@@ -1,7 +1,10 @@
 import { PrimaryHeading } from '../../components/Typography/Titles/Titles'
+import { useAuth0 } from '@auth0/auth0-react'
 import './account.styles.css'
 
 export const Account = () => {
+
+    const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
     
     return (
         <section className='account'>
@@ -13,7 +16,8 @@ export const Account = () => {
                     textColour="black"
                 />
                 <div className="border">
-                    <div className="info">
+                    <button className="btn btn-white" onClick={() => loginWithRedirect()}>Login</button>
+                    {/* <div className="info">
                         <p><span className='detail'>Username:</span>molts</p>
                         <p><span className='detail'>First name:</span>Tom</p>
                         <p><span className='detail'>Last name:</span>Molton</p>
@@ -23,7 +27,7 @@ export const Account = () => {
                     <div className="two-buttons">
                         <button className="btn btn-white">Change Password</button>
                         <button className="btn btn-red">Delete Account</button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="how-to-play bckgrd-white page-padding">
