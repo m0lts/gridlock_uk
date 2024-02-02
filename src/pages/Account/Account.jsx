@@ -7,6 +7,8 @@ export const Account = () => {
     const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
 
     const userLoggedIn = isAuthenticated;
+
+    console.log(user)
     
     return (
         <section className='account'>
@@ -22,7 +24,6 @@ export const Account = () => {
                         <>
                             <div className="info">
                                 <p><span className='detail'>Username:</span>{user.username}</p>
-                                <p><span className='detail'>Name:</span>{user.name}</p>
                                 <p><span className='detail'>Email:</span>{user.email}</p>
                             </div>
                             <div className="two-buttons">
