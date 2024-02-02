@@ -80,6 +80,7 @@ p {
 .btn {
     border:none;
     font-family: var(--primary-font);
+    cursor: pointer;
 }
 
 .two-buttons {

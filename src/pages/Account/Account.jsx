@@ -21,13 +21,12 @@ export const Account = () => {
                     {userLoggedIn ? (
                         <>
                             <div className="info">
-                                <p><span className='detail'>Username:</span>molts</p>
+                                <p><span className='detail'>Username:</span>{user.username}</p>
                                 <p><span className='detail'>Name:</span>{user.name}</p>
                                 <p><span className='detail'>Email:</span>{user.email}</p>
-                                <p><span className='detail'>Password:</span>**************</p>
                             </div>
                             <div className="two-buttons">
-                                <button className="btn btn-red" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Out</button>
+                                <button className="btn btn-white" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Out</button>
                                 <button className="btn btn-red">Delete Account</button>
                             </div>
                         </>
