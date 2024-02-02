@@ -4,11 +4,11 @@ import './account.styles.css'
 
 export const Account = () => {
 
-    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
+    const { loginWithRedirect, logout, isAuthenticated, user, username } = useAuth0()
 
     const userLoggedIn = isAuthenticated;
 
-    console.log(user)
+    console.log(user, isAuthenticated)
     
     return (
         <section className='account'>
@@ -23,7 +23,7 @@ export const Account = () => {
                     {userLoggedIn ? (
                         <>
                             <div className="info">
-                                <p><span className='detail'>Username:</span>{user.username}</p>
+                                <p><span className='detail'>Username:</span>{username}</p>
                                 <p><span className='detail'>Email:</span>{user.email}</p>
                             </div>
                             <div className="two-buttons">
