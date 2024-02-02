@@ -4,7 +4,9 @@ import './account.styles.css'
 
 export const Account = () => {
 
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
+    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
+
+    const userLoggedIn = isAuthenticated;
     
     return (
         <section className='account'>
@@ -16,18 +18,22 @@ export const Account = () => {
                     textColour="black"
                 />
                 <div className="border">
-                    <button className="btn btn-white" onClick={() => loginWithRedirect()}>Login</button>
-                    {/* <div className="info">
-                        <p><span className='detail'>Username:</span>molts</p>
-                        <p><span className='detail'>First name:</span>Tom</p>
-                        <p><span className='detail'>Last name:</span>Molton</p>
-                        <p><span className='detail'>Email:</span>moltontom@outlook.com</p>
-                        <p><span className='detail'>Password:</span>**************</p>
-                    </div>
-                    <div className="two-buttons">
-                        <button className="btn btn-white">Change Password</button>
-                        <button className="btn btn-red">Delete Account</button>
-                    </div> */}
+                    {userLoggedIn ? (
+                        <>
+                            <div className="info">
+                                <p><span className='detail'>Username:</span>molts</p>
+                                <p><span className='detail'>Name:</span>{user.name}</p>
+                                <p><span className='detail'>Email:</span>{user.email}</p>
+                                <p><span className='detail'>Password:</span>**************</p>
+                            </div>
+                            <div className="two-buttons">
+                                <button className="btn btn-red" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Out</button>
+                                <button className="btn btn-red">Delete Account</button>
+                            </div>
+                        </>
+                    ) : (
+                        <button className="btn btn-white" onClick={() => loginWithRedirect()}>Login</button>
+                    )}
                 </div>
             </div>
             <div className="how-to-play bckgrd-white page-padding">
