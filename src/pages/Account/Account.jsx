@@ -1,16 +1,50 @@
+import { useState, useEffect } from 'react'
 import { PrimaryHeading } from '../../components/Typography/Titles/Titles'
 import { useAuth0 } from '@auth0/auth0-react'
 import './account.styles.css'
 
 export const Account = () => {
 
-    const { loginWithRedirect, logout, isAuthenticated, user, user_metadata } = useAuth0()
+    const { loginWithRedirect, logout, isAuthenticated, user, getAccessTokenSilently } = useAuth0()
+    const [userMetadata, setUserMetadata] = useState(null)
+
 
     const userLoggedIn = isAuthenticated;
 
     console.log(user, isAuthenticated)
 
-    console.log(user_metadata)
+    useEffect(() => {
+        const getUserMetadata = async () => {
+          const domain = "dev-48tip6fhw83ez2y0.us.auth0.com";
+      
+          try {
+            const accessToken = await getAccessTokenSilently({
+              authorizationParams: {
+                audience: `https://${domain}/api/v2/`,
+                scope: "read:current_user",
+              },
+            });
+      
+            const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
+      
+            const metadataResponse = await fetch(userDetailsByIdUrl, {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            });
+      
+            const { user_metadata } = await metadataResponse.json();
+      
+            setUserMetadata(user_metadata);
+
+            console.log(user_metadata)
+          } catch (e) {
+            console.log(e.message);
+          }
+        };
+      
+        getUserMetadata();
+      }, [getAccessTokenSilently, user?.sub]);
 
     
     return (
@@ -28,6 +62,12 @@ export const Account = () => {
                             <div className="info">
                                 <p><span className='detail'>Username:</span>{user.username}</p>
                                 <p><span className='detail'>Email:</span>{user.email}</p>
+                                <h3>User Metadata</h3>
+                                    {userMetadata ? (
+                                    <pre>{JSON.stringify(userMetadata, null, 2)}</pre>
+                                    ) : (
+                                    "No user metadata defined"
+                                    )}
                             </div>
                             <div className="two-buttons">
                                 <button className="btn btn-white" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Out</button>

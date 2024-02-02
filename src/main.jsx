@@ -11,7 +11,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       domain="dev-48tip6fhw83ez2y0.us.auth0.com"
       clientId="VrM8jB1YZUSIJaSvwuQtGUVOPRN7OH5I"
       authorizationParams={{
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.origin,
+        audience: "https://dev-48tip6fhw83ez2y0.us.auth0.com/api/v2/",
+        scope: "read:current_user update:current_user_metadata"
       }}
     >
       <BrowserRouter>
