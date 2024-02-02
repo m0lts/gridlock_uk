@@ -1,0 +1,61 @@
+.calendar .grid {
+    padding: 1em 0;
+    width:100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1em;
+}
+.calendar .grid-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:0.25em;
+    border: 1px solid var(--white);
+    padding: 1em 0.5em;
+}
+.calendar .grid-item img {
+    width:50px;
+    height:30px;
+    object-fit: cover;
+}
+
+
+.calendar .grid-item.expanded {
+    grid-column: span 2;
+    height:fit-content;
+}
+.calendar .grid-item.expanded .location {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin:1em 0;
+}
+.calendar .grid-item.expanded .track {
+    width:80%;
+}
+.calendar .grid-item.expanded .track img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+
+
+
+.calendar .grid-item.expanded .program {
+    color:var(--white);
+    display: grid;
+    grid-template-columns: 30% 70%;
+    width:100%;
+    margin: 2em;
+}
+
+.calendar .grid-item.expanded .session {
+    text-align: right;
+    margin-bottom: 0.25em;
+}
+.calendar .grid-item.expanded .time {
+    text-align: center;
+    margin-bottom: 0.25em;
+}

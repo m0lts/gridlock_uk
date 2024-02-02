@@ -1,0 +1,35 @@
+.standings {
+    min-height: 100vh;
+}
+.standings .table {
+    margin-top: 2em;
+    width:100%;
+}
+.standings .table .head th {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 0.75em;
+    border-bottom: 1px solid var(--white);
+}
+.standings .table tr:nth-of-type(even) {
+    background-color: var(--white);
+    color: var(--black);
+}
+.standings .table .col1, .col2, .col3 {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0.5em 0;
+}
+.standings .table .col1 {
+    width:15%;
+    text-align: center;
+}
+.standings .table .col2 {
+    width:70%;
+    text-align: left;
+    padding-left: 2em;
+}
+.standings .table .col3 {
+    width:15%;
+    text-align: center;
+}

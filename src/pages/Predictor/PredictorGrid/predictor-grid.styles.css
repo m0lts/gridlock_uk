@@ -1,0 +1,67 @@
+.predictor-grid {
+    color: var(--white);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 2em;
+    padding-bottom: 2em;
+}
+.predictor-grid .grid-item {
+    border:1px solid var(--white);
+    background-color: var(--dark-grey);
+    height: 125px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
+}
+.predictor-grid .grid-item .icon {
+    font-size: 1.5em;
+}
+.predictor-grid .grid-item .name {
+    text-align: center;
+}
+.predictor-grid .grid-item:nth-child(even) {
+    margin-top: 1em;
+}
+
+/* Selected grid item */
+.predictor-grid .selected-grid-item {
+    background-color: var(--black);
+    width:100%;
+    height: 100%;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+/* Selection modal */
+.selection-modal {
+    backdrop-filter: blur(5px);
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    z-index:10;
+    padding:2em;
+    padding-bottom: 5em;
+    overflow: scroll;
+}
+.selection-modal .driver {
+    background-color: var(--black);
+    color: var(--white);
+    border: 1px solid var(--white);
+    margin-bottom: 0.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.5em;
+}
+.selection-modal .name {
+    display: flex;
+    align-items: center;
+    gap:0.5em;
+}

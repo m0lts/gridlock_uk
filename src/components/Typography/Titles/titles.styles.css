@@ -1,0 +1,46 @@
+.primary-heading {
+    font-size: 1.5em;
+    font-weight: 500;
+    padding:0.1em 0.5em;
+}
+.primary-heading.accent-red {
+    border-left: 5px solid var(--red);
+}
+.primary-heading.accent-purple {
+    border-left: 5px solid var(--purple);
+}
+.primary-heading.accent-green {
+    border-left: 5px solid var(--green);
+}
+.primary-heading.accent-yellow {
+    border-left: 5px solid var(--yellow);
+}
+.primary-heading.accent-blue {
+    border-left: 5px solid var(--blue);
+}
+.primary-heading.background-white {
+    background-color: var(--white);
+}
+.primary-heading.background-black {
+    background-color: var(--black);
+}
+.primary-heading.text-black {
+    color: var(--black);
+}
+.primary-heading.text-white {
+    color: var(--white);
+}
+
+.uppercase-title {
+    font-size: 2em;
+    max-width: 100%;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.uppercase-title.white {
+    color: var(--white);
+}
+.uppercase-title.black {
+    color: var(--black);
+}

@@ -1,0 +1,20 @@
+.driver-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 2em;
+}
+.driver-grid .driver {
+    border:1px solid var(--white);
+    height: 125px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
+}
+.driver-grid .driver .name {
+    text-align: center;
+}
+.driver-grid .driver:nth-child(even) {
+    margin-top: 1em;
+}
