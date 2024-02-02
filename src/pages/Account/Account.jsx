@@ -1,5 +1,6 @@
 import { PrimaryHeading } from '../../components/Typography/Titles/Titles'
 import { useAuth0 } from '@auth0/auth0-react'
+import LogoBlack from "../../assets/logos/logo-black.png";
 import './account.styles.css'
 
 export const Account = () => {
@@ -79,6 +80,10 @@ export const Account = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="footer">
+                <p>Gridlock is not affiliated with F1 in any way.</p>
+                <img src={LogoBlack} alt="" />
             </div>
         </section>
     )
