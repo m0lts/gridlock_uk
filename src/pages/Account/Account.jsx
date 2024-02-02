@@ -9,6 +9,25 @@ export const Account = () => {
     const userLoggedIn = isAuthenticated;
 
     console.log(user, isAuthenticated)
+
+    var myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+
+    var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+    };
+
+    
+
+    const getUserDetails = () => {
+        console.log(user)
+        fetch(`https://login.auth0.com/api/v2/users/auth0|65bd21768e99fde9f86b3f21`, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    }
     
     return (
         <section className='account'>
@@ -25,6 +44,7 @@ export const Account = () => {
                             <div className="info">
                                 <p><span className='detail'>Username:</span>{username}</p>
                                 <p><span className='detail'>Email:</span>{user.email}</p>
+                                <button onClick={getUserDetails} >Get user details</button>
                             </div>
                             <div className="two-buttons">
                                 <button className="btn btn-white" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Out</button>
