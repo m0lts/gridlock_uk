@@ -7,7 +7,7 @@ import MonacoTrack from '../../../assets/circuits/monaco_track.png'
 import './next-event.styles.css'
 import { Link } from "react-router-dom"
 
-export const NextEvent = () => {
+export const NextEvent = ({ nextEvent }) => {
 
     const [showMoreInfo, setShowMoreInfo] = useState(false);
 

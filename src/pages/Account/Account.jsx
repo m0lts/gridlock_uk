@@ -8,8 +8,6 @@ export const Account = () => {
     const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
 
     const userLoggedIn = isAuthenticated;
-
-    console.log(user, isAuthenticated)
     
     return (
         <section className='account'>

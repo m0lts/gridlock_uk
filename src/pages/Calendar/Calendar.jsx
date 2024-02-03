@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PrimaryHeading, UpperCaseTitle } from '../../components/Typography/Titles/Titles'
 import './calendar.styles.css'
 
-export const Calendar = () => {
+export const Calendar = ({ seasonData }) => {
 
     const [expandedItem, setExpandedItem] = useState(null);
 
@@ -10,7 +10,7 @@ export const Calendar = () => {
         setExpandedItem((prevExpandedItem) => (prevExpandedItem === index ? null : index));
     };
 
-    const gridItems = Array.from({ length: 24 }, (_, index) => (
+    const gridItems = seasonData.map((event, index) => (
         <div 
             key={index} 
             className={`grid-item ${expandedItem === index ? 'expanded' : ''}`}
@@ -22,12 +22,12 @@ export const Calendar = () => {
                     <div className="location">
                         <img src="https://via.placeholder.com/150" alt="placeholder" />
                         <UpperCaseTitle
-                            title="monaco"
+                            title={event.competitionCountry}
                             colour="white"
                         />
                     </div>
                     <div className="track">
-                        <img src="https://via.placeholder.com/150" alt="placeholder" />
+                        <img src={event.competitionCircuit} alt="placeholder" />
                     </div>
                     <div className="program">
                         <div className="sessions">
@@ -54,7 +54,7 @@ export const Calendar = () => {
                     />
                     <img src="https://via.placeholder.com/150" alt="placeholder" />
                     <UpperCaseTitle
-                        title="monaco"
+                        title={event.competitionCountry}
                         colour="white"
                     />
                 </>
