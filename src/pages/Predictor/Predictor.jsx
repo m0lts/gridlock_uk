@@ -1,13 +1,33 @@
 import { PrimaryHeading, UpperCaseTitle } from '../../components/Typography/Titles/Titles'
 import MonacoFlag from '../../assets/flags/monaco_flag.svg'
-
+import { useState, useEffect } from 'react';
 import './predictor.styles.css'
 import { DriverGrid } from '../../components/DriverGrid/DriverGrid';
 import { Parallelograms } from '../../components/Typography/Shapes/Shapes';
 import { RainIcon, SunIcon, LockIcon } from '../../components/Icons/Icons';
 import { PredictorGrid } from './PredictorGrid/PredictorGrid';
+import { getCountryFlag } from '../../utils/getCountryFlag';
+import { Loader } from '../../components/Loader/Loader';
 
-export const Predictor = () => {
+
+export const Predictor = ({ seasonData }) => {
+
+    const [nextEvent, setNextEvent] = useState([])
+
+    useEffect(() => {
+        const findNextEvent = () => {
+            const scheduledEvent = seasonData.find(event => event.status === 'Scheduled');
+            
+            // Check if a scheduled event was found
+            if (scheduledEvent) {
+                setNextEvent([scheduledEvent]);
+            } else {
+                setNextEvent([]);
+            }
+        };
+
+        findNextEvent();
+    }, [seasonData]);
 
     const userLoggedIn = true;
 
@@ -28,13 +48,17 @@ export const Predictor = () => {
                     textColour="black"
                 />
                 <div className="head">
-                    <div className="event">
-                        <UpperCaseTitle
-                            title="monaco"
-                            colour="white"
-                        />
-                        <img src={MonacoFlag} alt="" className="flag" />
-                    </div>
+                    {nextEvent.length === 0 ? (
+                        <Loader />
+                    ) : (
+                        <div className="event">
+                            <UpperCaseTitle
+                                title={nextEvent[0].competitionCountry}
+                                colour="white"
+                            />
+                            <img src={getCountryFlag(nextEvent[0].competitionCountry)} alt={`${nextEvent[0].competitionCountry} Flag`} className="flag" />
+                        </div>
+                    )}
                     <div className="time">
                         <h3>Time Left:</h3>
                         <h3>00:47:34</h3>

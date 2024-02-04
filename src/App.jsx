@@ -39,7 +39,6 @@ export default function App() {
     }
     
       fetchData();
-      console.log(returnedApiData)
 
   }, [apiRequest])
 

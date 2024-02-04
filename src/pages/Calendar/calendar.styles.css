@@ -1,6 +1,6 @@
 .calendar .grid {
     padding: 1em 0;
-    width:100%;
+    max-width:100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1em;
@@ -45,8 +45,9 @@
 
 .calendar .grid-item.expanded .program {
     color:var(--white);
-    display: grid;
-    grid-template-columns: 30% 70%;
+    display: flex;
+    justify-content: center;
+    gap:1rem;
     width:100%;
     margin: 2em;
 }
@@ -54,6 +55,7 @@
 .calendar .grid-item.expanded .session {
     text-align: right;
     margin-bottom: 0.25em;
+    opacity: 0.8;
 }
 .calendar .grid-item.expanded .time {
     text-align: center;

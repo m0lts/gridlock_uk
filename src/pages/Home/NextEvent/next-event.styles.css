@@ -38,8 +38,9 @@
 }
 .next-event .more-info {
     color:var(--white);
-    display: grid;
-    grid-template-columns: 30% 70%;
+    display: flex;
+    justify-content: center;
+    gap:1rem;
     width:100%;
     margin-bottom: 2em;
 }
@@ -47,6 +48,7 @@
 .next-event .more-info .session {
     text-align: right;
     margin-bottom: 0.25em;
+    opacity: 0.8;
 }
 .next-event .more-info .time {
     text-align: center;

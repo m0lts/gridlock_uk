@@ -18,6 +18,5 @@ export const filterApiResponse = (response) => {
         }
         });
 
-        console.log(groupedCompetitions);
         return groupedCompetitions;
     }

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { PrimaryHeading, UpperCaseTitle } from '../../components/Typography/Titles/Titles'
 import './calendar.styles.css'
+import { getCountryFlag } from '../../utils/getCountryFlag';
+import { getEventDates } from '../../utils/getEventDates';
 
 export const Calendar = ({ seasonData }) => {
 
@@ -20,7 +22,7 @@ export const Calendar = ({ seasonData }) => {
                 <>
                     <h3>Round {index + 1}</h3>
                     <div className="location">
-                        <img src="https://via.placeholder.com/150" alt="placeholder" />
+                        <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} Flag`} />
                         <UpperCaseTitle
                             title={event.competitionCountry}
                             colour="white"
@@ -31,18 +33,18 @@ export const Calendar = ({ seasonData }) => {
                     </div>
                     <div className="program">
                         <div className="sessions">
-                            <p className="session">Practice 1:</p>
-                            <p className="session">Practice 2:</p>
-                            <p className="session">Practice 3:</p>
-                            <p className="session">Qualifying:</p>
-                            <p className="session">Race:</p>
+                            {getEventDates(event.events).map((event, index) => (
+                                <p key={index} className="session">
+                                    {Object.keys(event)[0]}:
+                                </p>
+                            ))}
                         </div>
                         <div className="times">
-                            <p className="time">19/05/2024 10:00 (GMT)</p>
-                            <p className="time">19/05/2024 14:00 (GMT)</p>
-                            <p className="time">19/05/2024 11:00 (GMT)</p>
-                            <p className="time">19/05/2024 14:00 (GMT)</p>
-                            <p className="time">19/05/2024 14:00 (GMT)</p>
+                            {getEventDates(event.events).map((event, index) => (
+                                <p key={index} className="time">
+                                    {Object.values(event)[0]}
+                                </p>
+                            ))}
                         </div>
                     </div>
                 </>
@@ -52,11 +54,8 @@ export const Calendar = ({ seasonData }) => {
                         title={index + 1}
                         colour="white"
                     />
-                    <img src="https://via.placeholder.com/150" alt="placeholder" />
-                    <UpperCaseTitle
-                        title={event.competitionCountry}
-                        colour="white"
-                    />
+                    <img src={getCountryFlag(event.competitionCountry)} alt="placeholder" />
+                    <h3>{event.competitionCountry}</h3>
                 </>
             )}
         </div>

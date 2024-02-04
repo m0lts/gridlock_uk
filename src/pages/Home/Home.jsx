@@ -23,11 +23,6 @@ export const Home = ({ seasonData }) => {
         findNextEvent();
     }, [seasonData]);
 
-    console.log(nextEvent);
-
-
-
-
     return (
         <section className="home">
             <NextEvent
