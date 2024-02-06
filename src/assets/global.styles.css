@@ -97,6 +97,18 @@ p {
     color: var(--white);
     padding:0.5em 1em;
 }
+.btn-white.center {
+    margin: 1em auto;
+}
+.btn-black {
+    background-color: var(--white);
+    border:1px solid var(--black);
+    color: var(--black);
+    padding:0.5em 1em;
+}
+.btn-black.center {
+    margin: 1em auto;
+}
 .btn-purple {
     background-color: var(--purple);
     color: var(--white);

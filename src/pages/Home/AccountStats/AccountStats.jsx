@@ -1,10 +1,16 @@
 import { LockIcon } from "../../../components/Icons/Icons";
 import { PrimaryHeading } from "../../../components/Typography/Titles/Titles"
 import './account-stats.styles.css'
+import { useAuth0 } from '@auth0/auth0-react';
+import { useState } from 'react';
 
 export const AccountStats = () => {
 
-    const userLoggedIn = true;
+    // Check if user is logged in
+    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+
+    const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
+    
 
     return (
         <section className="account-stats page-padding">
@@ -30,10 +36,10 @@ export const AccountStats = () => {
                     </div>
                 </div>
             ) : (
-                <div className="stats-locked">
+                <button className="stats-locked btn btn-black center"  onClick={() => loginWithRedirect()}>
                     <LockIcon />
                     <h3>Login to view your stats</h3>
-                </div>
+                </button>
             )}
         </section>
     )

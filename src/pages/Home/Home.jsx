@@ -29,7 +29,9 @@ export const Home = ({ seasonData }) => {
                 nextEvent={nextEvent}
             />
             <AccountStats />
-            <GridlockStats />
+            <GridlockStats
+                nextEvent={nextEvent}
+            />
         </section>
     )
 }

@@ -33,8 +33,14 @@
     font-size: 2em;
 }
 
+/* Track stats */
 .predictor .track-stats, .weather-forecast {
     background-color: var(--white);
+}
+.predictor .track-stats h3 {
+    margin-top:1em;
+    text-align: center;
+    font-size: 1rem;
 }
 .predictor .track-stats .statistics {
     padding:1em 0;

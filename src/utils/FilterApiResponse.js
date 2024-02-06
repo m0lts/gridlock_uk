@@ -13,6 +13,7 @@ export const filterApiResponse = (response) => {
                 competitionName: event.competition.name,
                 competitionCountry: event.competition.location.country,
                 competitionCircuit: event.circuit.image,
+                competitionCircuitName: event.circuit.name,
                 events: [event],
             });
         }

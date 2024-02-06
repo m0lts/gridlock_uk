@@ -8,17 +8,27 @@ import { RainIcon, SunIcon, LockIcon } from '../../components/Icons/Icons';
 import { PredictorGrid } from './PredictorGrid/PredictorGrid';
 import { getCountryFlag } from '../../utils/getCountryFlag';
 import { Loader } from '../../components/Loader/Loader';
+import { CountdownTimer } from './Countdown/CountdownTimer';
+import { getCircuitInfo } from '../../utils/getCircuitInfo';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 export const Predictor = ({ seasonData }) => {
 
-    const [nextEvent, setNextEvent] = useState([])
+    // Check if user is logged in
+    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
 
+    const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
+    const [nextEvent, setNextEvent] = useState([]);
+    const [qualiTime, setQualiTime] = useState();
+    const [circuitInfo, setCircuitInfo] = useState();
+
+
+    // When the season data has been set, find the next event
     useEffect(() => {
         const findNextEvent = () => {
             const scheduledEvent = seasonData.find(event => event.status === 'Scheduled');
-            
-            // Check if a scheduled event was found
+
             if (scheduledEvent) {
                 setNextEvent([scheduledEvent]);
             } else {
@@ -29,14 +39,19 @@ export const Predictor = ({ seasonData }) => {
         findNextEvent();
     }, [seasonData]);
 
-    const userLoggedIn = true;
 
-    const downforce = 5;
-    const tyreStress = 3;
-    const grip = 4;
-    const trackEvolution = 5;
-    const braking = 4;
-    const asphaltAbrasion = 3;
+    // When next event state has been set, get the countdown to qualifying and the circuit information
+    useEffect(() => {
+        const getQualiTime = () => {
+            const quali = nextEvent[0].events.filter(event => event.type === 'qualification');
+            setQualiTime(new Date(quali[0].date).getTime());
+        }
+        if (nextEvent.length > 0) {
+            getQualiTime();
+            setCircuitInfo(getCircuitInfo[nextEvent[0].competitionCircuitName]);
+        }
+    }, [nextEvent])
+
 
     return (
         <section className="predictor">
@@ -59,10 +74,9 @@ export const Predictor = ({ seasonData }) => {
                             <img src={getCountryFlag(nextEvent[0].competitionCountry)} alt={`${nextEvent[0].competitionCountry} Flag`} className="flag" />
                         </div>
                     )}
-                    <div className="time">
-                        <h3>Time Left:</h3>
-                        <h3>00:47:34</h3>
-                    </div>
+                    <CountdownTimer 
+                        qualiTime={qualiTime}
+                    />
                 </div>
                 {userLoggedIn ? (
                     <>
@@ -77,10 +91,10 @@ export const Predictor = ({ seasonData }) => {
                         </div>
                     </>
                 ) : (
-                    <div className="predictor-locked">
+                    <button className="predictor-locked btn btn-white center"  onClick={() => loginWithRedirect()}>
                         <LockIcon />
                         <h3>Login to make a prediction</h3>
-                    </div>
+                    </button>
                 )}
             </div>
             <div className="track-stats page-padding">
@@ -90,62 +104,70 @@ export const Predictor = ({ seasonData }) => {
                     backgroundColour="black"
                     textColour="white"
                 />
-                <div className="statistics">
-                    <div className="stat">
-                        <p>Downforce:</p>
-                        <div className="value">
-                            <Parallelograms
-                                number={downforce}
-                                color="black"
-                            />
+                {circuitInfo ? (
+                    <>
+                        <h3>{nextEvent[0].competitionCircuitName}</h3>
+                        <div className="statistics">
+                            <div className="stat">
+                                <p>Downforce:</p>
+                                <div className="value">
+                                    <Parallelograms
+                                        number={circuitInfo.downforce}
+                                        color="black"
+                                    />
+                                </div>
+                            </div>
+                            <div className="stat">
+                                <p>Tyre Stress:</p>
+                                <div className="value">
+                                    <Parallelograms
+                                        number={circuitInfo['tyre stress']}
+                                        color="black"
+                                    />
+                                </div>
+                            </div>
+                            <div className="stat">
+                                <p>Grip:</p>
+                                <div className="value">
+                                    <Parallelograms
+                                        number={circuitInfo.traction}
+                                        color="black"
+                                    />
+                                </div>
+                            </div>
+                            <div className="stat">
+                                <p>Track Evolution:</p>
+                                <div className="value">
+                                    <Parallelograms
+                                        number={circuitInfo['track evolution']}
+                                        color="black"
+                                    />
+                                </div>
+                            </div>
+                            <div className="stat">
+                                <p>Braking:</p>
+                                <div className="value">
+                                    <Parallelograms
+                                        number={circuitInfo.braking}
+                                        color="black"
+                                    />
+                                </div>
+                            </div>
+                            <div className="stat">
+                                <p>Asphalt Abrasion:</p>
+                                <div className="value">
+                                    <Parallelograms
+                                        number={circuitInfo['asphalt abrasion']}
+                                        color="black"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="stat">
-                        <p>Tyre Stress:</p>
-                        <div className="value">
-                            <Parallelograms
-                                number={tyreStress}
-                                color="black"
-                            />
-                        </div>
-                    </div>
-                    <div className="stat">
-                        <p>Grip:</p>
-                        <div className="value">
-                            <Parallelograms
-                                number={grip}
-                                color="black"
-                            />
-                        </div>
-                    </div>
-                    <div className="stat">
-                        <p>Track Evolution:</p>
-                        <div className="value">
-                            <Parallelograms
-                                number={trackEvolution}
-                                color="black"
-                            />
-                        </div>
-                    </div>
-                    <div className="stat">
-                        <p>Braking:</p>
-                        <div className="value">
-                            <Parallelograms
-                                number={braking}
-                                color="black"
-                            />
-                        </div>
-                    </div>
-                    <div className="stat">
-                        <p>Asphalt Abrasion:</p>
-                        <div className="value">
-                            <Parallelograms
-                                number={asphaltAbrasion}
-                                color="black"
-                            />
-                        </div>
-                    </div>
-                </div>
+                    </>
+                ) : (
+                    <Loader />
+                )
+                }
             </div>
             <div className="weather-forecast page-padding">
                 <PrimaryHeading
