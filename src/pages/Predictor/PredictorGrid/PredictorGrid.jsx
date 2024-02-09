@@ -1,164 +1,46 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GearIcon } from '../../../components/Icons/Icons';
 import './predictor-grid.styles.css'
+import { Loader } from '../../../components/Loader/Loader';
 
-export const PredictorGrid = () => {
+export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent }) => {
 
-    
+    const [drivers, setDrivers] = useState([])
 
-    const [drivers, setDrivers] = useState([
-        {
-            firstName: 'Max',
-            lastName: 'Verstappen',
-            team: 'Red Bull',
-            number: 1
-        },
-        {
-            firstName: 'Sergio',
-            lastName: 'Perez',
-            team: 'Red Bull',
-            number: 11
-        },
-        {
-            firstName: 'Lewis',
-            lastName: 'Hamilton',
-            team: 'Mercedes',
-            number: 44
-        },
-        {
-            firstName: 'Valtteri',
-            lastName: 'Bottas',
-            team: 'Mercedes',
-            number: 77
-        },
-        {
-            firstName: 'Lando',
-            lastName: 'Norris',
-            team: 'McLaren',
-            number: 4
-        },
-        {
-            firstName: 'Daniel',
-            lastName: 'Ricciardo',
-            team: 'McLaren',
-            number: 3
-        },
-        {
-            firstName: 'Charles',
-            lastName: 'Leclerc',
-            team: 'Ferrari',
-            number: 16
-        },
-        {
-            firstName: 'Carlos',
-            lastName: 'Sainz',
-            team: 'Ferrari',
-            number: 55
-        },
-        {
-            firstName: 'Pierre',
-            lastName: 'Gasly',
-            team: 'AlphaTauri',
-            number: 10
-        },
-        {
-            firstName: 'Yuki',
-            lastName: 'Tsunoda',
-            team: 'AlphaTauri',
-            number: 22
-        },
-        {
-            firstName: 'Sebastian',
-            lastName: 'Vettel',
-            team: 'Aston Martin',
-            number: 5
-        },
-        {
-            firstName: 'Lance',
-            lastName: 'Stroll',
-            team: 'Aston Martin',
-            number: 18
-        },
-        {
-            firstName: 'Fernando',
-            lastName: 'Alonso',
-            team: 'Alpine',
-            number: 14
-        },
-        {
-            firstName: 'Esteban',
-            lastName: 'Ocon',
-            team: 'Alpine',
-            number: 31
-        },
-        {
-            firstName: 'George',
-            lastName: 'Russell',
-            team: 'Williams',
-            number: 63
-        },
-        {
-            firstName: 'Nicholas',
-            lastName: 'Latifi',
-            team: 'Williams',
-            number: 6
-        },
-        {
-            firstName: 'Kimi',
-            lastName: 'Räikkönen',
-            team: 'Sauber',
-            number: 7
-        },
-        {
-            firstName: 'Antonio',
-            lastName: 'Giovinazzi',
-            team: 'Sauber',
-            number: 99
-        },
-        {
-            firstName: 'Mick',
-            lastName: 'Schumacher',
-            team: 'Haas',
-            number: 47
-        },
-        {
-            firstName: 'Nikita',
-            lastName: 'Mazepin',
-            team: 'Haas',
-            number: 9
-        }
-    ])
+    useEffect(() => {
+        setDrivers(driverData);
+    }, [driverData]);
 
     const getTeamColour = (team) => {
         switch (team) {
-            case 'Red Bull':
+            case 'Red Bull Racing':
                 return '#0600EF';
                 break;
-            case 'Mercedes':
+            case 'Mercedes-AMG Petronas':
                 return '#00D2BE';
                 break;
-            case 'McLaren':
+            case 'McLaren Racing':
                 return '#FF8700';
                 break;
-            case 'Ferrari':
+            case 'Scuderia Ferrari':
                 return '#DC0000';
                 break;
-            case 'AlphaTauri':
-                return '#2B4562';
+            case 'Scuderia AlphaTauri Honda':
+                return '#1130F5';
                 break;
-            case 'Aston Martin':
+            case 'Aston Martin F1 Team':
                 return '#006F62';
                 break;
-            case 'Alpine':
-                return '#0090FF';
+            case 'Alpine F1 Team':
+                return '#F54EF2';
                 break;
-            case 'Williams':
+            case 'Williams F1 Team':
                 return '#005AFF';
                 break;
-            case 'Sauber':
-                return '#900000';
+            case 'Alfa Romeo':
+                return '#08ff08';
                 break;
-            case 'Haas':
+            case 'Haas F1 Team':
                 return '#FFFFFF';
                 break;
             default:
@@ -210,10 +92,10 @@ export const PredictorGrid = () => {
         <div key={index} className="grid-item" onClick={() => handleGridItemClick(index)}>
             {selectedDrivers[index] ? (
                 <div className='selected-grid-item'>
-                    <h1 style={{ color: `${getTeamColour(selectedDrivers[index].team)}` }}>{selectedDrivers[index].number}</h1>
+                    <h1 style={{ color: `${getTeamColour(selectedDrivers[index].driverTeam)}` }}>{selectedDrivers[index].driverNumber}</h1>
                     <div className="name">
-                        <p>{selectedDrivers[index].firstName}</p>
-                        <h4>{selectedDrivers[index].lastName}</h4>
+                        <p>{selectedDrivers[index].driverFirstName}</p>
+                        <h4>{selectedDrivers[index].driverLastName}</h4>
                     </div>
                 </div>
             ) : (
@@ -227,27 +109,150 @@ export const PredictorGrid = () => {
         </div>
     ));
 
+    
+    // Send user prediction to database and handle errors
+    const [showError, setShowError] = useState(false);
+    const [disableSubmitButton, setDisableSubmitButton] = useState(true);
+    const [submitButtonText, setSubmitButtonText] = useState('Lock it in');
+
+    useEffect(() => {
+        if (!selectedDrivers.includes(null)) {
+            setDisableSubmitButton(false);
+        }
+    }, [selectedDrivers]);
+
+
+    const handleUserPrediction = async () => {
+
+        setSubmitButtonText('Submitting...');
+
+        if (selectedDrivers.includes(null)) {
+            setShowError(true);
+            setSubmitButtonText('Lock it in');
+            return;
+        }
+
+        try {
+            const payload = {
+                prediction: selectedDrivers,
+                userEmail,
+                userName,
+                competition: nextEvent[0].competitionName,
+                country: nextEvent[0].competitionCountry,
+                competitionId: nextEvent[0].competitionId,
+                points: null,
+                submittedAt: new Date(),
+            }
+            const response = await fetch('/api/predictions/handleAddUserPrediction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.status === 200 || response.status === 201) {
+                setSubmitButtonText('Prediction submitted!');
+                setTimeout(() => {
+                    setSubmitButtonText('Update prediction');
+                }, 2000);
+            }
+            
+        } catch (error) {
+            console.error(error);
+        }
+        
+    }
+
+    const [updateDriversArray, setUpdateDriversArray] = useState(false);
+
+    // Fetch user prediction from database
+    useEffect(() => {
+        const fetchPrediction = async () => {
+            if (nextEvent.length > 0) {
+                try {
+                    const payload = {
+                        userEmail,
+                        competitionId: nextEvent[0].competitionId,
+                    };
+                    const response = await fetch('/api/predictions/handleFindUserPrediction', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+                    if (response.status === 200) {
+                        const responseData = await response.json();
+                        const dbPrediction = responseData.dbPrediction;
+                        setSelectedDrivers(dbPrediction.prediction);
+                        setUpdateDriversArray(true);
+                        setSubmitButtonText('Update prediction');
+                    }
+                } catch (error) {
+                console.error('Error submitting form:', error);
+                }
+                }   
+            }   
+        if (nextEvent.length > 0) {
+            fetchPrediction();
+        }
+    }, [nextEvent])
+
+    // Remove drivers already selected from the 'drivers' array
+    useEffect(() => {
+        const updateDriversArrayWithDbPrediction = () => {
+            if (updateDriversArray) {
+                const updatedDrivers = drivers.filter(driver => {
+                    return !selectedDrivers.some(selectedDriver => selectedDriver.driverId === driver.driverId);
+                });
+                setDrivers(updatedDrivers);
+            }
+        }
+        if (drivers.length > 0 && updateDriversArray) {
+            updateDriversArrayWithDbPrediction();
+        }
+    }, [updateDriversArray])
+
     return (
         <section className="predictor-grid">
-            {gridItems}
-            {showSelectionModal && (
-                <div className="selection-modal">
-                    {drivers.map((driver, index) => (
-                        <div
-                            key={index}
-                            className="driver"
-                            style={{ border: `1px solid ${getTeamColour(driver.team)}`, boxShadow: `1px 1px 3px ${getTeamColour(driver.team)}` }}
-                            onClick={() => handleDriverSelection(driver)}
-                        >
-                            <h1>{driver.number}</h1>
-                            <div className="name">
-                                <p>{driver.firstName}</p>
-                                <h4>{driver.lastName}</h4>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+            {drivers.length === 0 ? (
+                <Loader />    
+            ) : (
+                <>
+                    {gridItems}
+                </>
             )}
+                    {showSelectionModal && (
+                        <div className="selection-modal">
+                            {drivers.map((driver, index) => (
+                                <div
+                                    key={index}
+                                    className="driver"
+                                    style={{ border: `1px solid ${getTeamColour(driver.driverTeam)}`, boxShadow: `1px 1px 3px ${getTeamColour(driver.driverTeam)}` }}
+                                    onClick={() => {handleDriverSelection(driver); setShowError(false)}}
+                                >
+                                    <h1>{driver.driverNumber}</h1>
+                                    <div className="name">
+                                        <p>{driver.driverFirstName}</p>
+                                        <h4>{driver.driverLastName}</h4>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+            <div className="submit-prediction">
+                    {/* <button className="btn btn-white">Use Previous Prediction</button> */}
+                    <button 
+                        className="btn btn-purple" 
+                        style={{ opacity: disableSubmitButton ? '0.5' : '1' }}
+                        onClick={handleUserPrediction}
+                        disabled={disableSubmitButton}
+                    >
+                        {submitButtonText}
+                    </button>
+                    <p className='error-msg' style={{ display: showError ? 'block' : 'none' }}>You must select a driver for all positions.</p>
+            </div>
         </section>
     );
 };

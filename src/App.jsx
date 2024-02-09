@@ -8,12 +8,13 @@ import './assets/global.styles.css'
 import { Calendar } from './pages/Calendar/Calendar'
 import { Standings } from './pages/Standings/Standings'
 import { Account } from './pages/Account/Account'
-import { filterApiResponse } from './utils/FilterApiResponse'
+import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
 
 export default function App() {
 
   const [apiRequest, setApiRequest] = useState('races?season=2024&timezone=Europe/London');
-  const [returnedApiData, setReturnedApiData] = useState([]);
+  const [returnedEventData, setReturnedEventData] = useState([]);
+  const [returnedDriverData, setReturnedDriverData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +30,14 @@ export default function App() {
         // Receive returned data and set state with data.
         if (response.ok) {
               const responseData = await response.json();
-              setReturnedApiData(filterApiResponse(responseData.result.response));
+              const data = responseData.result.response;
+
+              if (apiRequest.includes('races')) {
+                setReturnedEventData(filterEventResponse(data));
+                setApiRequest('rankings/drivers?season=2023');
+              } else if (apiRequest.includes('drivers')) {
+                setReturnedDriverData(filterDriverResponse(data));
+              }
             } else {
               console.log('failure');
             }
@@ -47,9 +55,9 @@ export default function App() {
     <div className="app">
       <Header />
       <Routes>
-        <Route path="/" element={<Home seasonData={returnedApiData} />} />
-        <Route path="/predictor" element={<Predictor seasonData={returnedApiData} />} />
-        <Route path="/calendar" element={<Calendar seasonData={returnedApiData} />} />
+        <Route path="/" element={<Home seasonData={returnedEventData} driverData={returnedDriverData} />} />
+        <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} />} />
+        <Route path="/calendar" element={<Calendar seasonData={returnedEventData} />} />
         <Route path="/standings" element={<Standings />} />
         <Route path="/account" element={<Account />} />
       </Routes>

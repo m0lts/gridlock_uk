@@ -13,12 +13,17 @@ import { getCircuitInfo } from '../../utils/getCircuitInfo';
 import { useAuth0 } from '@auth0/auth0-react';
 
 
-export const Predictor = ({ seasonData }) => {
+export const Predictor = ({ seasonData, driverData }) => {
 
     // Check if user is logged in
-    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+    // const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
 
-    const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
+    const [userLoggedIn, setUserLoggedIn] = useState(true);
+    const user = {
+        email: 'moltontom6@gmail.com',
+        nickname: 'moltontom6',
+    }
+    // const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
     const [nextEvent, setNextEvent] = useState([]);
     const [qualiTime, setQualiTime] = useState();
     const [circuitInfo, setCircuitInfo] = useState();
@@ -81,13 +86,12 @@ export const Predictor = ({ seasonData }) => {
                 {userLoggedIn ? (
                     <>
                         <div className="predictions">
-                            <PredictorGrid />
-                        </div>
-                        <div className="two-buttons">
-                            <button className="btn btn-white">Use Previous Prediction</button>
-                            <button className="btn btn-purple">
-                                Lock it in
-                            </button>
+                            <PredictorGrid
+                                driverData={driverData}
+                                userEmail={user.email}
+                                userName={user.nickname}
+                                nextEvent={nextEvent}
+                            />
                         </div>
                     </>
                 ) : (
@@ -169,7 +173,7 @@ export const Predictor = ({ seasonData }) => {
                 )
                 }
             </div>
-            <div className="weather-forecast page-padding">
+            {/* <div className="weather-forecast page-padding">
                 <PrimaryHeading
                     title="Weather Forecast"
                     accentColour="purple"
@@ -186,7 +190,7 @@ export const Predictor = ({ seasonData }) => {
                         <SunIcon />
                     </div>
                 </div>
-            </div>
+            </div> */}
         </section>
     )
 }

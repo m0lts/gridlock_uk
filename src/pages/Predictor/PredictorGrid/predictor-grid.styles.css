@@ -65,3 +65,16 @@
     align-items: center;
     gap:0.5em;
 }
+
+.predictor-grid .submit-prediction {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:1em;
+    margin-top:1em;
+}
+.predictor-grid .submit-prediction .error-msg {
+    color: var(--red);
+}
