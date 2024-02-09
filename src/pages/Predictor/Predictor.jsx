@@ -16,14 +16,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 export const Predictor = ({ seasonData, driverData }) => {
 
     // Check if user is logged in
-    // const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
-
-    const [userLoggedIn, setUserLoggedIn] = useState(true);
-    const user = {
-        email: 'moltontom6@gmail.com',
-        nickname: 'moltontom6',
-    }
-    // const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
+    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+    const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
     const [nextEvent, setNextEvent] = useState([]);
     const [qualiTime, setQualiTime] = useState();
     const [circuitInfo, setCircuitInfo] = useState();
