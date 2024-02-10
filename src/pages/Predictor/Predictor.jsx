@@ -18,6 +18,7 @@ export const Predictor = ({ seasonData, driverData }) => {
     // Check if user is logged in
     const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
     const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
+
     const [nextEvent, setNextEvent] = useState([]);
     const [qualiTime, setQualiTime] = useState();
     const [circuitInfo, setCircuitInfo] = useState();

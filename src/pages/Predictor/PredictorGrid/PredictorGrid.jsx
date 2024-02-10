@@ -140,9 +140,9 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent }) =>
                 competition: nextEvent[0].competitionName,
                 country: nextEvent[0].competitionCountry,
                 competitionId: nextEvent[0].competitionId,
-                points: null,
                 submittedAt: new Date(),
             }
+
             const response = await fetch('/api/predictions/handleAddUserPrediction', {
                 method: 'POST',
                 headers: {
