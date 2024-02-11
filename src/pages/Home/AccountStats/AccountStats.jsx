@@ -1,15 +1,14 @@
+import { Link } from "react-router-dom";
 import { LockIcon } from "../../../components/Icons/Icons";
 import { PrimaryHeading } from "../../../components/Typography/Titles/Titles"
 import './account-stats.styles.css'
-import { useAuth0 } from '@auth0/auth0-react';
-import { useState } from 'react';
+
 
 export const AccountStats = () => {
 
     // Check if user is logged in
-    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
-
-    const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
+    const userLoggedIn = sessionStorage.getItem('user');
+    const user = JSON.parse(userLoggedIn);
     
 
     return (
@@ -36,10 +35,12 @@ export const AccountStats = () => {
                     </div>
                 </div>
             ) : (
-                <button className="stats-locked btn btn-black center"  onClick={() => loginWithRedirect()}>
-                    <LockIcon />
-                    <h3>Login to view your stats</h3>
-                </button>
+                <Link to='/login' className="link">
+                    <button className="stats-locked btn btn-black center">
+                        <LockIcon />
+                        <h3>Login to view your stats</h3>
+                    </button>
+                </Link>
             )}
         </section>
     )

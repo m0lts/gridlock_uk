@@ -9,6 +9,10 @@ import { Calendar } from './pages/Calendar/Calendar'
 import { Standings } from './pages/Standings/Standings'
 import { Account } from './pages/Account/Account'
 import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
+import LogIn from './pages/Login/Login'
+import SignUp from './pages/Signup/Signup'
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
+import ResetPassword from './pages/ResetPassword/ResetPassword'
 
 export default function App() {
 
@@ -60,6 +64,10 @@ export default function App() {
         <Route path="/calendar" element={<Calendar seasonData={returnedEventData} />} />
         <Route path="/standings" element={<Standings />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path='/forgotpassword' element={<ForgotPassword />} />
+        <Route path='/resetpassword' element={<ResetPassword />} />
       </Routes>
       <Menu />
     </div>

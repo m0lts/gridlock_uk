@@ -6,6 +6,7 @@ export const Menu = () => {
 
     const location = useLocation()
 
+    const userLoggedIn = sessionStorage.getItem('user');
 
     return (
         <nav className="menu">
@@ -35,9 +36,17 @@ export const Menu = () => {
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to="/account" className="menu-link link" style={{ color: location.pathname === '/account' ? 'var(--blue)' : 'var(--white)'}}>
+                    <NavLink to={`${userLoggedIn ? '/account' : '/login'}`} className="menu-link link" style={{
+                        color: (
+                            location.pathname === '/account' || 
+                            location.pathname === '/login' || 
+                            location.pathname === '/signup' || 
+                            location.pathname === '/forgotpassword' || 
+                            location.pathname === '/resetpassword'
+                            ) ? 'var(--blue)' : 'var(--white)'
+                    }}>
                         <AccountIcon />
-                        <p className="text">Account</p>
+                        <p className="text">{userLoggedIn ? 'Account' : 'Login'}</p>
                     </NavLink>
                 </li>
             </ul>

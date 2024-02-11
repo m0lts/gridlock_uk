@@ -26,13 +26,13 @@ export const filterDriverResponse = (response) => {
     const filteredDrivers = [];
 
     response.forEach(driver => {
-        const driverNameArray = driver.driver.name.split(' ');
-        const firstName = driverNameArray[0];
-        const lastName = driverNameArray[driverNameArray.length - 1];
+        const spaceIndex = driver.driver.name.indexOf(' ');
+        const firstName = driver.driver.name.substring(0, spaceIndex);
+        const lastName = driver.driver.name.substring(spaceIndex + 1);
         const driverAbbr = lastName.substring(0, 3).toUpperCase();
-
+        
         const driverAbbrToUse = driver.driver.abbr === null ? driverAbbr : driver.driver.abbr;
-
+        
         filteredDrivers.push({
             driverId: driver.driver.id,
             driverFirstName: firstName,

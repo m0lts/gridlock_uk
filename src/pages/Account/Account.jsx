@@ -1,14 +1,21 @@
 import { PrimaryHeading } from '../../components/Typography/Titles/Titles'
-import { useAuth0 } from '@auth0/auth0-react'
 import LogoBlack from "../../assets/logos/logo-black.png";
 import './account.styles.css'
 import { HowToPlay } from '../../components/HowToPlay/HowToPlay';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Account = () => {
 
-    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
+    const navigate = useNavigate();
 
-    const userLoggedIn = isAuthenticated;
+    const userLoggedIn = sessionStorage.getItem('user');
+    const user = JSON.parse(userLoggedIn);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem('user');
+        navigate('/');
+        window.location.reload();
+    }
     
     return (
         <section className='account'>
@@ -23,16 +30,15 @@ export const Account = () => {
                     {userLoggedIn ? (
                         <>
                             <div className="info">
-                                <p><span className='detail'>Username:</span>{user.nickname}</p>
+                                <p><span className='detail'>Username:</span>{user.username}</p>
                                 <p><span className='detail'>Email:</span>{user.email}</p>
                             </div>
-                            <div className="two-buttons">
-                                <button className="btn btn-white" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Out</button>
-                                <button className="btn btn-red">Delete Account</button>
-                            </div>
+                            <button className="btn btn-white" onClick={handleLogout}>Log Out</button>
                         </>
                     ) : (
-                        <button className="btn btn-white center" onClick={() => loginWithRedirect()}>Login to Gridlock</button>
+                        <Link to='/login'>
+                            <button className="btn btn-white center">Login to Gridlock</button>
+                        </Link>
                     )}
                 </div>
             </div>

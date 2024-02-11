@@ -78,3 +78,26 @@
 .predictor-grid .submit-prediction .error-msg {
     color: var(--red);
 }
+
+
+/* Predictor locked */
+.predictor-grid-locked {
+    grid-column: span 2;
+    background-color: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:1em;
+    padding: 1em;
+    border: 1px solid var(--white);
+    text-align: center;
+}
+.predictor-grid-locked div .icon {
+    font-size: 2.5em;
+    color: var(--purple);
+    margin:1rem 0;
+}
+.predictor-grid-locked p {
+    color: var(--white);
+}

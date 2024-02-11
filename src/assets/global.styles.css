@@ -118,6 +118,10 @@ p {
 .btn-purple .link {
     color: var(--white);
 }
+.btn-purple.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 .btn-red {
     background-color: var(--red);
     border:1px solid var(--red);

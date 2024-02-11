@@ -10,14 +10,16 @@ import { getCountryFlag } from '../../utils/getCountryFlag';
 import { Loader } from '../../components/Loader/Loader';
 import { CountdownTimer } from './Countdown/CountdownTimer';
 import { getCircuitInfo } from '../../utils/getCircuitInfo';
-import { useAuth0 } from '@auth0/auth0-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export const Predictor = ({ seasonData, driverData }) => {
 
     // Check if user is logged in
-    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
-    const [userLoggedIn, setUserLoggedIn] = useState(isAuthenticated);
+    const userLoggedIn = sessionStorage.getItem('user');
+    const user = JSON.parse(userLoggedIn);
+
+    const navigate = useNavigate();
 
     const [nextEvent, setNextEvent] = useState([]);
     const [qualiTime, setQualiTime] = useState();
@@ -82,18 +84,21 @@ export const Predictor = ({ seasonData, driverData }) => {
                     <>
                         <div className="predictions">
                             <PredictorGrid
+                                qualiTime={qualiTime}
                                 driverData={driverData}
                                 userEmail={user.email}
-                                userName={user.nickname}
+                                userName={user.username}
                                 nextEvent={nextEvent}
                             />
                         </div>
                     </>
                 ) : (
-                    <button className="predictor-locked btn btn-white center"  onClick={() => loginWithRedirect()}>
-                        <LockIcon />
-                        <h3>Login to make a prediction</h3>
-                    </button>
+                    <Link to="/login" className='link'>
+                        <button className="predictor-locked btn btn-white center">
+                            <LockIcon />
+                            <h3>Login to make a prediction</h3>
+                        </button>
+                    </Link>
                 )}
             </div>
             <div className="track-stats page-padding">

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { GearIcon } from '../../../components/Icons/Icons';
+import { GearIcon, LockIcon } from '../../../components/Icons/Icons';
 import './predictor-grid.styles.css'
 import { Loader } from '../../../components/Loader/Loader';
 
-export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent }) => {
+export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qualiTime }) => {
 
     const [drivers, setDrivers] = useState([])
 
@@ -178,7 +178,7 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent }) =>
                     const response = await fetch('/api/predictions/handleFindUserPrediction', {
                         method: 'POST',
                         headers: {
-                        'Content-Type': 'application/json',
+                            'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(payload),
                     });
@@ -215,14 +215,14 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent }) =>
     }, [updateDriversArray])
 
     return (
-        <section className="predictor-grid">
-            {drivers.length === 0 ? (
-                <Loader />    
-            ) : (
-                <>
-                    {gridItems}
-                </>
-            )}
+                <section className="predictor-grid">
+                    {drivers.length === 0 ? (
+                        <Loader />    
+                    ) : (
+                        <>
+                            {gridItems}
+                        </>
+                    )}
                     {showSelectionModal && (
                         <div className="selection-modal">
                             {drivers.map((driver, index) => (
@@ -241,18 +241,27 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent }) =>
                             ))}
                         </div>
                     )}
-            <div className="submit-prediction">
-                    {/* <button className="btn btn-white">Use Previous Prediction</button> */}
-                    <button 
-                        className="btn btn-purple" 
-                        style={{ opacity: disableSubmitButton ? '0.5' : '1' }}
-                        onClick={handleUserPrediction}
-                        disabled={disableSubmitButton}
-                    >
-                        {submitButtonText}
-                    </button>
-                    <p className='error-msg' style={{ display: showError ? 'block' : 'none' }}>You must select a driver for all positions.</p>
-            </div>
-        </section>
-    );
+                    {qualiTime > Date.now() ? (
+                        <div className="submit-prediction">
+                                {/* <button className="btn btn-white">Use Previous Prediction</button> */}
+                                <button 
+                                    className="btn btn-purple" 
+                                    style={{ opacity: disableSubmitButton ? '0.5' : '1' }}
+                                    onClick={handleUserPrediction}
+                                    disabled={disableSubmitButton}
+                                >
+                                    {submitButtonText}
+                                </button>
+                                <p className='error-msg' style={{ display: showError ? 'block' : 'none' }}>You must select a driver for all positions.</p>
+                        </div>
+                    ) : (
+                        <div className="predictor-grid-locked">
+                            <div className="locked">
+                                <LockIcon />
+                                <p>Predictor is locked - qualifying has started. An automatic random prediction has been submitted for you.</p>
+                            </div>
+                        </div>
+                    )}
+                </section>
+    )
 };
