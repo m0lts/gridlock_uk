@@ -28,9 +28,7 @@ export default async function handler(request, response) {
             const email = receivedData.email;
 
             const userRecord = await dbCollection.findOne({ email });
-            console.log(userRecord)
             const userRecordId = userRecord._id.toString();
-            console.log(userRecordId);
 
             if (!userRecord) {
                 response.status(400).json({ error: "Email not found" });
@@ -57,14 +55,15 @@ export default async function handler(request, response) {
 
             await passwordResetCollection.insertOne(dataToEnter);
 
-            const resetLink = `http://localhost:3000/resetpassword?token=${resetToken}&user=${userRecordId}`;
+            const resetLink = `https://www.f1gridlock.com/resetpassword?token=${resetToken}&user=${userRecordId}`;
 
             const msg = {
                 to: email,
                 from: 'gridlock.contact@gmail.com',
-                subject: 'Reset Your Password',
-                // text: `Please use this one-time-password code to reset your password: ${resetToken}`,
-                html: `<p>Please follow this link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`,
+                templateId: 'd-153671bbc10b4e2f878cf25669f7714c',
+                dynamic_template_data: {
+                    resetLink: resetLink,
+                }
             };
 
             const sendEmail = await sendgrid.send(msg);
