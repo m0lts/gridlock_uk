@@ -201,7 +201,7 @@ export default function SignUp() {
                         Submit
                     </button>
                     <div className="legal-box">
-                        <p>By signing up, you agree to our <Link to='/terms' className="forgot-password-link">Terms of Service</Link> and <Link to='/privacy' className="forgot-password-link">Privacy Policy</Link>.</p>
+                        <p>By signing up, you agree to our <Link to='https://app.termly.io/document/terms-of-service/5ff14f74-440f-4efc-847c-ad668d378a47' className="forgot-password-link">Terms of Service</Link> and <Link to='https://app.termly.io/document/privacy-policy/3c0c4470-16e7-44b1-8700-97ba61830c3e' className="forgot-password-link">Privacy Policy</Link>.</p>
                     </div>
                     <div className="forgot-password-message">
                         <Link to='/login' className="forgot-password-link">

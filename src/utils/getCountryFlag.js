@@ -2,7 +2,7 @@ export const getCountryFlag = (country) => {
 
     if (country === 'Bahrain') {
         return `https://flagsapi.com/BH/flat/64.png`;
-    } else if (country === 'Saudi Arabia ') {
+    } else if (country === 'Saudi Arabia') {
         return `https://flagsapi.com/SA/flat/64.png`;
     } else if (country === 'Australia') {
         return `https://flagsapi.com/AU/flat/64.png`;
@@ -22,7 +22,7 @@ export const getCountryFlag = (country) => {
         return `https://flagsapi.com/ES/flat/64.png`;
     } else if (country === 'Austria') {
         return `https://flagsapi.com/AT/flat/64.png`;
-    } else if (country === 'Great Britain') {
+    } else if (country === 'United Kingdom') {
         return `https://flagsapi.com/GB/flat/64.png`;
     } else if (country === 'Hungary') {
         return `https://flagsapi.com/HU/flat/64.png`;
@@ -42,5 +42,7 @@ export const getCountryFlag = (country) => {
         return `https://flagsapi.com/AE/flat/64.png`;
     } else if (country === 'Qatar') {
         return `https://flagsapi.com/QA/flat/64.png`;
+    } else if (country === 'United Arab Emirates') {
+        return `https://flagsapi.com/AE/flat/64.png`;
     }
 }

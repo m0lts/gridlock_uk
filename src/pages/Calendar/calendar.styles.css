@@ -19,6 +19,9 @@
     height:30px;
     object-fit: cover;
 }
+.calendar .grid-item h3 {
+    text-align: center;
+}
 
 
 .calendar .grid-item.expanded {
