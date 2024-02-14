@@ -57,7 +57,7 @@ export default async function handler(request, response) {
             const verificationToken = generateRandomToken(24);
             formData.verificationToken = verificationToken;
 
-            const verificationLink = `localhost:3000/verifyaccount?email=${email}&token=${verificationToken}`;
+            const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
 
             const msg = {
                 to: email,
