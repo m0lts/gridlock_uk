@@ -14,6 +14,7 @@ import SignUp from './pages/Signup/Signup'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
 import { ErrorPage } from './pages/Error/ErrorPage'
+import { VerifyAccount } from './pages/VerifyAccount/VerifyAccount'
 
 export default function App() {
 
@@ -39,7 +40,7 @@ export default function App() {
 
               if (apiRequest.includes('races')) {
                 setReturnedEventData(filterEventResponse(data));
-                setApiRequest('rankings/drivers?season=2023');
+                setApiRequest('rankings/drivers?season=2024');
               } else if (apiRequest.includes('drivers')) {
                 setReturnedDriverData(filterDriverResponse(data));
               }
@@ -69,6 +70,7 @@ export default function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path='/forgotpassword' element={<ForgotPassword />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
+        <Route path='/verifyaccount' element={<VerifyAccount />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />

@@ -25,6 +25,7 @@ export default function SignUp() {
     const [usernameError, setUsernameError] = useState('');
     // For submission modal
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [signUpSuccess, setSignUpSuccess] = useState(false);
 
 
     
@@ -77,8 +78,9 @@ export default function SignUp() {
             });
       
             if (response.ok) {
+                formValues.verified = false;
                 sessionStorage.setItem('user', JSON.stringify(formValues));
-                navigate('/');
+                setSignUpSuccess(true);
               } else if (response.status === 400) {
                 // Email already taken
                 setEmailError('* Email already in use.');
@@ -86,6 +88,9 @@ export default function SignUp() {
               } else if (response.status === 401) {
                 // Username already taken
                 setUsernameError('* Username already in use.');
+                setFormSubmitted(false);
+              } else if (response.status === 500) {
+                setEmailError('* Email address not recognised, please enter a valid email address.');
                 setFormSubmitted(false);
               } else {
                 alert('Account creation failed, please try again later.');
@@ -101,9 +106,16 @@ export default function SignUp() {
     return (
         <section className="gateway-page page-padding bckgrd-white"> 
             <div className="body">
-                <h1 className="title">Sign Up</h1>
+                <h1 className="title">{signUpSuccess ? 'Success!' : 'Sign Up'}</h1>
                 {formSubmitted ? (
+                    signUpSuccess ? (
+                        <div className="sign-up-success">
+                            <p style={{ marginBottom: '1rem'}}>We have sent you an email to verify your account. You won't be able to submit a prediction until your account is verified. If you haven't received an email, ensure you check your spam/junk mailbox.</p>
+                            <Link to='/' className="forgot-password-link">Go to homepage</Link>
+                        </div>
+                    ) : (
                     <p>Creating your account...</p>
+                    )
                 ) : (
                 <form className="account-form" onSubmit={handleSubmit}>
                     <div className="two-inputs">
@@ -188,6 +200,9 @@ export default function SignUp() {
                     >
                         Submit
                     </button>
+                    <div className="legal-box">
+                        <p>By signing up, you agree to our <Link to='/terms' className="forgot-password-link">Terms of Service</Link> and <Link to='/privacy' className="forgot-password-link">Privacy Policy</Link>.</p>
+                    </div>
                     <div className="forgot-password-message">
                         <Link to='/login' className="forgot-password-link">
                             Already have an account? Log in here.

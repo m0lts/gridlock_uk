@@ -32,6 +32,18 @@
     color: var(--purple);
     font-size: 2em;
 }
+.verify-account-box {
+    display: flex;
+    flex-direction: column;
+    color: var(--white);
+    text-align: center;
+    gap:0.5rem;
+}
+.verify-account-box .icon {
+    font-size: 2em;
+    color: var(--purple);
+
+}
 
 /* Track stats */
 .predictor .track-stats, .weather-forecast {

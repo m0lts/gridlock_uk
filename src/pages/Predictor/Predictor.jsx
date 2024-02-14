@@ -18,12 +18,41 @@ export const Predictor = ({ seasonData, driverData }) => {
     // Check if user is logged in
     const userLoggedIn = sessionStorage.getItem('user');
     const user = JSON.parse(userLoggedIn);
+    const [userVerified, setUserVerified] = useState(true);
+    const [verifyButtonText, setVerifyButtonText] = useState('Re-send verification link');
 
     const navigate = useNavigate();
 
     const [nextEvent, setNextEvent] = useState([]);
     const [qualiTime, setQualiTime] = useState();
     const [circuitInfo, setCircuitInfo] = useState();
+
+    // On page load, check if user is verified
+    useEffect(() => {
+        if (userLoggedIn) {
+            if (!user.verified) {
+                setUserVerified(false);
+            }
+        }
+    }, [userLoggedIn])
+
+    // Resend verification link
+    const handleSendVerificationLink = async () => {
+        setVerifyButtonText('Sending Link...');
+        const response = await fetch('/api/accounts/handleResendVerification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: user.email }),
+        });
+
+        if (response.ok) {
+            setVerifyButtonText('Verification link sent.');
+        } else if (response.status === 401) {
+            setVerifyButtonText('Error sending verification link.');
+        }
+    }
 
 
     // When the season data has been set, find the next event
@@ -45,7 +74,7 @@ export const Predictor = ({ seasonData, driverData }) => {
     // When next event state has been set, get the countdown to qualifying and the circuit information
     useEffect(() => {
         const getQualiTime = () => {
-            const quali = nextEvent[0].events.filter(event => event.type === 'qualification');
+            const quali = nextEvent[0].events.filter(event => event.type === '1st Qualifying');
             setQualiTime(new Date(quali[0].date).getTime());
         }
         if (nextEvent.length > 0) {
@@ -80,7 +109,7 @@ export const Predictor = ({ seasonData, driverData }) => {
                         qualiTime={qualiTime}
                     />
                 </div>
-                {userLoggedIn ? (
+                {userLoggedIn && userVerified ? (
                     <>
                         <div className="predictions">
                             <PredictorGrid
@@ -92,7 +121,15 @@ export const Predictor = ({ seasonData, driverData }) => {
                             />
                         </div>
                     </>
-                ) : (
+                ) : !userVerified && userLoggedIn ? (
+                    <div className='verify-account-box'>
+                        <LockIcon />
+                        <h3>You must verify your account before submitting a prediction.</h3>
+                        <button className="predictor-locked btn btn-white center" onClick={handleSendVerificationLink}>
+                            <h3>{verifyButtonText}</h3>
+                        </button>
+                    </div>
+                ) : !userLoggedIn && (
                     <Link to="/login" className='link'>
                         <button className="predictor-locked btn btn-white center">
                             <LockIcon />

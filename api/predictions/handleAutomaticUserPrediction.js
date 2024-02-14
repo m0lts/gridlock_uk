@@ -38,11 +38,11 @@ export default async function handler(request, response) {
 
         // Get qualifying time for race
         const competitionSessions = raceIDData.response.filter(event => event.competition.id === competitionID);
-        const competitionQualifying = competitionSessions.filter(event => event.type === 'qualification');
+        const competitionQualifying = competitionSessions.filter(event => event.type === '1st Qualifying');
         const qualifyingStartTime = new Date(competitionQualifying[0].date).getTime();
         const currentTime = new Date().getTime();
 
-        const driversQuery = await fetch("https://v1.formula-1.api-sports.io/rankings/drivers?season=2023", {
+        const driversQuery = await fetch("https://v1.formula-1.api-sports.io/rankings/drivers?season=2024", {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "v1.formula-1.api-sports.io",

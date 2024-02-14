@@ -1,5 +1,9 @@
 import { MongoClient } from "mongodb";
 import bcrypt from 'bcrypt';
+import sendgrid from '@sendgrid/mail';
+
+// Send grid API key
+sendgrid.setApiKey(process.env.SENDGRIDAPI_KEY);
 
 const uri = process.env.MONGODB_URI;
 const options = {};
@@ -25,6 +29,8 @@ export default async function handler(request, response) {
             const hashedPassword = await bcrypt.hash(formData.password, 10);
             formData.password = hashedPassword;
 
+            formData.verified = false;
+
             // Check if email or username already exists in database
             const email = formData.email;
             const username = formData.username;
@@ -37,8 +43,40 @@ export default async function handler(request, response) {
                 response.status(401).json({ error: 'Username taken.' });
                 return;
             }
-            await dbCollection.insertOne(formData);
-            response.status(201).json({ message: "Account successfully created." });
+
+            const generateRandomToken = (length) => {
+                const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+                let token = '';
+                for (let i = 0; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * characters.length);
+                    token += characters[randomIndex];
+                }
+                return token;
+            };
+
+            const verificationToken = generateRandomToken(24);
+            formData.verificationToken = verificationToken;
+
+            const verificationLink = `localhost:3000/verifyaccount?email=${email}&token=${verificationToken}`;
+
+            const msg = {
+                to: email,
+                from: 'gridlock.contact@gmail.com',
+                templateId: 'd-f9b818d2289e4c2da46e434c87a9b9e9',
+                dynamic_template_data: {
+                    verificationLink: verificationLink,
+                }
+            };
+
+            const sendEmail = await sendgrid.send(msg);
+
+            if (!sendEmail) {
+                response.status(500).json({ error: "Error sending verification email." });
+                return;
+            } else {
+                await dbCollection.insertOne(formData);
+                response.status(201).json({ message: 'Email successfully sent' });
+            }
 
             } else {
                 response.status(405).json({ error: "Method Not Allowed" });
