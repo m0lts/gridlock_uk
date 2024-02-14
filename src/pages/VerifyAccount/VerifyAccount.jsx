@@ -70,8 +70,3 @@ export const VerifyAccount = () => {
 }
 
 
-// {
-//     "rewrites": [
-//         {"source": "/(.*)", "destination": "/"}
-//     ]
-// }
