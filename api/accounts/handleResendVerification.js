@@ -42,7 +42,7 @@ export default async function handler(request, response) {
 
                 await dbCollection.updateOne({ email }, { $set: { verificationToken } });
                 
-                const verificationLink = `localhost:3000/verifyaccount?email=${email}&token=${verificationToken}`;
+                const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
 
                 const msg = {
                     to: email,
