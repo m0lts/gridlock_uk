@@ -15,40 +15,40 @@ export default async function handler(request, response) {
 
     try {
         // Find the most recently completed race and assign it to closestRaceId
-        // const raceIDQuery = await fetch("https://v1.formula-1.api-sports.io/races?season=2024&timezone=Europe/London", {
-        //     "method": "GET",
-        //     "headers": {
-        //         "x-rapidapi-host": "v1.formula-1.api-sports.io",
-        //         "x-rapidapi-key": process.env.RAPIDAPI_KEY
-        //     }
-        // });
-        // const raceIDData = await raceIDQuery.json();
-        // const competitionRaces = raceIDData.response.filter(event => event.type === 'Race');
-        // const completedRaces = competitionRaces.filter(event => event.status === "Completed");
+        const raceIDQuery = await fetch("https://v1.formula-1.api-sports.io/races?season=2024&timezone=Europe/London", {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "v1.formula-1.api-sports.io",
+                "x-rapidapi-key": process.env.RAPIDAPI_KEY
+            }
+        });
+        const raceIDData = await raceIDQuery.json();
+        const competitionRaces = raceIDData.response.filter(event => event.type === 'Race');
+        const completedRaces = competitionRaces.filter(event => event.status === "Completed");
 
-        // // Stop if no completed races are found
-        // if (completedRaces.length === 0) {
-        //     response.status(200).json({ message: 'No completed races found.' });
-        //     return;
-        // }
+        // Stop if no completed races are found
+        if (completedRaces.length === 0) {
+            response.status(200).json({ message: 'No completed races found.' });
+            return;
+        }
 
         
         const currentTime = new Date().getTime();
-        let closestRaceId = 1671;
-        let closestRaceCompetitionId = 2;
+        let closestRaceId = null;
+        let closestRaceCompetitionId = null;
         let closestTimeDifference = Infinity;
         
-        // completedRaces.forEach(race => {
-        //     if (race.date) {
-        //         const raceTime = new Date(race.date).getTime();
-        //         const timeDifference = Math.abs(currentTime - raceTime);
-        //         if (timeDifference < closestTimeDifference) {
-        //             closestTimeDifference = timeDifference;
-        //             closestRaceId = race.id;
-        //             closestRaceCompetitionId = race.competition.id;
-        //         }
-        //     }
-        // });
+        completedRaces.forEach(race => {
+            if (race.date) {
+                const raceTime = new Date(race.date).getTime();
+                const timeDifference = Math.abs(currentTime - raceTime);
+                if (timeDifference < closestTimeDifference) {
+                    closestTimeDifference = timeDifference;
+                    closestRaceId = race.id;
+                    closestRaceCompetitionId = race.competition.id;
+                }
+            }
+        });
 
         // Get the result of the most recent race using closestRaceId
         const raceResultQuery = await fetch(`https://v1.formula-1.api-sports.io/rankings/races?race=${closestRaceId}`, {
