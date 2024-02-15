@@ -74,7 +74,7 @@ export const Predictor = ({ seasonData, driverData }) => {
     // When next event state has been set, get the countdown to qualifying and the circuit information
     useEffect(() => {
         const getQualiTime = () => {
-            const quali = nextEvent[0].events.filter(event => event.type === '1st Qualifying');
+            const quali = nextEvent[0].events.filter(event => event.type === 'Qualifying');
             setQualiTime(new Date(quali[0].date).getTime());
         }
         if (nextEvent.length > 0) {
@@ -95,7 +95,7 @@ export const Predictor = ({ seasonData, driverData }) => {
                 />
                 <div className="head">
                     {nextEvent.length === 0 ? (
-                        <Loader />
+                        <p className="loading-text white">Loading...</p>   
                     ) : (
                         <div className="event">
                             <UpperCaseTitle

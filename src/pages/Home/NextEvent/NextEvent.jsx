@@ -27,7 +27,7 @@ export const NextEvent = ({ nextEvent }) => {
             />
             {nextEvent.length === 0 ? (
                 <div className="body">
-                    <Loader />
+                    <p className="loading-text white">Loading...</p>
                 </div>
             ) : (
                 <>

@@ -129,8 +129,16 @@ p {
     padding:0.5em 1em;
 }
 
-
-/* Old */
+.loading-text {
+    padding: 2rem 0;
+    text-align: center;
+}
+.loading-text.white {
+    color: var(--white);
+}
+.loading-text.black {
+    color: var(--black);
+}
 
 
 .link {

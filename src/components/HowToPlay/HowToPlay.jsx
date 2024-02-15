@@ -27,7 +27,7 @@ export const HowToPlay = ({ backgroundColour, textColour, accentColour }) => {
                     </div>
                     <div className='grid'>
                         <h1>02</h1>
-                        <p>Submit your prediction before qualifying starts. If you fail to submit a prediction, your previous prediction will be automatically submitted.</p>
+                        <p>Submit your prediction before qualifying starts. If you fail to submit a prediction, a randomised prediction will be automatically submitted for you.</p>
                     </div>
                 </div>
                 <div className="sec4">

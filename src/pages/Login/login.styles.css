@@ -66,6 +66,21 @@
     text-decoration: underline;
 }
 
+/* Legal box */
+.legal-box {
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+    margin-top: 0.5rem;
+    font-weight: 300;
+    font-size: 0.75rem;
+}
+.legal-box label {
+    display: flex;
+    align-items: center;
+    gap:0.5rem;
+}
+
 /* Forgot password page */
 .gateway-page .message {
     margin: 1rem 0;

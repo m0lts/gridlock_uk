@@ -12,11 +12,10 @@ export default async function handler(request, response) {
     let mongoClient;
 
     mongoClient = await (new MongoClient(uri, options)).connect();
-    console.log("Just Connected!");
 
     try {
         // Find the most recently completed race and assign it to closestRaceId
-        const raceIDQuery = await fetch("https://v1.formula-1.api-sports.io/races?season=2023&timezone=Europe/London", {
+        const raceIDQuery = await fetch("https://v1.formula-1.api-sports.io/races?season=2024&timezone=Europe/London", {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "v1.formula-1.api-sports.io",
@@ -26,11 +25,19 @@ export default async function handler(request, response) {
         const raceIDData = await raceIDQuery.json();
         const competitionRaces = raceIDData.response.filter(event => event.type === 'Race');
         const completedRaces = competitionRaces.filter(event => event.status === "Completed");
+
+        // Stop if no completed races are found
+        if (completedRaces.length === 0) {
+            response.status(200).json({ message: 'No completed races found.' });
+            return;
+        }
+
+        
         const currentTime = new Date().getTime();
         let closestRaceId = null;
         let closestRaceCompetitionId = null;
         let closestTimeDifference = Infinity;
-
+        
         completedRaces.forEach(race => {
             if (race.date) {
                 const raceTime = new Date(race.date).getTime();
@@ -42,7 +49,7 @@ export default async function handler(request, response) {
                 }
             }
         });
-        
+
         // Get the result of the most recent race using closestRaceId
         const raceResultQuery = await fetch(`https://v1.formula-1.api-sports.io/rankings/races?race=${closestRaceId}`, {
             "method": "GET",
@@ -52,6 +59,14 @@ export default async function handler(request, response) {
             }
         });
         const raceResult = await raceResultQuery.json();
+
+
+        if (raceResult.response.length === 0) {
+            response.status(200).json({ message: 'No results found for the race.' });
+            return;
+        }
+
+
         const driverIDs = raceResult.response.map(event => event.driver.id);
         const top10Drivers = driverIDs.splice(0, 10);
 
@@ -119,7 +134,6 @@ export default async function handler(request, response) {
     } finally {
         if (mongoClient) {
             await mongoClient.close();
-            console.log("MongoDB connection closed.");
         }
     }
 }

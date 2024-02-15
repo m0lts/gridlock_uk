@@ -49,7 +49,7 @@ export const GridlockStats = ({ nextEvent }) => {
                     </>
                 )
             ) : (
-                <Loader />
+                <p className="loading-text white">Loading...</p>
             )}
         </section>
     )

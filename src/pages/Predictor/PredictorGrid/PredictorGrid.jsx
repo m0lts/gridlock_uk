@@ -140,6 +140,7 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                 competition: nextEvent[0].competitionName,
                 country: nextEvent[0].competitionCountry,
                 competitionId: nextEvent[0].competitionId,
+                qualiTime: new Date(qualiTime),
                 submittedAt: new Date(),
             }
 
@@ -156,6 +157,8 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                 setTimeout(() => {
                     setSubmitButtonText('Update prediction');
                 }, 2000);
+            } else if (response.status === 401) {
+                setSubmitButtonText('Predictions locked');
             }
             
         } catch (error) {
@@ -217,7 +220,7 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     return (
                 <section className="predictor-grid">
                     {drivers.length === 0 ? (
-                        <Loader />    
+                        <p className="loading-text white">Loading...</p>   
                     ) : (
                         <>
                             {gridItems}

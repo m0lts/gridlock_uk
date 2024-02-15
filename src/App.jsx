@@ -15,6 +15,7 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
 import { ErrorPage } from './pages/Error/ErrorPage'
 import { VerifyAccount } from './pages/VerifyAccount/VerifyAccount'
+import { MaintenancePage } from './pages/Maintenance/Maintenance'
 
 export default function App() {
 
@@ -60,6 +61,7 @@ export default function App() {
   return (
     <div className="app">
       <Header />
+      {/* <MaintenancePage /> */}
       <Routes>
         <Route path="/" element={<Home seasonData={returnedEventData} driverData={returnedDriverData} />} />
         <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} />} />

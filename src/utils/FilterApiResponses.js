@@ -2,21 +2,30 @@ export const filterEventResponse = (response) => {
         const groupedCompetitions = [];
 
         response.forEach(event => {
-        const competitionId = event.competition.id;
-        const existingCompetition = groupedCompetitions.find(comp => comp.competitionId === competitionId);
-        if (existingCompetition) {
-            existingCompetition.events.push(event);
-        } else {
-            groupedCompetitions.push({
-                status: event.status,
-                competitionId,
-                competitionName: event.competition.name,
-                competitionCountry: event.competition.location.country,
-                competitionCircuit: event.circuit.image,
-                competitionCircuitName: event.circuit.name,
-                events: [event],
-            });
-        }
+
+            if (event.type === '2nd Qualifying' || event.type === '3rd Qualifying' || event.type === '2nd Sprint Shootout' || event.type === '3rd Sprint Shootout') {
+                return;
+            } else if (event.type === '1st Qualifying') {
+                event.type = 'Qualifying';
+            } else if (event.type === '1st Sprint Shootout') {
+                event.type = 'Sprint Shootout';
+            }
+
+            const competitionId = event.competition.id;
+            const existingCompetition = groupedCompetitions.find(comp => comp.competitionId === competitionId);
+            if (existingCompetition) {
+                existingCompetition.events.push(event);
+            } else {
+                groupedCompetitions.push({
+                    status: event.status,
+                    competitionId,
+                    competitionName: event.competition.name,
+                    competitionCountry: event.competition.location.country,
+                    competitionCircuit: event.circuit.image,
+                    competitionCircuitName: event.circuit.name,
+                    events: [event],
+                });
+            }
         });
 
         return groupedCompetitions;

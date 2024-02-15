@@ -42,6 +42,12 @@ export default async function handler(request, response) {
         const qualifyingStartTime = new Date(competitionQualifying[0].date).getTime();
         const currentTime = new Date().getTime();
 
+        if (currentTime < qualifyingStartTime) {
+            response.status(200).json({ message: 'Qualifying has not started yet.' });
+            return;
+        }
+
+
         const driversQuery = await fetch("https://v1.formula-1.api-sports.io/rankings/drivers?season=2024", {
             "method": "GET",
             "headers": {
@@ -75,7 +81,7 @@ export default async function handler(request, response) {
             return shuffled.slice(0, count);
         }
 
-        if (currentTime < qualifyingStartTime) {
+        if (currentTime > qualifyingStartTime) {
             for (const user of users) {
                 // Check if the user has a prediction for the next race
                 const userEmail = user.email;

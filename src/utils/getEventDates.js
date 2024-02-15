@@ -20,9 +20,17 @@ export const getEventDates = (events) => {
 
         // Push the desired result into the eventDates array
         eventDates.push({
-            [competition]: formattedDate
+            [competition]: formattedDate,
+            originalDate: date,
         });
     });
+
+    // Sort the eventDates array based on the original dates
+    eventDates.sort((a, b) => b.originalDate - a.originalDate);
+
+    // Remove the originalDate property from each object
+    eventDates.forEach(date => delete date.originalDate);
+
 
     // Return the final array of event dates
     return eventDates;

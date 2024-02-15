@@ -2,16 +2,25 @@
     min-height: 100vh;
 }
 .standings .table {
-    margin-top: 2em;
+    margin-top: 1em;
     width:100%;
 }
 .standings .table .head th {
     text-transform: uppercase;
     font-weight: 400;
     font-size: 0.75em;
-    border-bottom: 1px solid var(--white);
+    border-bottom: 1px solid var(--black);
 }
 .standings .table tr:nth-of-type(even) {
+    background-color: var(--black);
+    color: var(--white);
+    
+}
+/* black table */
+.standings .table.black .head th {
+    border-bottom: 1px solid var(--white);
+}
+.standings .table.black tr:nth-of-type(even) {
     background-color: var(--white);
     color: var(--black);
 }
@@ -33,3 +42,92 @@
     width:15%;
     text-align: center;
 }
+
+/* User's leagues */
+.user-leagues {
+    margin-top: 2em;
+}
+
+/* User not logged in */
+.standings .league-section .not-logged-in {
+    margin: 0 auto;
+}
+.standings .league-section .not-logged-in .icon {
+    color: var(--yellow);
+    font-size: 1.5rem;
+}
+/* user not verified */
+.standings .verify-account-box.yellow .icon {
+    color: var(--yellow);
+}
+
+/* join and create league section */
+.standings .league-section {
+    background-color: var(--black);
+    padding:1rem 0;
+    position: fixed;
+    bottom:55px;
+    left:0;
+    right:0;
+    margin:0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.standings .league-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap:0.5rem;
+    width:90%;
+    margin:0 auto;
+}
+.standings .league-form .input-group {
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+    width:100%;
+}
+.standings .league-form .input-group label {
+    font-size: 1rem;
+}
+.standings .league-form .input-group input {
+    height: 2rem;
+    padding: 1rem 0.5rem;
+    border: 1px solid var(--white);
+    background-color: var(--black);
+    color: var(--white);
+    font-size: 1rem;
+    font-family: var(--font-family);
+}
+.standings .league-form .input-group input:focus {
+    outline: none;
+    border: 1px solid var(--red);
+}
+.standings .league-form .btn {
+    margin-top: 1rem;
+}
+.standings .league-form .league-code {
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+    width:100%;
+}
+.standings .league-form .league-code .label {
+    font-size: 1rem;
+    font-weight: 400;
+}
+.standings .league-form .league-code .code {
+    padding: 0.5rem;
+    border: 1px solid var(--white);
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.standings .league-created {
+    text-align: center;
+}
+
+
