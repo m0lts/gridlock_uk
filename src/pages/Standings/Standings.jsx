@@ -87,8 +87,11 @@ export const Standings = () => {
             setLeaguesLoading(false);
         }
 
-        if (leagues.length > 0 && standings.length > 0) {
+        if (standings.length === 0) {
+            setLeaguesLoading(false);
+        } else if (leagues.length > 0 && standings.length > 0) {
             fetchLeagueStandings(leagues);
+            setLeaguesLoading(true);
         }
     }, [leagues, standings])
 
@@ -231,6 +234,7 @@ export const Standings = () => {
         }
     }
 
+
     return (
         <section className='standings bckgrd-black'>
             <div className="global-table page-padding bckgrd-white">
@@ -294,7 +298,17 @@ export const Standings = () => {
                                                 <td colSpan="3">Loading...</td>
                                             </tr>
                                         ) : (
-                                            sortStandings(leagueStandings[league.leagueName])
+                                            standings.length === 0 ? (
+                                                league.leagueMembers.map((member, index) => (
+                                                    <tr key={index}>
+                                                        <td className='col1'>-</td>
+                                                        <td className='col2'>{member}</td>
+                                                        <td className='col3'>0</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                sortStandings(leagueStandings[league.leagueName])
+                                            )
                                         )}
                                     </tbody>
                                 </table>

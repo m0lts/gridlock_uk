@@ -85,6 +85,7 @@ export default function SignUp() {
       
             if (response.ok) {
                 formValues.verified = false;
+                formValues.email = formValues.email.toLowerCase();
                 sessionStorage.setItem('user', JSON.stringify(formValues));
                 setSignUpSuccess(true);
               } else if (response.status === 400) {

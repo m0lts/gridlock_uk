@@ -33,6 +33,7 @@ export default async function handler(request, response) {
 
             // Check if email or username already exists in database
             const email = formData.email;
+            formData.email = email.toLowerCase();
             const username = formData.username;
             const emailInDatabase = await dbCollection.findOne({ email });
             const usernameInDatabase = await dbCollection.findOne({ username });

@@ -22,10 +22,23 @@ export default async function handler(request, response) {
             const emailOrUsername = formData.email;
             const password = formData.password;
 
+            let query = {};
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            if (isValidEmail(emailOrUsername)) {
+                query.email = emailOrUsername.toLowerCase();
+            } else {
+                query.username = emailOrUsername;
+            }
+
             const userRecord = await dbCollection.findOne({
                 $or: [
-                    { email: emailOrUsername },
-                    { username: emailOrUsername }
+                    { email: query.email },
+                    { username: query.username }
                 ]
             });
 
