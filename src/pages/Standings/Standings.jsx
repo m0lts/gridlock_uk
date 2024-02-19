@@ -15,6 +15,7 @@ export const Standings = () => {
     const [leagueStandings, setLeagueStandings] = useState({});
     const [loading, setLoading] = useState(true);
     const [leaguesLoading, setLeaguesLoading] = useState(true);
+    const [showLeagueDetailsModal, setShowLeagueDetailsModal] = useState(false);
 
     useEffect(() => {
         const fetchStandings = async () => {
@@ -234,6 +235,7 @@ export const Standings = () => {
         }
     }
 
+    console.log(leagues)
 
     return (
         <section className='standings bckgrd-black'>
@@ -276,12 +278,22 @@ export const Standings = () => {
                     leagues.map((league, index) => {
                         return (
                             <div key={index} className='user-leagues'>
-                                <PrimaryHeading 
-                                    title={league.leagueName}
-                                    accentColour="yellow"
-                                    backgroundColour="white"
-                                    textColour="black"
-                                />
+                                <div className="league-title">
+                                    <PrimaryHeading 
+                                        title={league.leagueName}
+                                        accentColour="yellow"
+                                        backgroundColour="white"
+                                        textColour="black"
+                                    />
+                                    <p>Code: {league._id}</p>
+                                    {/* <button className="btn btn-black" onClick={() => setShowLeagueDetailsModal(!showLeagueDetailsModal)}>See Details</button>
+                                    <div className="league-details-modal" style={{ display: showLeagueDetailsModal ? 'block' : 'none' }}>
+                                        <h2>League Details</h2>
+                                        <p>League Name: {league.leagueName}</p>
+                                        <p>League Code: {league._id}</p>
+                                        <button className="btn btn-white" onClick={() => setShowLeagueDetailsModal(!showLeagueDetailsModal)}>Close</button>
+                                    </div> */}
+                                </div>
                                 <table className="table black">
                                     <thead className='head'>
                                         <tr>
