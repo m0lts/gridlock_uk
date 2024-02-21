@@ -4,6 +4,7 @@ export const getEventDates = (events) => {
     events.forEach(event => {
         const date = new Date(event.date);
         let competition = event.type;
+        const timeZone = event.timezone;
 
         if (competition === 'qualification') {
             competition = 'Qualifying';
@@ -16,6 +17,8 @@ export const getEventDates = (events) => {
             year: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: timeZone,
+            timeZoneName: 'short'
         });
 
         // Push the desired result into the eventDates array

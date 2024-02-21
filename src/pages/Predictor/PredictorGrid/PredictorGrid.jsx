@@ -52,6 +52,8 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     const [showSelectionModal, setShowSelectionModal] = useState(false);
     const [selectedGridIndex, setSelectedGridIndex] = useState(null);
     const [selectedDrivers, setSelectedDrivers] = useState(Array(10).fill(null));
+    const [showPredictionModal, setShowPredictionModal] = useState(false);
+    const [submittingPredictionMsg, setSubmittingPredictionMsg] = useState('');
 
     const handleGridItemClick = (index) => {
         if (selectedDrivers[index]) {
@@ -118,6 +120,8 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     useEffect(() => {
         if (!selectedDrivers.includes(null)) {
             setDisableSubmitButton(false);
+        } else {
+            setDisableSubmitButton(true);
         }
     }, [selectedDrivers]);
 
@@ -125,10 +129,14 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     const handleUserPrediction = async () => {
 
         setSubmitButtonText('Submitting...');
+        setShowPredictionModal(true);
+        setSubmittingPredictionMsg('Submitting your prediction...');
 
         if (selectedDrivers.includes(null)) {
             setShowError(true);
             setSubmitButtonText('Lock it in');
+            setShowPredictionModal(false);
+            setSubmittingPrediction(false);
             return;
         }
 
@@ -154,11 +162,17 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
 
             if (response.status === 200 || response.status === 201) {
                 setSubmitButtonText('Prediction submitted!');
+                setSubmittingPredictionMsg('Prediction submitted! You can edit your prediction until qualifying starts.');
                 setTimeout(() => {
                     setSubmitButtonText('Update prediction');
+                    setShowPredictionModal(false);
                 }, 2000);
             } else if (response.status === 401) {
                 setSubmitButtonText('Predictions locked');
+                setSubmittingPredictionMsg('Qualifying has started - predictions are locked.');
+                setTimeout(() => {
+                    setShowPredictionModal(false);
+                }, 2000);
             }
             
         } catch (error) {
@@ -217,6 +231,13 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
         }
     }, [updateDriversArray])
 
+    // Prevent user from submitting prediction after qualifying has started
+    useEffect(() => {
+        if (qualiTime < Date.now()) {
+            setDisableSubmitButton(true);
+        }
+    }, [qualiTime]);
+
     return (
                 <section className="predictor-grid">
                     {drivers.length === 0 ? (
@@ -242,6 +263,15 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                    )}
+                    {showPredictionModal && (
+                        <div className="prediction-modal">
+                            <div className="modal-msg">
+                                <GearIcon />
+                                <h3>{submittingPredictionMsg}</h3>
+                                <button className='btn btn-black' onClick={() => setShowPredictionModal(false)}>Close</button>
+                            </div>
                         </div>
                     )}
                     {qualiTime > Date.now() ? (

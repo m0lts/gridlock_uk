@@ -235,13 +235,12 @@ export const Standings = () => {
         }
     }
 
-    console.log(leagues)
 
     return (
         <section className='standings bckgrd-black'>
             <div className="global-table page-padding bckgrd-white">
                 <PrimaryHeading
-                    title="Gridlock Standings"
+                    title="Global Standings"
                     accentColour="yellow"
                     backgroundColour="black"
                     textColour="white"

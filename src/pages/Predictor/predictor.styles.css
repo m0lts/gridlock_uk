@@ -48,6 +48,7 @@
 /* Track stats */
 .predictor .track-stats, .weather-forecast {
     background-color: var(--white);
+    margin-bottom: 1em;
 }
 .predictor .track-stats h3 {
     margin-top:1em;
@@ -78,7 +79,7 @@
 }
 
 
-.predictor .weather {
+/* .predictor .weather {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,4 +101,4 @@
 
 .predictor .weather .icon {
     font-size: 2.5em;
-}
+} */

@@ -1,5 +1,6 @@
 .standings {
     min-height: 100vh;
+    padding-bottom: 3em;
 }
 .standings .table {
     margin-top: 1em;
@@ -44,6 +45,7 @@
 }
 
 /* User's leagues */
+
 .user-leagues {
     margin-top: 2em;
 }

@@ -12,6 +12,7 @@ export const Calendar = ({ seasonData }) => {
         setExpandedItem((prevExpandedItem) => (prevExpandedItem === index ? null : index));
     };
 
+
     const gridItems = seasonData.map((event, index) => (
         <div 
             key={index} 
@@ -30,6 +31,7 @@ export const Calendar = ({ seasonData }) => {
                     </div>
                     <div className="track">
                         <img src={event.competitionCircuit} alt="placeholder" />
+                        <h3 className='name'>{event.events[0].circuit.name}</h3>
                     </div>
                     <div className="program">
                         <div className="sessions">
