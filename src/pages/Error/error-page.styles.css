@@ -1,0 +1,6 @@
+.error-page {
+    min-height:90vh;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}

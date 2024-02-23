@@ -1,0 +1,87 @@
+/* login-page */
+.gateway-page {
+    border: 1px solid var(--black);
+    margin:1rem;
+}
+.gateway-page .body .title {
+    margin-bottom: 1rem;
+}
+.account-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap:1rem;
+}
+.account-form .two-inputs {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    width:100%;
+    gap:1rem;
+}
+.account-form .two-inputs input {
+    width: 100%;
+}
+.account-form .input-group {
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+    width:100%;
+}
+.account-form .input-group label {
+    font-size: 1rem;
+}
+.account-form .input-group input {
+    height: 2rem;
+    padding: 1rem 0.5rem;
+    border: 1px solid var(--black);
+    font-size: 1rem;
+    font-family: var(--font-family);
+}
+.account-form .input-group input:focus {
+    outline: none;
+    border: 1px solid var(--red);
+}
+.account-form .btn {
+    margin-top: 1rem;
+}
+/* Form page errors */
+.error-message {
+    color:red;
+    font-size: 0.7rem;
+    margin-top:5px;
+}
+.forgot-password-message {
+    font-size: 0.8rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}
+.forgot-password-link {
+    color:var(--true-black);
+}
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Legal box */
+.legal-box {
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+    margin-top: 0.5rem;
+    font-weight: 300;
+    font-size: 0.75rem;
+}
+.legal-box label {
+    display: flex;
+    align-items: center;
+    gap:0.5rem;
+}
+
+/* Forgot password page */
+.gateway-page .message {
+    margin: 1rem 0;
+}
