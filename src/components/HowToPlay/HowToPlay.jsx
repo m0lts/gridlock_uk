@@ -14,6 +14,8 @@ export const HowToPlay = ({ backgroundColour, textColour, accentColour }) => {
                 <div className="sec1">
                     <h3>Overview:</h3>
                     <p>Gridlock is a F1 prediction app. Each weekend users predict which drivers they think will finish in what position.</p>
+                    <h3>Prize:</h3>
+                    <p>£100 cash.</p>
                 </div>
                 <div className="sec2">
                     <h3>How to play:</h3>
