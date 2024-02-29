@@ -264,8 +264,6 @@ export const Standings = () => {
         setSelectedLeague(selectedLeague === index ? null : index);
     };
 
-    console.log(leagues)
-
 
     return (
         <section className='standings bckgrd-black'>

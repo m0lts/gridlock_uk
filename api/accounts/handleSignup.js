@@ -20,6 +20,7 @@ export default async function handler(request, response) {
 
         const db = mongoClient.db("gridlock");
         const dbCollection = db.collection("accounts");
+        const leagueCollection = db.collection("leagues");
 
         if (request.method === "POST") {
             const formData = request.body;
@@ -75,6 +76,152 @@ export default async function handler(request, response) {
                 response.status(500).json({ error: "Error sending verification email." });
                 return;
             } else {
+                switch (formData.roundNo) {
+                    case 1:
+                        break;
+                    case 2:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 2 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 3:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 3 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 4:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 4 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 5:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 5 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 6:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 6 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 7:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 7 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 8:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 8 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 9:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 9 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 10:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 10 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 11:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 11 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 12:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 12 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 13:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 13 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 14:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 14 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 15:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 15 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 16:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 16 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 17:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 17 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 18:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 18 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 19:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 19 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 20:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 20 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 21:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 21 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 22:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 22 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 23:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 23 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    case 24:
+                        await leagueCollection.updateOne(
+                            { leagueName: "Round 24 Joiners" },
+                            { $push: { leagueMembers: formData.username } }
+                        );
+                        break;
+                    default:
+                        break;
+                }
+                delete formData.roundNo;
+
                 await dbCollection.insertOne(formData);
                 response.status(201).json({ message: 'Email successfully sent' });
             }

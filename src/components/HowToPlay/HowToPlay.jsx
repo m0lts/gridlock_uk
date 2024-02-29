@@ -38,7 +38,7 @@ export const HowToPlay = ({ backgroundColour, textColour, accentColour }) => {
                     </div>
                     <div className="grid">
                         <h1>3 points</h1>
-                        <p>For predicting a driver in the correct position.</p>
+                        <p>For predicting each driver in the correct position.</p>
                     </div>
                     <div className="grid">
                         <h1>10 bonus points</h1>

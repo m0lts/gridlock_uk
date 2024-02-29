@@ -69,7 +69,7 @@ export default function App() {
         <Route path="/standings" element={<Standings />} />
         <Route path="/account" element={<Account />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup" element={<SignUp seasonData={returnedEventData} />} />
         <Route path='/forgotpassword' element={<ForgotPassword />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/verifyaccount' element={<VerifyAccount />} />

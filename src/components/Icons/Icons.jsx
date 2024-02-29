@@ -12,7 +12,8 @@ import { faCircleUser,
     faRankingStar,
     faUser, 
     faAngleDown,
-    faAngleUp} from '@fortawesome/free-solid-svg-icons'
+    faAngleUp,
+    faArrowRight} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -44,6 +45,11 @@ export const StandingsIcon = () => {
 export const AccountIcon = () => {
     return (
         <FontAwesomeIcon icon={faCircleUser} className='icon' />
+    )
+}
+export const RightArrowIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faArrowRight} className='icon' />
     )
 }
 

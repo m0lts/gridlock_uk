@@ -37,14 +37,14 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
             case 'Williams F1 Team':
                 return '#005AFF';
                 break;
-            case 'Alfa Romeo':
+            case 'Stake F1 Team Kick Sauber':
                 return '#08ff08';
                 break;
             case 'Haas F1 Team':
                 return '#FFFFFF';
                 break;
             default:
-                return 'white';
+                return '#1130F5';
                 break;
         }
     }
@@ -54,6 +54,7 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     const [selectedDrivers, setSelectedDrivers] = useState(Array(10).fill(null));
     const [showPredictionModal, setShowPredictionModal] = useState(false);
     const [submittingPredictionMsg, setSubmittingPredictionMsg] = useState('');
+    const [fetchingPrediction, setFetchingPrediction] = useState(true);
 
     const handleGridItemClick = (index) => {
         if (selectedDrivers[index]) {
@@ -136,7 +137,6 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
             setShowError(true);
             setSubmitButtonText('Lock it in');
             setShowPredictionModal(false);
-            setSubmittingPrediction(false);
             return;
         }
 
@@ -187,6 +187,7 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     useEffect(() => {
         const fetchPrediction = async () => {
             if (nextEvent.length > 0) {
+                setFetchingPrediction(true);
                 try {
                     const payload = {
                         userEmail,
@@ -205,9 +206,10 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                         setSelectedDrivers(dbPrediction.prediction);
                         setUpdateDriversArray(true);
                         setSubmitButtonText('Update prediction');
+                        setFetchingPrediction(false);
                     }
                 } catch (error) {
-                console.error('Error submitting form:', error);
+                    console.error('Error submitting form:', error);
                 }
                 }   
             }   
@@ -239,62 +241,64 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     }, [qualiTime]);
 
     return (
-                <section className="predictor-grid">
-                    {drivers.length === 0 ? (
-                        <p className="loading-text white">Loading...</p>   
-                    ) : (
-                        <>
-                            {gridItems}
-                        </>
-                    )}
-                    {showSelectionModal && (
-                        <div className="selection-modal">
-                            {drivers.map((driver, index) => (
-                                <div
-                                    key={index}
-                                    className="driver"
-                                    style={{ border: `1px solid ${getTeamColour(driver.driverTeam)}`, boxShadow: `1px 1px 3px ${getTeamColour(driver.driverTeam)}` }}
-                                    onClick={() => {handleDriverSelection(driver); setShowError(false)}}
-                                >
-                                    <h1>{driver.driverNumber}</h1>
-                                    <div className="name">
-                                        <p>{driver.driverFirstName}</p>
-                                        <h4>{driver.driverLastName}</h4>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                    {showPredictionModal && (
-                        <div className="prediction-modal">
-                            <div className="modal-msg">
-                                <GearIcon />
-                                <h3>{submittingPredictionMsg}</h3>
-                                <button className='btn btn-black' onClick={() => setShowPredictionModal(false)}>Close</button>
+        <section className="predictor-grid">
+            {drivers.length === 0 || fetchingPrediction ? (
+                <div className="loading">
+                    <GearIcon />
+                </div>
+            ) : (
+                <>
+                    {gridItems}
+                </>
+            )}
+            {showSelectionModal && (
+                <div className="selection-modal">
+                    {drivers.map((driver, index) => (
+                        <div
+                            key={index}
+                            className="driver"
+                            style={{ border: `1px solid ${getTeamColour(driver.driverTeam)}`, boxShadow: `1px 1px 3px ${getTeamColour(driver.driverTeam)}` }}
+                            onClick={() => {handleDriverSelection(driver); setShowError(false)}}
+                        >
+                            <h1>{driver.driverNumber}</h1>
+                            <div className="name">
+                                <p>{driver.driverFirstName}</p>
+                                <h4>{driver.driverLastName}</h4>
                             </div>
                         </div>
-                    )}
-                    {qualiTime > Date.now() ? (
-                        <div className="submit-prediction">
-                                {/* <button className="btn btn-white">Use Previous Prediction</button> */}
-                                <button 
-                                    className="btn btn-purple" 
-                                    style={{ opacity: disableSubmitButton ? '0.5' : '1' }}
-                                    onClick={handleUserPrediction}
-                                    disabled={disableSubmitButton}
-                                >
-                                    {submitButtonText}
-                                </button>
-                                <p className='error-msg' style={{ display: showError ? 'block' : 'none' }}>You must select a driver for all positions.</p>
-                        </div>
-                    ) : (
-                        <div className="predictor-grid-locked">
-                            <div className="locked">
-                                <LockIcon />
-                                <p>Predictor is locked - qualifying has started. An automatic random prediction has been submitted for you.</p>
-                            </div>
-                        </div>
-                    )}
-                </section>
+                    ))}
+                </div>
+            )}
+            {showPredictionModal && (
+                <div className="prediction-modal">
+                    <div className="modal-msg">
+                        <GearIcon />
+                        <h3>{submittingPredictionMsg}</h3>
+                        <button className='btn btn-black' onClick={() => setShowPredictionModal(false)}>Close</button>
+                    </div>
+                </div>
+            )}
+            {qualiTime > Date.now() ? (
+                <div className="submit-prediction">
+                        {/* <button className="btn btn-white">Use Previous Prediction</button> */}
+                        <button 
+                            className="btn btn-purple" 
+                            style={{ opacity: disableSubmitButton ? '0.5' : '1' }}
+                            onClick={handleUserPrediction}
+                            disabled={disableSubmitButton}
+                        >
+                            {submitButtonText}
+                        </button>
+                        <p className='error-msg' style={{ display: showError ? 'block' : 'none' }}>You must select a driver for all positions.</p>
+                </div>
+            ) : (
+                <div className="predictor-grid-locked">
+                    <div className="locked">
+                        <LockIcon />
+                        <p>Predictor is locked - qualifying has started. An automatic random prediction has been submitted for you.</p>
+                    </div>
+                </div>
+            )}
+        </section>
     )
 };

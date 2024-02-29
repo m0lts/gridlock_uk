@@ -136,6 +136,16 @@
     color: var(--purple);
     animation: spin 2s linear infinite;
 }
+.predictor-grid .loading {
+    text-align: center;
+    grid-column: span 2;
+}
+.predictor-grid .loading .icon {
+    font-size: 2rem;
+    color: var(--purple);
+    animation: spin 2s linear infinite;
+
+}
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

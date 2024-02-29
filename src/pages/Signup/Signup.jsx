@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Loader } from "../../components/Loader/Loader";
 
 
-export default function SignUp() {
+export default function SignUp({ seasonData }) {
 
     // SET UP NAVIGATE
     const navigate = useNavigate();
@@ -28,6 +28,69 @@ export default function SignUp() {
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [signUpSuccess, setSignUpSuccess] = useState(false);
 
+
+    useEffect(() => {
+        const findNextEvent = () => {
+            const scheduledEvent = seasonData.find(event => event.status === 'Scheduled');
+            
+            if (scheduledEvent) {
+                if (scheduledEvent.competitionId === 32) {
+                    formValues.roundNo = 2;
+                } else if (scheduledEvent.competitionId === 1) {
+                    formValues.roundNo = 3;
+                } else if (scheduledEvent.competitionId === 19) {
+                    formValues.roundNo = 4;
+                } else if (scheduledEvent.competitionId === 4) {
+                    formValues.roundNo = 5;
+                } else if (scheduledEvent.competitionId === 34) {
+                    formValues.roundNo = 6;
+                } else if (scheduledEvent.competitionId === 29) {
+                    formValues.roundNo = 7;
+                } else if (scheduledEvent.competitionId === 7) {
+                    formValues.roundNo = 8;
+                } else if (scheduledEvent.competitionId === 9) {
+                    formValues.roundNo = 9;
+                } else if (scheduledEvent.competitionId === 6) {
+                    formValues.roundNo = 10;
+                } else if (scheduledEvent.competitionId === 11) {
+                    formValues.roundNo = 11;
+                } else if (scheduledEvent.competitionId === 12) {
+                    formValues.roundNo = 12;
+                } else if (scheduledEvent.competitionId === 14) {
+                    formValues.roundNo = 13;
+                } else if (scheduledEvent.competitionId === 15) {
+                    formValues.roundNo = 14;
+                } else if (scheduledEvent.competitionId === 5) {
+                    formValues.roundNo = 15;
+                } else if (scheduledEvent.competitionId === 16) {
+                    formValues.roundNo = 16;
+                } else if (scheduledEvent.competitionId === 8) {
+                    formValues.roundNo = 17;
+                } else if (scheduledEvent.competitionId === 17) {
+                    formValues.roundNo = 18;
+                } else if (scheduledEvent.competitionId === 20) {
+                    formValues.roundNo = 19;
+                } else if (scheduledEvent.competitionId === 21) {
+                    formValues.roundNo = 20;
+                } else if (scheduledEvent.competitionId === 22) {
+                    formValues.roundNo = 21;
+                } else if (scheduledEvent.competitionId === 35) {
+                    formValues.roundNo = 22;
+                } else if (scheduledEvent.competitionId === 33) {
+                    formValues.roundNo = 23;
+                } else if (scheduledEvent.competitionId === 23) {
+                    formValues.roundNo = 24;
+                } else {
+                    formValues.roundNo = 1;
+                }
+            }
+
+        };
+
+        if (seasonData.length > 0) {
+            findNextEvent();
+        }
+    }, [seasonData]);
 
     
     // SET FORM VALUES TO ENTERED VALUES

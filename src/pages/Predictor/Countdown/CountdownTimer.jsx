@@ -31,8 +31,8 @@ export const CountdownTimer = ({ qualiTime }) => {
 
     return (
         <div className="time">
-            <h3>Time Left:</h3>
-            <h3>{countdown}</h3>
+            <p>Predictions close in:</p>
+            <p>{countdown}</p>
         </div>
     );
 };
