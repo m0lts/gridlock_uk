@@ -207,6 +207,8 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                         setUpdateDriversArray(true);
                         setSubmitButtonText('Update prediction');
                         setFetchingPrediction(false);
+                    } else {
+                        setFetchingPrediction(false);
                     }
                 } catch (error) {
                     console.error('Error submitting form:', error);
