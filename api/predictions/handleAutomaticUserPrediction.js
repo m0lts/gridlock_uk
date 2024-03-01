@@ -19,7 +19,7 @@ export default async function handler(request, response) {
         const accountsCollection = db.collection("accounts");
         const predictionsCollection = db.collection("predictions");
 
-        const users = await accountsCollection.find().toArray();
+        const users = await accountsCollection.find({ verified: true }).toArray();
 
         // Get the next race's ID
         const raceIDQuery = await fetch("https://v1.formula-1.api-sports.io/races?season=2024&timezone=Europe/London", {
