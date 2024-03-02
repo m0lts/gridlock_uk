@@ -1,0 +1,61 @@
+.how-to-play {
+    margin-bottom: 1em;
+}
+.how-to-play .info {
+    border:1px solid var(--black);
+    margin-top:1em;
+    padding:1em;
+}
+.how-to-play .info h3 {
+    margin-bottom: 0.5em;
+}
+
+.how-to-play .info p {
+    margin-bottom: 1em;
+}
+.how-to-play .info.white {
+    border: 1px solid var(--white);
+}
+.how-to-play .info .grid {
+    margin: 1em auto;
+    gap:2em;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.how-to-play .info .grid h1 {
+    font-size: 1.5em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.how-to-play .info .grid h1 span {
+    font-size: 1rem;
+}
+
+.how-to-play .info .prizes {
+    display: flex;
+    justify-content: space-around;
+    height:100px;
+}
+.how-to-play .info .prizes .prize:nth-child(1) {
+    align-self: center;
+}
+.how-to-play .info .prizes .prize:nth-child(2) {
+    align-self: flex-start;
+}
+.how-to-play .info .prizes .prize:nth-child(3) {
+    align-self: flex-end;
+}
+.how-to-play .info .prizes .prize {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.how-to-play .info .prizes .prize span {
+    font-weight: 500;
+    font-size: 1.5rem;
+}

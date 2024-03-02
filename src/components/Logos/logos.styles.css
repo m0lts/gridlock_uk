@@ -1,0 +1,15 @@
+.default-logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.default-logo img {
+    width:100px;
+    height:100px;
+    margin-right:0.5em;
+}
+.default-logo h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--primary-white);
+}

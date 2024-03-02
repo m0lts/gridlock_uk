@@ -1,0 +1,6 @@
+.primary-date {
+    font-size: 1em;
+}
+.primary-date.grey {
+    color: var(--grey);
+}
