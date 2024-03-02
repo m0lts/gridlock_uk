@@ -84,34 +84,32 @@ export const Standings = () => {
 
                 // Store league standings in the leagueStandingsMap
                 leagueStandingsMap[leagueName] = leagueStandings;
+
             }
-            
+           
             setLeagueStandings(leagueStandingsMap);
             setLeaguesLoading(false);
         }
 
-        if (standings.length === 0) {
-            setLeaguesLoading(false);
-        } else if (leagues.length > 0 && standings.length > 0) {
+        if (leagues.length > 0 && standings.length > 0) {
             fetchLeagueStandings(leagues);
-            setLeaguesLoading(true);
         }
     }, [leagues, standings])
 
 
-    // const sortStandings = (standings) => {
-    //     const sortedStandings = [...standings].sort((a, b) => b.totalPoints - a.totalPoints);
-    //     const standingsTable = sortedStandings.map((user, index) => {
-    //         return (
-    //             <tr key={index}>
-    //                 <td className='col1'>{index + 1}</td>
-    //                 <td className='col2'>{user.username}</td>
-    //                 <td className='col3'>{user.totalPoints}</td>
-    //             </tr>
-    //         );
-    //     });
-    //     return standingsTable;
-    // }
+    const sortStandings = (standings) => {
+        const sortedStandings = [...standings].sort((a, b) => b.totalPoints - a.totalPoints);
+        const standingsTable = sortedStandings.map((user, index) => {
+            return (
+                <tr key={index}>
+                    <td className='col1'>{index + 1}</td>
+                    <td className='col2'>{user.username}</td>
+                    <td className='col3'>{user.totalPoints}</td>
+                </tr>
+            );
+        });
+        return standingsTable;
+    }
 
 
     // League creation and joining code
@@ -300,7 +298,7 @@ export const Standings = () => {
                     </tbody>
                 </table>
             </div>
-            {/* <div className="league-tables page-padding bckgrd-black">
+            <div className="league-tables page-padding bckgrd-black">
                 {leagues.length > 0 && (
                     leagues.map((league, index) => {
                         return (
@@ -349,14 +347,7 @@ export const Standings = () => {
                                                     </tr>
                                                 ))
                                             ) : (
-                                                console.log(leagueStandings[league.leagueName])
-                                                // .map((user, index) => (
-                                                //     <tr key={index}>
-                                                //         <td className='col1'>{index + 1}</td>
-                                                //         <td className='col2'>{user.username}</td>
-                                                //         <td className='col3'>{user.totalPoints}</td>
-                                                //     </tr>
-                                                // ))
+                                                sortStandings(leagueStandings[league.leagueName])
                                             )
                                         )}
                                     </tbody>
@@ -365,7 +356,7 @@ export const Standings = () => {
                         )
                     })
                 )}
-            </div> */}
+            </div>
             <div className="league-section">
                 {!userLoggedIn ? (
                     <Link to="/login" className='link not-logged-in'>
