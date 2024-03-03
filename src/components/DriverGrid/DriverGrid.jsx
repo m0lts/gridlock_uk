@@ -1,178 +1,66 @@
 import './driver-grid.styles.css'
 
-export const DriverGrid = ({ numberOfDrivers }) => {
-
-    const drivers = [
-        {
-            firstName: 'Max',
-            lastName: 'Verstappen',
-            team: 'Red Bull',
-            number: 1
-        },
-        {
-            firstName: 'Sergio',
-            lastName: 'Perez',
-            team: 'Red Bull',
-            number: 11
-        },
-        {
-            firstName: 'Lewis',
-            lastName: 'Hamilton',
-            team: 'Mercedes',
-            number: 44
-        },
-        {
-            firstName: 'Valtteri',
-            lastName: 'Bottas',
-            team: 'Mercedes',
-            number: 77
-        },
-        {
-            firstName: 'Lando',
-            lastName: 'Norris',
-            team: 'McLaren',
-            number: 4
-        },
-        {
-            firstName: 'Daniel',
-            lastName: 'Ricciardo',
-            team: 'McLaren',
-            number: 3
-        },
-        {
-            firstName: 'Charles',
-            lastName: 'Leclerc',
-            team: 'Ferrari',
-            number: 16
-        },
-        {
-            firstName: 'Carlos',
-            lastName: 'Sainz',
-            team: 'Ferrari',
-            number: 55
-        },
-        {
-            firstName: 'Pierre',
-            lastName: 'Gasly',
-            team: 'AlphaTauri',
-            number: 10
-        },
-        {
-            firstName: 'Yuki',
-            lastName: 'Tsunoda',
-            team: 'AlphaTauri',
-            number: 22
-        },
-        {
-            firstName: 'Sebastian',
-            lastName: 'Vettel',
-            team: 'Aston Martin',
-            number: 5
-        },
-        {
-            firstName: 'Lance',
-            lastName: 'Stroll',
-            team: 'Aston Martin',
-            number: 18
-        },
-        {
-            firstName: 'Fernando',
-            lastName: 'Alonso',
-            team: 'Alpine',
-            number: 14
-        },
-        {
-            firstName: 'Esteban',
-            lastName: 'Ocon',
-            team: 'Alpine',
-            number: 31
-        },
-        {
-            firstName: 'George',
-            lastName: 'Russell',
-            team: 'Williams',
-            number: 63
-        },
-        {
-            firstName: 'Nicholas',
-            lastName: 'Latifi',
-            team: 'Williams',
-            number: 6
-        },
-        {
-            firstName: 'Kimi',
-            lastName: 'Räikkönen',
-            team: 'Sauber',
-            number: 7
-        },
-        {
-            firstName: 'Antonio',
-            lastName: 'Giovinazzi',
-            team: 'Sauber',
-            number: 99
-        },
-        {
-            firstName: 'Mick',
-            lastName: 'Schumacher',
-            team: 'Haas',
-            number: 47
-        },
-        {
-            firstName: 'Nikita',
-            lastName: 'Mazepin',
-            team: 'Haas',
-            number: 9
-        }
-    ]
+export const DriverGrid = ({ drivers }) => {
 
     const getTeamColour = (team) => {
         switch (team) {
-            case 'Red Bull':
-                return '#0600EF';
+            case 'Red Bull Racing':
+                return '#3671C6';
                 break;
-            case 'Mercedes':
-                return '#00D2BE';
+            case 'Mercedes-AMG Petronas':
+                return '#29F4D2';
                 break;
-            case 'McLaren':
-                return '#FF8700';
+            case 'McLaren Racing':
+                return '#FF8001';
                 break;
-            case 'Ferrari':
-                return '#DC0000';
+            case 'Scuderia Ferrari':
+                return '#E8022D';
                 break;
-            case 'AlphaTauri':
-                return '#2B4562';
+            case 'Scuderia Ferrari ':
+                return '#E8022D';
                 break;
-            case 'Aston Martin':
-                return '#006F62';
+            case 'Scuderia Ferrari\n':
+                return '#E8022D';
                 break;
-            case 'Alpine':
-                return '#0090FF';
+            case 'Visa Cash App RB Formula One Team':
+                return '#6592FF';
                 break;
-            case 'Williams':
-                return '#005AFF';
+            case 'Scuderia AlphaTauri Honda':
+                return '#6592FF';
                 break;
-            case 'Sauber':
-                return '#900000';
+            case 'Aston Martin F1 Team':
+                return '#239971';
                 break;
-            case 'Haas':
-                return '#FFFFFF';
+            case 'Alpine F1 Team':
+                return '#FF87BC';
+                break;
+            case 'Williams F1 Team':
+                return '#63C4FF';
+                break;
+            case 'Stake F1 Team Kick Sauber':
+                return '#52E252';
+                break;
+            case 'Alfa Romeo':
+                return '#52E252';
+                break;
+            case 'Haas F1 Team':
+                return '#B6BABD';
                 break;
             default:
-                return 'white';
+                return '#FFFFFF';
                 break;
         }
     }
 
-
     return (
         <section className="driver-grid">
-            {drivers.slice(0, numberOfDrivers).map((driver, index) => {
+            {drivers.map((driver, index) => {
                 return (
                     <div className="driver" key={index} >
-                        <h1 style={{ color: `${getTeamColour(driver.team)}`}}>{driver.number}</h1>
+                        <h1 style={{ color: `${getTeamColour(driver.driverTeam)}`}}>{driver.driverNumber}</h1>
                         <div className="name">
-                            <p>{driver.firstName}</p>
-                            <h4>{driver.lastName}</h4>
+                            <p>{driver.driverFirstName}</p>
+                            <h4>{driver.driverLastName}</h4>
                         </div>
                     </div>
                 )

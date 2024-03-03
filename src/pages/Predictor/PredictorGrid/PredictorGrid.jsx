@@ -28,6 +28,9 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
             case 'Scuderia Ferrari ':
                 return '#E8022D';
                 break;
+            case 'Scuderia Ferrari\n':
+                return '#E8022D';
+                break;
             case 'Visa Cash App RB Formula One Team':
                 return '#6592FF';
                 break;
