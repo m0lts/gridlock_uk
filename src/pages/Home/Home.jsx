@@ -6,7 +6,7 @@ import './home.styles.css'
 import { CountdownTimer } from '../Predictor/Countdown/CountdownTimer'
 
 
-export const Home = ({ seasonData }) => {
+export const Home = ({ seasonData, driverData }) => {
 
     const [nextEvent, setNextEvent] = useState([]);
     const [qualifyingTime, setQualifyingTime] = useState('');
@@ -74,6 +74,7 @@ export const Home = ({ seasonData }) => {
             <AccountStats />
             <GridlockStats
                 nextEvent={nextEvent}
+                driverData={driverData}
             />
         </section>
     )

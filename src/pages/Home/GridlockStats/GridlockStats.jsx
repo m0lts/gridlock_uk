@@ -5,10 +5,11 @@ import { LoaderWhite } from "../../../components/Loader/Loader"
 import './gridlock-stats.styles.css'
 import { useEffect, useState } from "react"
 
-export const GridlockStats = ({ nextEvent }) => {
+export const GridlockStats = ({ nextEvent, driverData }) => {
 
     const [bestPrediction, setBestPrediction] = useState();
     const [totalGridlockPoints, setTotalGridlockPoints] = useState();
+    const [mostPopularPrediction, setMostPopularPrediction] = useState();
 
     useEffect(() => {
         const fetchBestPrediction = async () => {
@@ -43,26 +44,95 @@ export const GridlockStats = ({ nextEvent }) => {
             }
         }
 
-        // const fetchMostPopularPrediction = async () => {
-        //     try {
-        //         const response = await fetch('/api/predictions/handleMostPopularPrediction', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             }
-        //         });
-        //         const data = await response.json();
-        //         console.log(data);
-
-        //     } catch (error) {
-        //         console.error('Error submitting form:', error);
-        //     }
-        // }
+        const fetchMostPopularPrediction = async () => {
+            try {
+                const response = await fetch('/api/predictions/handleMostPopularPrediction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                const cleanedData = data.map(item => {
+                    const { position, ...rest } = item;
+                    const driverDetails = driverData.find(driver => driver.driverId === parseInt(rest.driver));
+                    if (driverDetails) {
+                        rest.driver = {
+                            driverFirstName: driverDetails.driverFirstName,
+                            driverLastName: driverDetails.driverLastName,
+                            driverNumber: driverDetails.driverNumber,
+                            driverTeam: driverDetails.driverTeam,
+                            driverAbbr: driverDetails.driverAbbr,
+                            driverImage: driverDetails.driverImage
+                        };
+                    }
+                    return rest;
+                });
+                
+                setMostPopularPrediction(cleanedData);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+            }
+        }
 
         fetchBestPrediction();
         fetchTotalGridlockPoints();
-        // fetchMostPopularPrediction();
-    }, [])
+        if (driverData.length > 0) {
+            fetchMostPopularPrediction();
+        }
+    }, [driverData])
+
+
+    const getTeamColour = (team) => {
+        switch (team) {
+            case 'Red Bull Racing':
+                return '#3671C6';
+                break;
+            case 'Mercedes-AMG Petronas':
+                return '#29F4D2';
+                break;
+            case 'McLaren Racing':
+                return '#FF8001';
+                break;
+            case 'Scuderia Ferrari':
+                return '#E8022D';
+                break;
+            case 'Scuderia Ferrari ':
+                return '#E8022D';
+                break;
+            case 'Scuderia Ferrari\n':
+                return '#E8022D';
+                break;
+            case 'Visa Cash App RB Formula One Team':
+                return '#6592FF';
+                break;
+            case 'Scuderia AlphaTauri Honda':
+                return '#6592FF';
+                break;
+            case 'Aston Martin F1 Team':
+                return '#239971';
+                break;
+            case 'Alpine F1 Team':
+                return '#FF87BC';
+                break;
+            case 'Williams F1 Team':
+                return '#63C4FF';
+                break;
+            case 'Stake F1 Team Kick Sauber':
+                return '#52E252';
+                break;
+            case 'Alfa Romeo':
+                return '#52E252';
+                break;
+            case 'Haas F1 Team':
+                return '#B6BABD';
+                break;
+            default:
+                return '#FFFFFF';
+                break;
+        }
+    }
+
 
     return (
         <section className="gridlock-stats page-padding">
@@ -103,12 +173,27 @@ export const GridlockStats = ({ nextEvent }) => {
                             <LoaderWhite />
                         )}
                     </div>
-                    {/* <div className="most-popular-prediction section">
-                        <h2>Most Popular Prediction</h2>
-                        <DriverGrid
-                            numberOfDrivers={10}
-                        />
-                    </div> */}
+                    <div className="most-popular-prediction section">
+                        <h2>Most Picked Driver in Each Position</h2>
+                        {mostPopularPrediction ? (
+                            <div className="driver-flex">
+                                {mostPopularPrediction.map((driver, index) => (
+                                    <div className="driver" key={index} >
+                                        <div className="left">
+                                            <p className="position">P{index + 1}</p>
+                                            <div className="details">
+                                                <div className="color-block" style={{ backgroundColor : `${getTeamColour(driver.driver.driverTeam)}` }}></div>
+                                                <p className="name">{driver.driver.driverLastName}</p>
+                                            </div>
+                                        </div>
+                                        <p className="percentage">{driver.percentage}%</p>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <LoaderWhite />
+                        )}
+                    </div>
                 </>
             ) : (
                 <LoaderWhite />

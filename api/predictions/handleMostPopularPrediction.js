@@ -18,57 +18,59 @@ export default async function handler(request, response) {
         const dbCollection = db.collection("predictions");
 
         try {
-            
             const allPredictions = await dbCollection.find().toArray();
-
+        
             const predictionsArrays = allPredictions.map(predictionDoc => predictionDoc.prediction);
-
-            const positionCounts = {};
-
+        
+            const positionDrivers = {};
+        
             // Iterate over each prediction array
             predictionsArrays.forEach(predictionArray => {
                 // Iterate over each position in the prediction array
-                predictionArray.forEach((driver, index) => {
-                    // If it's the first occurrence of this position, initialize its count
-                    if (!positionCounts[index]) {
-                        positionCounts[index] = {};
+                predictionArray.forEach((driverObj, index) => {
+                    const driver = driverObj.driverId;
+                    // If it's the first occurrence of this position, initialize its Set
+                    if (!positionDrivers[index]) {
+                        positionDrivers[index] = {};
                     }
-                    // If it's the first occurrence of this driver for this position, initialize its count
-                    if (!positionCounts[index][driver]) {
-                        positionCounts[index][driver] = 1;
+                    // Count occurrences of this driver for this position
+                    if (!positionDrivers[index][driver]) {
+                        positionDrivers[index][driver] = 1;
                     } else {
-                        // Increment the count of this driver for this position
-                        positionCounts[index][driver]++;
+                        positionDrivers[index][driver]++;
                     }
                 });
             });
-
-            // Find the most picked driver for each position
-            const mostPickedDrivers = {};
-            for (const position in positionCounts) {
-                const drivers = positionCounts[position];
-                let mostPickedDriver = null;
+        
+            // Find the total number of picks for each position
+            const totalPicks = predictionsArrays.length;
+        
+            // Calculate the most picked driver for each position along with their percentage
+            const mostPickedDrivers = [];
+            for (const position in positionDrivers) {
+                const drivers = positionDrivers[position];
                 let maxCount = 0;
+                let mostPickedDriver = null;
+                // Iterate over unique drivers for this position
                 for (const driver in drivers) {
-                    if (drivers[driver] > maxCount) {
+                    const count = drivers[driver];
+                    // Update if this driver has more counts than current most picked driver
+                    if (count > maxCount) {
+                        maxCount = count;
                         mostPickedDriver = driver;
-                        maxCount = drivers[driver];
                     }
                 }
-                mostPickedDrivers[position] = mostPickedDriver;
+                // Calculate the percentage of picks for the most picked driver
+                const percentage = (maxCount / totalPicks) * 100;
+                mostPickedDrivers.push({ position: parseInt(position), driver: mostPickedDriver, percentage: percentage.toFixed(2) });
             }
-
-            console.log(mostPickedDrivers)
-
+                
             response.status(200).json(mostPickedDrivers);
-
-            
-
         } catch (error) {
             console.error('Error fetching or processing data:', error);
             response.status(500).json(error);
         }
-
+        
 
     } catch (error) {
         console.error(error);
