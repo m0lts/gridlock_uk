@@ -174,22 +174,24 @@ export const GridlockStats = ({ nextEvent, driverData }) => {
                         )}
                     </div>
                     <div className="most-popular-prediction section">
-                        <h2>Most Picked Driver in Each Position</h2>
                         {mostPopularPrediction ? (
-                            <div className="driver-flex">
-                                {mostPopularPrediction.map((driver, index) => (
-                                    <div className="driver" key={index} >
-                                        <div className="left">
-                                            <p className="position">P{index + 1}</p>
-                                            <div className="details">
-                                                <div className="color-block" style={{ backgroundColor : `${getTeamColour(driver.driver.driverTeam)}` }}></div>
-                                                <p className="name">{driver.driver.driverLastName}</p>
+                            <>
+                                <h2>Most Picked Driver in Each Position</h2>
+                                <div className="driver-flex">
+                                    {mostPopularPrediction.map((driver, index) => (
+                                        <div className="driver" key={index} >
+                                            <div className="left">
+                                                <p className="position">P{index + 1}</p>
+                                                <div className="details">
+                                                    <div className="color-block" style={{ backgroundColor : `${getTeamColour(driver.driver.driverTeam)}` }}></div>
+                                                    <p className="name">{driver.driver.driverLastName}</p>
+                                                </div>
                                             </div>
+                                            <p className="percentage">{driver.percentage}%</p>
                                         </div>
-                                        <p className="percentage">{driver.percentage}%</p>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            </>
                         ) : (
                             <LoaderWhite />
                         )}
