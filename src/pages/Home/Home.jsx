@@ -4,6 +4,7 @@ import { AccountStats } from './AccountStats/AccountStats'
 import { GridlockStats } from './GridlockStats/GridlockStats'
 import './home.styles.css'
 import { CountdownTimer } from '../Predictor/Countdown/CountdownTimer'
+import { UpdateModal } from './UpdateModal/UpdateModal'
 
 
 export const Home = ({ seasonData, driverData }) => {
@@ -11,6 +12,17 @@ export const Home = ({ seasonData, driverData }) => {
     const [nextEvent, setNextEvent] = useState([]);
     const [qualifyingTime, setQualifyingTime] = useState('');
     const [showNotification, setShowNotification] = useState(false);
+    const [showUpdateModal, setShowUpdateModal] = useState(true);
+
+    useEffect(() => {
+        const checkForUpdateModal = () => {
+            const updateModal = localStorage.getItem('updateModal');
+            if (updateModal === 'closed') {
+                setShowUpdateModal(false);
+            }
+        }
+        checkForUpdateModal();
+    }, [])
 
     useEffect(() => {
         const findNextEvent = () => {
@@ -60,6 +72,12 @@ export const Home = ({ seasonData, driverData }) => {
 
     return (
         <section className="home">
+            {showUpdateModal && (
+                <UpdateModal
+                    showUpdateModal={showUpdateModal}
+                    setShowUpdateModal={setShowUpdateModal}
+                />
+            )}
             {showNotification && (
                 <div className="notification">
                     <h4>Qualifying starts soon!</h4>

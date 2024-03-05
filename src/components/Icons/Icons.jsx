@@ -13,7 +13,10 @@ import { faCircleUser,
     faUser, 
     faAngleDown,
     faAngleUp,
-    faArrowRight} from '@fortawesome/free-solid-svg-icons'
+    faArrowRight,
+    faPlus,
+    faCross,
+    faX} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -98,5 +101,17 @@ export const DownChevronIcon = () => {
 export const UpChevronIcon = () => {
     return (
         <FontAwesomeIcon icon={faAngleUp} className='icon' />
+    )
+}
+
+// Expand icon 
+export const ExpandIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faPlus} className='icon' />
+    )
+}
+export const CloseIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faX} className='icon' style={{ color: 'red' }} />
     )
 }

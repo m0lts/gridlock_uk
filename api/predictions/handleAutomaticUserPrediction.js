@@ -40,6 +40,7 @@ export default async function handler(request, response) {
         const competitionSessions = raceIDData.response.filter(event => event.competition.id === competitionID);
         const competitionQualifying = competitionSessions.filter(event => event.type === '1st Qualifying');
         const qualifyingStartTime = new Date(competitionQualifying[0].date).getTime();
+        const qualifyingTimeDateFormat = new Date(competitionQualifying[0].date);
         const currentTime = new Date().getTime();
 
         if (currentTime < qualifyingStartTime) {
@@ -101,6 +102,7 @@ export default async function handler(request, response) {
                         competition: competitionName,
                         country: competitionCountry,
                         competitionId: competitionID,
+                        qualiTime: qualifyingTimeDateFormat,
                         submittedAt: submissionAt
                     };
         

@@ -151,7 +151,9 @@ export const GridlockStats = ({ nextEvent, driverData }) => {
                                 <div className="details">
                                     <h3>{bestPrediction.userName}</h3>
                                     <h3>{bestPrediction.competitionName}</h3>
-                                    <h3>{bestPrediction.totalPoints}</h3>
+                                    <h3>
+                                        {bestPrediction.totalPoints} points
+                                    </h3>
                                 </div>
                                 <DriverGrid
                                     drivers={bestPrediction.userPrediction}
