@@ -36,7 +36,7 @@ export const UpdateModal = ({ showUpdateModal, setShowUpdateModal }) => {
                     </div>
                     <br />
                     <div className="update">
-                        <h3>Accounts:</h3>
+                        <h3>Accounts page:</h3>
                         <ul>
                             <li>Accounts have been made more personalisable. Users can now select and save a profile icon from a pre-defined pool of icons. User icons will by default be assigned a question mark until changed.</li>
                             <li>Get in touch section added. If you encounter an issue, it would be greatly appreciated if you could send us a message through the get in touch form with details of the issue. Suggestions on app improvements are also welcome.</li>

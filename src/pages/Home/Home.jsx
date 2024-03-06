@@ -12,13 +12,13 @@ export const Home = ({ seasonData, driverData }) => {
     const [nextEvent, setNextEvent] = useState([]);
     const [qualifyingTime, setQualifyingTime] = useState('');
     const [showNotification, setShowNotification] = useState(false);
-    const [showUpdateModal, setShowUpdateModal] = useState(true);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
 
     useEffect(() => {
         const checkForUpdateModal = () => {
             const updateModal = localStorage.getItem('updateModal');
-            if (updateModal === 'closed') {
-                setShowUpdateModal(false);
+            if (!updateModal) {
+                setShowUpdateModal(true);
             }
         }
         checkForUpdateModal();
