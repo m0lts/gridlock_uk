@@ -4,7 +4,7 @@ import './user-profile.styles.css';
 import { LoaderWhite } from "../../components/Loader/Loader";
 import { PrimaryHeading } from "../../components/Typography/Titles/Titles";
 import { CloseIcon, ExpandIcon } from "../../components/Icons/Icons";
-import { getCountryFlag } from "../../utils/GetCountryFlag";
+import { getCountryFlag } from "../../utils/getCountryFlag";
 import { PreviousPredictions } from "../../components/PreviousPredictions/PreviousPredictions";
 
 export const UserProfile = ({ seasonData }) => {
