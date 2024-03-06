@@ -11,7 +11,7 @@ import { getCircuitInfo } from '../../utils/getCircuitInfo';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoaderBlack, LoaderWhite } from '../../components/Loader/Loader';
 import { PreviousPredictions } from '../../components/PreviousPredictions/PreviousPredictions';
-import { getCountryFlag } from '../../utils/GetCountryFlag';
+import { getCountryFlag } from '../../utils/getCountryFlag';
 
 export const Predictor = ({ seasonData, driverData }) => {
 

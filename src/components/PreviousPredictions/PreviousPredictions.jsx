@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PrimaryHeading } from '../Typography/Titles/Titles';
-import { getCountryFlag } from '../../utils/GetCountryFlag';
+import { getCountryFlag } from '../../utils/getCountryFlag';
 import { ExpandIcon, CloseIcon } from '../Icons/Icons';
 import { LoaderWhite } from '../Loader/Loader';
 
