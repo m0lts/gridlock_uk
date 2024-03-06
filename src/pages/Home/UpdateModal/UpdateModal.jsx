@@ -38,8 +38,8 @@ export const UpdateModal = ({ showUpdateModal, setShowUpdateModal }) => {
                     <div className="update">
                         <h3>Accounts:</h3>
                         <ul>
-                            <li>Accounts have been made more personalisable. Users can now select and save a profile icon from a pool of icons. User icons will by default be assigned a question mark until changed.</li>
-                            <li>Bug reporter added. If you notice or come across a bug, it would be hugely appreciated if you could file it in the bug reported under your profile. This will help Gridlock develop and perform better for you!</li>
+                            <li>Accounts have been made more personalisable. Users can now select and save a profile icon from a pre-defined pool of icons. User icons will by default be assigned a question mark until changed.</li>
+                            <li>Get in touch section added. If you encounter an issue, it would be greatly appreciated if you could send us a message through the get in touch form with details of the issue. Suggestions on app improvements are also welcome.</li>
                         </ul>
                     </div>
                 </div>

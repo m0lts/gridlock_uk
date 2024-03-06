@@ -48,6 +48,7 @@ export const filterDriverResponse = (response) => {
             driverLastName: lastName,
             driverAbbr: driverAbbrToUse,
             driverTeam: driver.team.name,
+            driverTeamBadge: driver.team.logo,
             driverNumber: driver.driver.number,
             driverImage: driver.driver.image,
         });

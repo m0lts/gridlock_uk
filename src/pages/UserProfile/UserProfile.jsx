@@ -1,22 +1,21 @@
-import { Link } from "react-router-dom";
-import { LockIcon } from "../../../components/Icons/Icons";
-import { PrimaryHeading } from "../../../components/Typography/Titles/Titles"
-import './account-stats.styles.css'
-import { useEffect, useState } from 'react'
-import { LoaderBlack } from "../../../components/Loader/Loader";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import './user-profile.styles.css';
+import { LoaderWhite } from "../../components/Loader/Loader";
+import { PrimaryHeading } from "../../components/Typography/Titles/Titles";
+import { CloseIcon, ExpandIcon } from "../../components/Icons/Icons";
+import { getCountryFlag } from "../../utils/GetCountryFlag";
+import { PreviousPredictions } from "../../components/PreviousPredictions/PreviousPredictions";
 
+export const UserProfile = ({ seasonData }) => {
 
-export const AccountStats = () => {
-
-    // Check if user is logged in
-    const userLoggedIn = localStorage.getItem('user');
-    const user = JSON.parse(userLoggedIn);
-
+    // Get user data logic
+    const { user } = useParams();
+    const [userAccount, setUserAccount] = useState();
     const [fetchingUserData, setFetchingUserData] = useState(false);
     const [userPosition, setUserPosition] = useState(0);
     const [userPoints, setUserPoints] = useState(0);
     const [userAveragePoints, setUserAveragePoints] = useState(0);
-
 
     const configPosition = (position) => {
         if (position === 1) {
@@ -31,7 +30,26 @@ export const AccountStats = () => {
     }
 
     useEffect(() => {
+        const fetchUserRecord = async () => {
+            try {
+                const response = await fetch('/api/accounts/handleFindUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user }),
+                });
+                if (response.status === 200) {
+                    const responseData = await response.json();
+                    setUserAccount(responseData);
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+            }
+        }
+
         const fetchStandings = async () => {
+            setFetchingUserData(true);
             try {
                 const response = await fetch('/api/points/handlePointsCollection', {
                     method: 'POST',
@@ -53,13 +71,13 @@ export const AccountStats = () => {
                         }
                     
                         const sortedStandings = usersWithTotalPoints.sort((a, b) => b.totalPoints - a.totalPoints);
-                        const userIndex = sortedStandings.findIndex(entry => entry.username === user.username);
+                        const userIndex = sortedStandings.findIndex(entry => entry.username === user);
                         setUserPosition(configPosition(userIndex !== -1 ? userIndex + 1 : 0));
                     
                         const userPoints = userIndex !== -1 ? sortedStandings[userIndex].totalPoints : 0;
                         setUserPoints(userPoints);
                     
-                        const userWeekends = rawStandings.filter(entry => entry.userName === user.username);
+                        const userWeekends = rawStandings.filter(entry => entry.userName === user);
                         const userWeekendPoints = userWeekends.flatMap(weekend => weekend.points.map(point => point.points));
                         const averagePoints = userWeekendPoints.reduce((a, b) => a + b, 0) / userWeekendPoints.length;
                         setUserAveragePoints(averagePoints);
@@ -78,26 +96,32 @@ export const AccountStats = () => {
                 setFetchingUserData(false);
             }
         }   
-        if (userLoggedIn) {
-            fetchStandings();
-            setFetchingUserData(true);
-        }
+        
+        fetchUserRecord();
+        fetchStandings();
 
-    }, [])
-    
+    }, [user])
+
 
     return (
-        <section className="account-stats page-padding">
-            <PrimaryHeading 
-                title="Account Stats"
-                textColour="white"
-                accentColour="red"
-                backgroundColour="black"
-            />
-            {userLoggedIn ? (
-                fetchingUserData ? (
-                    <LoaderBlack />
-                ) : (
+        <section className="user page-padding bckgrd-black">
+            <Link to="/standings" className="link">
+                Back to standings
+            </Link>
+            <header className="header" style={{ borderBottom: !userAccount && '1px solid var(--white)' }}>
+                <div className="profile-picture">
+                    {userAccount && userAccount.profilePicture ? (
+                        <img src={userAccount.profilePicture} alt="Profile" className="image" />
+                    ) : (
+                        <div className="image">
+                            <p>?</p>
+                        </div>
+                    )}
+                </div>
+                <h1>{user}</h1>
+            </header>
+            {userAccount ? (
+                <>
                     <div className="stats">
                         <div className="stats-item">
                             <p>Global Rank</p>
@@ -112,14 +136,15 @@ export const AccountStats = () => {
                             <h1>{userAveragePoints ? userAveragePoints : '0'}</h1>
                         </div>
                     </div>
-                )
+                    <PreviousPredictions
+                        userEmail={userAccount.email}
+                        seasonData={seasonData}
+                        color="yellow"
+                        padding={false}
+                    />
+                </>
             ) : (
-                <Link to='/login' className="link">
-                    <button className="stats-locked btn btn-black center">
-                        <LockIcon />
-                        <h3>Login to view your stats</h3>
-                    </button>
-                </Link>
+                <LoaderWhite />
             )}
         </section>
     )

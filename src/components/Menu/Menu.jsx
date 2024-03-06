@@ -30,7 +30,7 @@ export const Menu = () => {
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to="/standings" className="menu-link link" style={{ color: location.pathname === '/standings' ? 'var(--yellow)' : 'var(--white)'}}>
+                    <NavLink to="/standings" className="menu-link link" style={{ color: (location.pathname === '/standings' || location.pathname.startsWith('/user/')) ? 'var(--yellow)' : 'var(--white)'}}>
                         <StandingsIcon />
                         <p className="text">Standings</p>
                     </NavLink>

@@ -6,12 +6,12 @@ import { DriverGrid } from '../../components/DriverGrid/DriverGrid';
 import { Parallelograms } from '../../components/Typography/Shapes/Shapes';
 import { RainIcon, SunIcon, LockIcon, ExpandIcon, CloseIcon } from '../../components/Icons/Icons';
 import { PredictorGrid } from './PredictorGrid/PredictorGrid';
-import { getCountryFlag } from '../../utils/getCountryFlag';
 import { CountdownTimer } from './Countdown/CountdownTimer';
 import { getCircuitInfo } from '../../utils/getCircuitInfo';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoaderBlack, LoaderWhite } from '../../components/Loader/Loader';
-
+import { PreviousPredictions } from '../../components/PreviousPredictions/PreviousPredictions';
+import { getCountryFlag } from '../../utils/GetCountryFlag';
 
 export const Predictor = ({ seasonData, driverData }) => {
 
@@ -289,77 +289,14 @@ export const Predictor = ({ seasonData, driverData }) => {
                 )
                 }
             </div>
-            <div className="previous-predictions page-padding">
-                <PrimaryHeading
-                    title="Previous Predictions"
-                    accentColour="purple"
-                    backgroundColour="white"
-                    textColour="black"
+            {userLoggedIn && (
+                <PreviousPredictions
+                    seasonData={seasonData}
+                    userEmail={user.email}
+                    color="purple"
+                    padding={true}
                 />
-                <div className="previous-predictions-flex">
-                    {previousEvents.length > 0 ? (
-                        previousEvents.map((event, index) => (
-                            <div className={`event ${expandedEvents[index] && 'expanded'}`} key={index} onClick={() => handleClick(index, event.competitionId)}>
-                                <div className="competition-bar">
-                                    <div className="left">
-                                        <p className="round">R{index + 1}</p>
-                                        <div className="details">
-                                            <img src={getCountryFlag(event.competitionCountry)} className="flag" />
-                                            <p className="competition">{event.competitionName}</p>
-                                        </div>
-                                    </div>
-                                    {expandedEvents[index] ? <CloseIcon /> : <ExpandIcon />}
-                                </div>
-                                {expandedEvents[index] && previousPrediction.length > 0 ? (
-                                        <div className="prediction-details">
-                                            {previousPrediction.map((prediction, index) => (
-                                                <div className="prediction" key={index}>
-                                                    <div className="left">
-                                                        <p className="position">P{index + 1}</p>
-                                                        <div className="driver">
-                                                            <img src={prediction.driverImage} />
-                                                            <p>{prediction.driverFirstName}</p>
-                                                            <p className='name'>{prediction.driverLastName}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            <div className="previous-points">
-                                                <h3>{previousPoints ? previousPoints : '...'} points scored</h3>
-                                            </div>
-                                        </div>
-                                ) : expandedEvents[index] && previousPrediction.length === 0 ? (
-                                    <div className="prediction-details">
-                                        <LoaderWhite />
-                                    </div>
-                                ) : (
-                                    null
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        <LoaderWhite />
-                    )}
-                </div>
-            </div>
-            {/* <div className="weather-forecast page-padding">
-                <PrimaryHeading
-                    title="Weather Forecast"
-                    accentColour="purple"
-                    backgroundColour="black"
-                    textColour="white"
-                />
-                <div className="weather">
-                    <div className="quali">
-                        <h3>Qualifying</h3>
-                        <RainIcon />
-                    </div>
-                    <div className="race">
-                        <h3>Race</h3>
-                        <SunIcon />
-                    </div>
-                </div>
-            </div> */}
+            )}
         </section>
     )
 }

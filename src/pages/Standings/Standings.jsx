@@ -67,22 +67,17 @@ export const Standings = () => {
 
     useEffect(() => {
         const fetchLeagueStandings = (leagues) => {
-            const leagueStandingsMap = {}; // Object to store league standings
+            const leagueStandingsMap = {};
 
-            // Loop through each league
             for (const league of leagues) {
                 const leagueName = league.leagueName;
                 const leagueMembers = league.leagueMembers;
                 const leagueStandings = [];
 
-                // Loop through each member of the league
                 for (const member of leagueMembers) {
-                    // Find user points from standings state
                     const userPoints = standings.find(user => user.username === member);
                     leagueStandings.push(userPoints);
                 }
-
-                // Store league standings in the leagueStandingsMap
                 leagueStandingsMap[leagueName] = leagueStandings;
 
             }
@@ -96,14 +91,17 @@ export const Standings = () => {
         }
     }, [leagues, standings])
 
-
     const sortStandings = (standings) => {
         const sortedStandings = [...standings].sort((a, b) => b.totalPoints - a.totalPoints);
         const standingsTable = sortedStandings.map((user, index) => {
             return (
                 <tr key={index}>
                     <td className='col1'>{index + 1}</td>
-                    <td className='col2'>{user.username}</td>
+                    <td className="col2">
+                        <Link to={{ pathname: `/user/${user.username}`, state: { user } }} className='link'>
+                            {user.username}
+                        </Link>
+                    </td>
                     <td className='col3'>{user.totalPoints}</td>
                 </tr>
             );
@@ -289,7 +287,11 @@ export const Standings = () => {
                                 standings.map((user, index) => (
                                     <tr key={index}>
                                         <td className='col1'>{index + 1}</td>
-                                        <td className='col2'>{user.username}</td>
+                                        <td className="col2">
+                                            <Link to={{ pathname: `/user/${user.username}`, state: { user } }} className='link'>
+                                                {user.username}
+                                            </Link>
+                                        </td>
                                         <td className='col3'>{user.totalPoints}</td>
                                     </tr>
                                 ))

@@ -1,13 +1,13 @@
-.stats, .stats-locked {
+.account-stats .stats, .stats-locked {
     padding: 1em 0;
 }
 /* User logged in */
-.stats {
+.account-stats .stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 5%;
 }
-.stats .stats-item {
+.account-stats .stats .stats-item {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -18,7 +18,7 @@
 }
 
 /* User not logged in */
-.stats-locked {
+.account-stats .stats-locked {
     margin-top:0.5em;
     padding: 2em 0;
     display: flex;
@@ -27,12 +27,12 @@
     gap:5%;
     border: 1px solid var(--black);
 }
-.stats-locked .icon {
+.account-stats .stats-locked .icon {
     color: var(--red);
     font-size: 2em;
 }
 
-.stats-locked:hover {
+.account-stats .stats-locked:hover {
     background-color: var(--black);
     color: var(--white);
     cursor: pointer;

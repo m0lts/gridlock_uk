@@ -16,6 +16,7 @@ import ResetPassword from './pages/ResetPassword/ResetPassword'
 import { ErrorPage } from './pages/Error/ErrorPage'
 import { VerifyAccount } from './pages/VerifyAccount/VerifyAccount'
 import { MaintenancePage } from './pages/Maintenance/Maintenance'
+import { UserProfile } from './pages/UserProfile/UserProfile'
 
 export default function App() {
 
@@ -67,12 +68,13 @@ export default function App() {
         <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} />} />
         <Route path="/calendar" element={<Calendar seasonData={returnedEventData} />} />
         <Route path="/standings" element={<Standings />} />
-        <Route path="/account" element={<Account />} />
+        <Route path="/account" element={<Account seasonData={returnedEventData} driverData={returnedDriverData} />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp seasonData={returnedEventData} />} />
         <Route path='/forgotpassword' element={<ForgotPassword />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/verifyaccount' element={<VerifyAccount />} />
+        <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} />} /> 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />

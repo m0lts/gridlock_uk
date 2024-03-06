@@ -3,45 +3,39 @@ import LogoBlack from "../../assets/logos/logo-black.png";
 import './account.styles.css'
 import { HowToPlay } from '../../components/HowToPlay/HowToPlay';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { LoaderWhite } from '../../components/Loader/Loader';
+import { GetInTouch } from './GetInTouch/GetInTouch';
+import { Profile } from './Profile/Profile';
 
-export const Account = () => {
-
-    const navigate = useNavigate();
+export const Account = ({ seasonData, driverData }) => {
 
     const userLoggedIn = localStorage.getItem('user');
     const user = JSON.parse(userLoggedIn);
 
-    const handleLogout = () => {
-        localStorage.removeItem('user');
-        navigate('/');
-        window.location.reload();
-    }
-    
     return (
         <section className='account'>
-            <div className='page-padding bckgrd-black'>
-                <PrimaryHeading
-                    title="Account"
-                    accentColour="blue"
-                    backgroundColour="white"
-                    textColour="black"
+            {userLoggedIn ? (
+                <Profile
+                    user={user}
+                    seasonData={seasonData}
+                    driverData={driverData}
                 />
-                <div className="border">
-                    {userLoggedIn ? (
-                        <>
-                            <div className="info">
-                                <p><span className='detail'>Username:</span>{user.username}</p>
-                                <p><span className='detail'>Email:</span>{user.email}</p>
-                            </div>
-                            <button className="btn btn-white" onClick={handleLogout}>Log Out</button>
-                        </>
-                    ) : (
-                        <Link to='/login'>
-                            <button className="btn btn-white center">Login to Gridlock</button>
-                        </Link>
-                    )}
+            ) : (
+                <div className="login-signup-buttons page-padding bckgrd-black">
+                    <Link to='/signup'>
+                        <button className="btn btn-white center">Signup to Gridlock</button>
+                    </Link>
+                    <Link to='/login'>
+                        <button className="btn btn-black center">Login to Gridlock</button>
+                    </Link>
                 </div>
-            </div>
+            )}
+            {userLoggedIn && (
+                <GetInTouch
+                    user={user}
+                />
+            )}
             <div className="page-padding">
                 <HowToPlay
                     backgroundColour="white"
