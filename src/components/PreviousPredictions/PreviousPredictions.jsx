@@ -6,6 +6,7 @@ import { LoaderWhite } from '../Loader/Loader';
 
 export const PreviousPredictions = ({ seasonData, userEmail, color, padding }) => {
 
+    const [noPreviousPrediction, setNoPreviousPrediction] = useState(false);
     const [previousEvents, setPreviousEvents] = useState([]);
     const [previousPrediction, setPreviousPrediction] = useState(Array(previousEvents.length).fill(null));
     const [previousPoints, setPreviousPoints] = useState();
@@ -36,7 +37,7 @@ export const PreviousPredictions = ({ seasonData, userEmail, color, padding }) =
             setExpandedEvents(newExpandedEvents);
 
         }
-
+        setNoPreviousPrediction(false);
         setPreviousPrediction([]);
         setPreviousPoints();
         if (!previousPrediction[index]) {
@@ -48,7 +49,7 @@ export const PreviousPredictions = ({ seasonData, userEmail, color, padding }) =
                 body: JSON.stringify({ userEmail: userEmail, competitionId }),
             });
 
-            if (response.ok) {
+            if (response.status === 200) {
                 const data = await response.json();
                 setPreviousPrediction(data.dbPrediction.prediction);
 
@@ -64,19 +65,22 @@ export const PreviousPredictions = ({ seasonData, userEmail, color, padding }) =
                     if (response.ok) {
                         const data = await response.json();
                         setPreviousPoints(data);
+                    } else {
+                        setPreviousPoints();
                     }
                     
                 } catch (error) {
-                    console.error(error);
+                    setPreviousPoints();
                 }
 
             } else {
-                console.log('Error fetching points from database.');
+                setNoPreviousPrediction(true);
             }
 
         } else {
             setPreviousPrediction([]);
             setPreviousPoints();
+            setNoPreviousPrediction(true);
         }
         
     }
@@ -122,9 +126,15 @@ export const PreviousPredictions = ({ seasonData, userEmail, color, padding }) =
                                         </div>
                                     </div>
                             ) : expandedEvents[index] && previousPrediction.length === 0 ? (
-                                <div className="prediction-details">
-                                    <LoaderWhite />
-                                </div>
+                                noPreviousPrediction ? (
+                                    <div className="prediction-details">
+                                        <p style={{ color: 'white', paddingBottom: '0.5rem' }}>Prediction doesn't exist.</p>
+                                    </div>
+                                ) : (
+                                    <div className="prediction-details">
+                                        <LoaderWhite />
+                                    </div>
+                                )
                             ) : (
                                 null
                             )}
