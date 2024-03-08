@@ -76,7 +76,14 @@ export const Standings = () => {
 
                 for (const member of leagueMembers) {
                     const userPoints = standings.find(user => user.username === member);
-                    leagueStandings.push(userPoints);
+                    if (userPoints) {
+                        leagueStandings.push(userPoints);
+                    } else {
+                        leagueStandings.push({
+                            username: member,
+                            totalPoints: 0,
+                        });
+                    }
                 }
                 leagueStandingsMap[leagueName] = leagueStandings;
 
@@ -94,17 +101,21 @@ export const Standings = () => {
     const sortStandings = (standings) => {
         const sortedStandings = [...standings].sort((a, b) => b.totalPoints - a.totalPoints);
         const standingsTable = sortedStandings.map((user, index) => {
-            return (
-                <tr key={index}>
-                    <td className='col1'>{index + 1}</td>
-                    <td className="col2">
-                        <Link to={{ pathname: `/user/${user.username}`, state: { user } }} className='link'>
-                            {user.username}
-                        </Link>
-                    </td>
-                    <td className='col3'>{user.totalPoints}</td>
-                </tr>
-            );
+            if (user) {
+                return (
+                    <tr key={index}>
+                        <td className='col1'>{index + 1}</td>
+                        <td className="col2">
+                            <Link to={{ pathname: `/user/${user.username}`, state: { user } }} className='link'>
+                                {user.username}
+                            </Link>
+                        </td>
+                        <td className='col3'>{user.totalPoints}</td>
+                    </tr>
+                );
+            } else {
+                return null;
+            }
         });
         return standingsTable;
     }
