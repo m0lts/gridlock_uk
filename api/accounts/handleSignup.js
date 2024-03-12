@@ -1,9 +1,12 @@
 import { MongoClient } from "mongodb";
 import bcrypt from 'bcrypt';
 import sendgrid from '@sendgrid/mail';
+import client from "@sendgrid/client";
+
 
 // Send grid API key
 sendgrid.setApiKey(process.env.SENDGRIDAPI_KEY);
+client.setApiKey(process.env.SENDGRIDAPI_KEY);
 
 const uri = process.env.MONGODB_URI;
 const options = {};
@@ -62,16 +65,39 @@ export default async function handler(request, response) {
 
             const msg = {
                 to: email,
-                from: 'gridlock.contact@gmail.com',
+                from: {
+                    name: 'Gridlock',
+                    email: 'gridlock.contact@gmail.com'
+                },
                 templateId: 'd-f9b818d2289e4c2da46e434c87a9b9e9',
                 dynamic_template_data: {
                     verificationLink: verificationLink,
+                    username: formData.username
                 }
             };
 
             const sendEmail = await sendgrid.send(msg);
 
-            if (!sendEmail) {
+            const contactData = {
+                "contacts": [
+                    {
+                        "email": email,
+                        "first_name": formData.forename,
+                        "last_name": formData.surname,
+                    }
+                ],
+                "list_ids": formData.emailConsent ? ['036a4122-8866-4476-bc31-946611d0f7c1'] : ['75df1a79-11c7-46fa-b1eb-834b9d6d3028'],
+            };
+
+            const contactRequest = {
+                method: 'PUT',
+                url: '/v3/marketing/contacts',
+                body: contactData,
+            };
+
+            const contactAdded = await client.request(contactRequest);
+
+            if (!sendEmail || !contactAdded) {
                 response.status(500).json({ error: "Error sending verification email." });
                 return;
             } else {

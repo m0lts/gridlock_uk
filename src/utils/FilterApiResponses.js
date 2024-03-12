@@ -34,6 +34,9 @@ export const filterEventResponse = (response) => {
 export const filterDriverResponse = (response) => {
     const filteredDrivers = [];
 
+    // Drivers to remove from the list
+    const oliBearmanId = 101;
+
     response.forEach(driver => {
         const spaceIndex = driver.driver.name.indexOf(' ');
         const firstName = driver.driver.name.substring(0, spaceIndex);
@@ -41,17 +44,21 @@ export const filterDriverResponse = (response) => {
         const driverAbbr = lastName.substring(0, 3).toUpperCase();
         
         const driverAbbrToUse = driver.driver.abbr === null ? driverAbbr : driver.driver.abbr;
+
         
-        filteredDrivers.push({
-            driverId: driver.driver.id,
-            driverFirstName: firstName,
-            driverLastName: lastName,
-            driverAbbr: driverAbbrToUse,
-            driverTeam: driver.team.name,
-            driverTeamBadge: driver.team.logo,
-            driverNumber: driver.driver.number,
-            driverImage: driver.driver.image,
-        });
+        if (!(driver.driver.id === oliBearmanId)) {
+            filteredDrivers.push({
+                driverId: driver.driver.id,
+                driverFirstName: firstName,
+                driverLastName: lastName,
+                driverAbbr: driverAbbrToUse,
+                driverTeam: driver.team.name,
+                driverTeamBadge: driver.team.logo,
+                driverNumber: driver.driver.number,
+                driverImage: driver.driver.image,
+            });
+        }
     });
+    
     return filteredDrivers;
 }
