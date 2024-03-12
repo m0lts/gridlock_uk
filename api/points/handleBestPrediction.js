@@ -15,25 +15,26 @@ export default async function handler(request, response) {
 
         const db = mongoClient.db("gridlock");
         const dbCollection = db.collection("standings");
-        const accountsCollection = db.collection("accounts");
         const predictionsCollection = db.collection("predictions");
 
         try {
 
             const userStandings = await dbCollection.find().toArray();
 
-            const highestPoints = userStandings.reduce((acc, curr) => {
-                const totalPoints = curr.points.reduce((acc, curr) => acc + curr.points, 0);
-                if (totalPoints > acc.totalPoints) {
-                    return {
-                        userEmail: curr.userEmail,
-                        userName: curr.userName,
-                        competitionId: curr.points[0].competitionId,
-                        totalPoints: totalPoints
-                    };
+            let highestPoints = { userEmail: null, competitionId: null, totalPoints: 0 };
+
+            for (const user of userStandings) {
+                for (const points of user.points) {
+                    if (points.points > highestPoints.totalPoints) {
+                        highestPoints = {
+                            userEmail: user.userEmail,
+                            userName: user.userName,
+                            competitionId: points.competitionId,
+                            totalPoints: points.points
+                        };
+                    }
                 }
-                return acc;
-            }, { userEmail: null, competitionId: null, totalPoints: 0 });
+            }
 
             const bestPrediction = await predictionsCollection.findOne({ competitionId: highestPoints.competitionId, userEmail: highestPoints.userEmail });
 
