@@ -62,7 +62,8 @@ export const AccountStats = () => {
                         const userWeekends = rawStandings.filter(entry => entry.userName === user.username);
                         const userWeekendPoints = userWeekends.flatMap(weekend => weekend.points.map(point => point.points));
                         const averagePoints = userWeekendPoints.reduce((a, b) => a + b, 0) / userWeekendPoints.length;
-                        setUserAveragePoints(averagePoints);
+                        const formattedAveragePoints = averagePoints % 1 === 0 ? averagePoints.toFixed(0) : averagePoints.toFixed(2);
+                        setUserAveragePoints(formattedAveragePoints);
 
                         setFetchingUserData(false);
                     } catch (error) {
