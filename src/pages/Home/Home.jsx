@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { NextEvent } from './NextEvent/NextEvent'
-import { AccountStats } from './AccountStats/AccountStats'
 import { GridlockStats } from './GridlockStats/GridlockStats'
 import './home.styles.css'
 import { CountdownTimer } from '../Predictor/Countdown/CountdownTimer'
 import { UpdateModal } from './UpdateModal/UpdateModal'
 import { NextEventDefault } from '../../components/NextEventBox/NextEventDefault'
+import { AccountStats } from '../../components/AccountStats/AccountStats'
 
 
 export const Home = ({ seasonData, driverData }) => {
@@ -15,6 +15,10 @@ export const Home = ({ seasonData, driverData }) => {
     const [showNotification, setShowNotification] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [roundNumber, setRoundNumber] = useState(0);
+
+    const userLoggedIn = localStorage.getItem('user');
+    const user = JSON.parse(userLoggedIn);
+    const userName = user.username;
 
     useEffect(() => {
         const checkForUpdateModal = () => {
@@ -40,47 +44,11 @@ export const Home = ({ seasonData, driverData }) => {
         findNextEvent();
     }, [seasonData]);
 
-    useEffect(() => {
-        const getQualiTime = () => {
-            if (nextEvent.length === 0) {
-                return;
-            }
-    
-            const quali = nextEvent[0].events.find(event => event.type === 'Qualifying');
-    
-            if (!quali) {
-                return;
-            }
-    
-            const qualiTime = new Date(quali.date).getTime();
-            setQualifyingTime(qualiTime);
-    
-            const currentTime = new Date().getTime();
-            const difference = qualiTime - currentTime;
-    
-            if (difference >= 0 && difference < 86400000) {
-                setShowNotification(true);
-            } else {
-                setShowNotification(false);
-            }
-
-        }
-        if (nextEvent.length > 0) {
-            getQualiTime();
-        }
-    }, [nextEvent]);
-
 
 
 
     return (
         <section className="home">
-            {(seasonData.length > 0 && nextEvent.length > 0) &&(
-                <NextEventDefault
-                    nextEvent={nextEvent}
-                    roundNumber={roundNumber}
-                />
-            )}
             {showUpdateModal && (
                 <UpdateModal
                     showUpdateModal={showUpdateModal}
@@ -95,14 +63,26 @@ export const Home = ({ seasonData, driverData }) => {
                     />
                 </div>
             )}
-            <NextEvent
+            {(seasonData.length > 0 && nextEvent.length > 0) && (
+                <NextEventDefault
+                    nextEvent={nextEvent}
+                    roundNumber={roundNumber}
+                />
+            )}
+            <AccountStats
+                userName={userName}
+            />
+
+            {/* <NextEvent
                 nextEvent={nextEvent}
             />
             <AccountStats />
+
             <GridlockStats
                 nextEvent={nextEvent}
                 driverData={driverData}
             />
+                        */}
         </section>
     )
 }

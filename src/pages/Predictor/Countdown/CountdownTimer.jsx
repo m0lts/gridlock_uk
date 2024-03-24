@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export const CountdownTimer = ({ qualiTime, event }) => {
-    const [countdown, setCountdown] = useState("");
+    const [countdown, setCountdown] = useState("--:--:--:--");
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -19,7 +19,7 @@ export const CountdownTimer = ({ qualiTime, event }) => {
                 const formattedMinutes = String(minutes).padStart(2, '0');
                 const formattedSeconds = String(seconds).padStart(2, '0');
     
-                setCountdown(`${formattedDays}d ${formattedHours}h ${formattedMinutes}m ${formattedSeconds}s`);
+                setCountdown(`${formattedDays}:${formattedHours}:${formattedMinutes}:${formattedSeconds}`);
             } else {
                 clearInterval(interval);
                 setCountdown('00:00:00:00');
@@ -31,17 +31,8 @@ export const CountdownTimer = ({ qualiTime, event }) => {
 
     return (
         <>
-            {countdown !== '' ? (
-                <div className="time">
-                    {countdown === '00:00:00:00' ? (
-                        <p>Predictions are now closed for the {event}.</p>
-                    ) : (
-                        <>
-                            <p>Predictions close in:</p>
-                            <p>{countdown}</p>
-                        </>
-                    )}
-                </div>
+            {countdown !== '--:--:--:--' ? (
+                <h2>{countdown}</h2>
             ) : null}
         </>
     );

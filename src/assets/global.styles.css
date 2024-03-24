@@ -99,6 +99,11 @@ h4 {
     color: var(--grey);
     text-align: left !important;
 }
+h5 {
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--white);
+}
 
 /* OLD */
 /* .page-padding {

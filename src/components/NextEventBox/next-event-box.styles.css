@@ -49,6 +49,14 @@
     justify-content: space-between;
     padding:1em;
 }
+.next-event-box .bottom .upper.closed {
+    background-color: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:1em;
+    padding:1em;
+}
 .next-event-box .bottom .upper .timer {
     width:40%;
     text-align: center;

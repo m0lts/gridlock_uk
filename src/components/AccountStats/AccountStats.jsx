@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
-import { LockIcon } from "../../../components/Icons/Icons";
-import { PrimaryHeading } from "../../../components/Typography/Titles/Titles"
+import { LockIcon, RightChevronIcon } from "../Icons/Icons";
+import { PrimaryHeading } from "../Typography/Titles/Titles"
 import './account-stats.styles.css'
 import { useEffect, useState } from 'react'
-import { LoaderBlack } from "../../../components/Loader/Loader";
+import { LoaderBlack } from "../Loader/Loader";
 
 
-export const AccountStats = () => {
-
-    // Check if user is logged in
-    const userLoggedIn = localStorage.getItem('user');
-    const user = JSON.parse(userLoggedIn);
+export const AccountStats = ({ userName }) => {
 
     const [fetchingUserData, setFetchingUserData] = useState(false);
     const [userPosition, setUserPosition] = useState(0);
@@ -53,13 +49,13 @@ export const AccountStats = () => {
                         }
                     
                         const sortedStandings = usersWithTotalPoints.sort((a, b) => b.totalPoints - a.totalPoints);
-                        const userIndex = sortedStandings.findIndex(entry => entry.username === user.username);
+                        const userIndex = sortedStandings.findIndex(entry => entry.username === userName);
                         setUserPosition(configPosition(userIndex !== -1 ? userIndex + 1 : 0));
                     
                         const userPoints = userIndex !== -1 ? sortedStandings[userIndex].totalPoints : 0;
                         setUserPoints(userPoints);
                     
-                        const userWeekends = rawStandings.filter(entry => entry.userName === user.username);
+                        const userWeekends = rawStandings.filter(entry => entry.userName === userName);
                         const userWeekendPoints = userWeekends.flatMap(weekend => weekend.points.map(point => point.points));
                         const averagePoints = userWeekendPoints.reduce((a, b) => a + b, 0) / userWeekendPoints.length;
                         const formattedAveragePoints = averagePoints % 1 === 0 ? averagePoints.toFixed(0) : averagePoints.toFixed(2);
@@ -79,7 +75,7 @@ export const AccountStats = () => {
                 setFetchingUserData(false);
             }
         }   
-        if (userLoggedIn) {
+        if (userName) {
             fetchStandings();
             setFetchingUserData(true);
         }
@@ -88,38 +84,33 @@ export const AccountStats = () => {
     
 
     return (
-        <section className="account-stats page-padding">
-            <PrimaryHeading 
-                title="Account Stats"
-                textColour="white"
-                accentColour="red"
-                backgroundColour="black"
-            />
-            {userLoggedIn ? (
-                fetchingUserData ? (
-                    <LoaderBlack />
-                ) : (
-                    <div className="stats">
-                        <div className="stats-item">
-                            <p>Global Rank</p>
+        <section className="account-stats">
+            {userName ? (
+                <>
+                    <h5>{userName}</h5>
+                    {fetchingUserData ? (
+                        <LoaderBlack />
+                    ) : (
+                        <>
+                        <div className="stat-box">
+                            <h3>Your Global Rank</h3>
                             <h1>{userPosition ? userPosition : '0'}</h1>
                         </div>
-                        <div className="stats-item">
-                            <p>Points</p>
+                        <div className="stat-box">
+                            <h3>Points Scored This Season</h3>
                             <h1>{userPoints ? userPoints : '0'}</h1>
                         </div>
-                        <div className="stats-item">
-                            <p>Average points per weekend</p>
+                        <div className="stat-box">
+                            <h3>Average Points Per Prediction</h3>
                             <h1>{userAveragePoints ? userAveragePoints : '0'}</h1>
                         </div>
-                    </div>
-                )
+                        </>
+                    )}                   
+                </>
             ) : (
-                <Link to='/login' className="link">
-                    <button className="stats-locked btn btn-black center">
-                        <LockIcon />
-                        <h3>Login to view your stats</h3>
-                    </button>
+                <Link to={'/login'} className="link locked">
+                    <h3>Login here to view your stats</h3>
+                    <RightChevronIcon />
                 </Link>
             )}
         </section>
