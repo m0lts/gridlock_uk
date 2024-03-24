@@ -16,7 +16,8 @@ import { faCircleUser,
     faArrowRight,
     faPlus,
     faCross,
-    faX} from '@fortawesome/free-solid-svg-icons'
+    faX,
+    faAngleRight} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -101,6 +102,11 @@ export const DownChevronIcon = () => {
 export const UpChevronIcon = () => {
     return (
         <FontAwesomeIcon icon={faAngleUp} className='icon' />
+    )
+}
+export const RightChevronIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faAngleRight} className='icon' />
     )
 }
 

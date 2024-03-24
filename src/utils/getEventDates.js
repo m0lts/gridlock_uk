@@ -59,8 +59,7 @@ export const getEventDatesOverview = (events) => {
 
     const formattedEndDate = endDate.toLocaleString('en-GB', {
         day: 'numeric',
-        month: 'short',
-        year: 'numeric'
+        month: 'long',
     });
 
     return `${formattedStartDate}-${formattedEndDate}`;

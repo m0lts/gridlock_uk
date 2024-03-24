@@ -5,6 +5,7 @@ import { GridlockStats } from './GridlockStats/GridlockStats'
 import './home.styles.css'
 import { CountdownTimer } from '../Predictor/Countdown/CountdownTimer'
 import { UpdateModal } from './UpdateModal/UpdateModal'
+import { NextEventDefault } from '../../components/NextEventBox/NextEventDefault'
 
 
 export const Home = ({ seasonData, driverData }) => {
@@ -13,6 +14,7 @@ export const Home = ({ seasonData, driverData }) => {
     const [qualifyingTime, setQualifyingTime] = useState('');
     const [showNotification, setShowNotification] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [roundNumber, setRoundNumber] = useState(0);
 
     useEffect(() => {
         const checkForUpdateModal = () => {
@@ -27,8 +29,9 @@ export const Home = ({ seasonData, driverData }) => {
     useEffect(() => {
         const findNextEvent = () => {
             const scheduledEvent = seasonData.find(event => event.status === 'Scheduled');
-            
+
             if (scheduledEvent) {
+                setRoundNumber(seasonData.indexOf(scheduledEvent) + 1);
                 setNextEvent([scheduledEvent]);
             } else {
                 setNextEvent([]);
@@ -72,6 +75,12 @@ export const Home = ({ seasonData, driverData }) => {
 
     return (
         <section className="home">
+            {(seasonData.length > 0 && nextEvent.length > 0) &&(
+                <NextEventDefault
+                    nextEvent={nextEvent}
+                    roundNumber={roundNumber}
+                />
+            )}
             {showUpdateModal && (
                 <UpdateModal
                     showUpdateModal={showUpdateModal}
