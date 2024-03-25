@@ -5,11 +5,11 @@ import { Link } from "react-router-dom"
 import { CountdownTimer } from "../../pages/Predictor/Countdown/CountdownTimer"
 import { getCountryFlag } from "../../utils/getCountryFlag"
 import { getEventDatesOverview } from "../../utils/getEventDates"
-import { RightChevronIcon } from "../Icons/Icons"
+import { GearIcon, RightChevronIcon } from "../Icons/Icons"
 // Styles
 import './next-event-box.styles.css'
 
-export const NextEventDefault = ({ nextEvent, roundNumber }) => {
+export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
 
     const [qualifyingTime, setQualifyingTime] = useState('00:00:00:00');
     const [predictionsClosed, setPredictionsClosed] = useState(false);
@@ -67,7 +67,7 @@ export const NextEventDefault = ({ nextEvent, roundNumber }) => {
                 </div>
             ) : (
                 <div className="bottom">
-                    <div className="upper">
+                    <div className="upper red">
                         <h3>Predictions Deadline:</h3>
                         <div className="timer">
                             <CountdownTimer 
@@ -75,10 +75,13 @@ export const NextEventDefault = ({ nextEvent, roundNumber }) => {
                             />
                         </div>
                     </div>
-                    <Link to={'/'} className="lower link">
-                        <h3>Make your prediction</h3>
-                        <RightChevronIcon />
-                    </Link>
+                    <div className="two-buttons narrow">
+                        <button className="btn black">
+                            <GearIcon />
+                            How to Play
+                        </button>
+                        <button className="btn white">prev. prediction</button>
+                    </div>
                 </div>
             )}
         </section>

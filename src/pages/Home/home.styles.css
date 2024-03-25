@@ -1,7 +1,4 @@
-.home {
-    width:100%;
-    min-height: 100vh;
-}
+
 .home .notification {
     background-color: var(--red);
     color:var(--white);
@@ -59,4 +56,9 @@
     list-style-type:square;
     font-weight: 400;
     margin-bottom: 0.25rem;
+}
+
+/* New */
+.home .middle-section {
+    background-color: var(--black);
 }

@@ -12,6 +12,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LoaderBlack, LoaderWhite } from '../../components/Loader/Loader';
 import { PreviousPredictions } from '../../components/PreviousPredictions/PreviousPredictions';
 import { getCountryFlag } from '../../utils/getCountryFlag';
+import { NextEventPredictor } from '../../components/NextEventBox/NextEventPredictor';
+import { CircuitInformation } from '../../components/CircuitInformation/CircuitInformation';
 
 export const Predictor = ({ seasonData, driverData }) => {
 
@@ -25,6 +27,7 @@ export const Predictor = ({ seasonData, driverData }) => {
 
     // Grid and track stats data
     const [nextEvent, setNextEvent] = useState([]);
+    const [roundNumber, setRoundNumber] = useState(0);
     const [qualiTime, setQualiTime] = useState();
     const [circuitInfo, setCircuitInfo] = useState();
 
@@ -69,6 +72,7 @@ export const Predictor = ({ seasonData, driverData }) => {
             const previousEvents = seasonData.filter(event => event.status === 'Completed');
 
             if (scheduledEvent) {
+                setRoundNumber(seasonData.indexOf(scheduledEvent) + 1);
                 setNextEvent([scheduledEvent]);
             } else {
                 setNextEvent([]);
@@ -160,143 +164,58 @@ export const Predictor = ({ seasonData, driverData }) => {
 
     return (
         <section className="predictor">
-            <div className="page-padding">
-                <PrimaryHeading
-                    title="Predictor"
-                    accentColour="purple"
-                    backgroundColour="white"
-                    textColour="black"
-                />
-                <div className="head">
-                    {nextEvent.length === 0 ? (
-                        null
-                    ) : (
-                        <div className="event">
-                            <div className="info">
-                                <UpperCaseTitle
-                                    title={nextEvent[0].competitionCountry}
-                                    colour="white"
-                                />
-                                <img src={getCountryFlag(nextEvent[0].competitionCountry)} alt={`${nextEvent[0].competitionCountry} Flag`} className="flag" />
-                            </div>
-                            <div className="countdown">
-                                <CountdownTimer 
-                                    qualiTime={qualiTime}
-                                    event={nextEvent[0].competitionName}
-                                />
-                            </div>
-                        </div>
-                    )}
-                </div>
-                {userLoggedIn && userVerified ? (
-                    <>
-                        <div className="predictions">
-                            <PredictorGrid
-                                qualiTime={qualiTime}
-                                driverData={driverData}
-                                userEmail={user.email}
-                                userName={user.username}
-                                nextEvent={nextEvent}
-                            />
-                        </div>
-                    </>
-                ) : !userVerified && userLoggedIn ? (
-                    <div className='verify-account-box'>
-                        <LockIcon />
-                        <h3>You must verify your account before submitting a prediction.</h3>
-                        <button className="predictor-locked btn btn-white center" onClick={handleSendVerificationLink}>
-                            <h3>{verifyButtonText}</h3>
-                        </button>
-                    </div>
-                ) : !userLoggedIn && (
-                    <Link to="/login" className='link'>
-                        <button className="predictor-locked btn btn-white center">
-                            <LockIcon />
-                            <h3>Login to make a prediction</h3>
-                        </button>
-                    </Link>
-                )}
-            </div>
-            <div className="track-stats page-padding">
-                <PrimaryHeading
-                    title="Track Stats"
-                    accentColour="purple"
-                    backgroundColour="black"
-                    textColour="white"
-                />
-                {circuitInfo ? (
-                    <>
-                        <h3>{nextEvent[0].competitionCircuitName}</h3>
-                        <div className="statistics">
-                            <div className="stat">
-                                <p>Downforce:</p>
-                                <div className="value">
-                                    <Parallelograms
-                                        number={circuitInfo.downforce}
-                                        color="black"
-                                    />
-                                </div>
-                            </div>
-                            <div className="stat">
-                                <p>Tyre Stress:</p>
-                                <div className="value">
-                                    <Parallelograms
-                                        number={circuitInfo['tyre stress']}
-                                        color="black"
-                                    />
-                                </div>
-                            </div>
-                            <div className="stat">
-                                <p>Grip:</p>
-                                <div className="value">
-                                    <Parallelograms
-                                        number={circuitInfo.traction}
-                                        color="black"
-                                    />
-                                </div>
-                            </div>
-                            <div className="stat">
-                                <p>Track Evolution:</p>
-                                <div className="value">
-                                    <Parallelograms
-                                        number={circuitInfo['track evolution']}
-                                        color="black"
-                                    />
-                                </div>
-                            </div>
-                            <div className="stat">
-                                <p>Braking:</p>
-                                <div className="value">
-                                    <Parallelograms
-                                        number={circuitInfo.braking}
-                                        color="black"
-                                    />
-                                </div>
-                            </div>
-                            <div className="stat">
-                                <p>Asphalt Abrasion:</p>
-                                <div className="value">
-                                    <Parallelograms
-                                        number={circuitInfo['asphalt abrasion']}
-                                        color="black"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </>
-                ) : (
-                    <LoaderBlack />
-                )
-                }
-            </div>
-            {userLoggedIn && (
-                <PreviousPredictions
-                    seasonData={seasonData}
-                    userEmail={user.email}
-                    color="purple"
-                    padding={true}
+            {(seasonData.length > 0 && nextEvent.length > 0) && (
+                <NextEventPredictor 
+                    nextEvent={nextEvent}
+                    roundNumber={roundNumber}
                 />
             )}
+            {userLoggedIn && userVerified ? (
+                <>
+                    <div className="predictions">
+                        <PredictorGrid
+                            qualiTime={qualiTime}
+                            driverData={driverData}
+                            userEmail={user.email}
+                            userName={user.username}
+                            nextEvent={nextEvent}
+                        />
+                    </div>
+                </>
+            ) : !userVerified && userLoggedIn ? (
+                <div className='verify-account-box'>
+                    <LockIcon />
+                    <h3>You must verify your account before submitting a prediction.</h3>
+                    <button className="predictor-locked btn white center" onClick={handleSendVerificationLink}>
+                        <h3>{verifyButtonText}</h3>
+                    </button>
+                </div>
+            ) : !userLoggedIn && (
+                <Link to="/login" className='link'>
+                    <button className="predictor-locked btn white center">
+                        <LockIcon />
+                        <h3>Login to make a prediction</h3>
+                    </button>
+                </Link>
+            )}
+            <div className="middle-section">
+                <h2>Track Info</h2>
+                {(seasonData.length > 0 && nextEvent.length > 0) && (
+                    <CircuitInformation
+                        circuitName={nextEvent[0].competitionCircuitName}
+                        circuitImage={nextEvent[0].competitionCircuit}
+                    />
+                )}
+            </div>
+            <div className="bottom-section">
+                <h2 style={{ marginBottom: '0.5em' }}>Your Previous Predictions</h2>
+                {userLoggedIn && (
+                    <PreviousPredictions
+                        seasonData={seasonData}
+                        userEmail={user.email}
+                    />
+                )}
+            </div>
         </section>
     )
 }

@@ -104,6 +104,12 @@ h5 {
     font-weight: 600;
     color: var(--white);
 }
+h6 {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--white);
+    font-style: italic;
+}
 
 /* OLD */
 /* .page-padding {
@@ -136,7 +142,8 @@ h5 {
 }
 
 /* Buttons */
-.btn {
+/* OLD */
+/* .btn {
     border:none;
     font-family: var(--primary-font);
     cursor: pointer;
@@ -197,7 +204,56 @@ h5 {
 }
 .loading-text.black {
     color: var(--black);
+} */
+
+/* NEW */
+.btn {
+    border:none;
+    font-family: var(--primary-font);
+    cursor: pointer;
 }
+.btn:hover {
+    opacity: 0.8;
+}
+.two-buttons {
+    width:100%;
+    padding:5px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.two-buttons.narrow {
+    padding:5px;
+    padding-bottom: 0;
+}
+.two-buttons .btn {
+    width:49%;
+}
+.btn.white, .btn.black {
+    padding:0.5em 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:0.5em;
+    border-radius: 5px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.btn.white {
+    background-color: var(--white);
+    color: var(--black);
+}
+.btn.black {
+    background-color: var(--black);
+    color: var(--white);
+}
+.btn .icon {
+    color: var(--red);
+    font-size: 1em;
+}
+
+
 
 
 .link {

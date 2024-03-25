@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { PrimaryHeading } from '../Typography/Titles/Titles';
 import { getCountryFlag } from '../../utils/getCountryFlag';
-import { ExpandIcon, CloseIcon } from '../Icons/Icons';
+import { ExpandIcon, CloseIcon, DownChevronIcon, UpChevronIcon } from '../Icons/Icons';
 import { LoaderWhite } from '../Loader/Loader';
+import './previous-predictions.styles.css';
 
-export const PreviousPredictions = ({ seasonData, userEmail, color, padding }) => {
+export const PreviousPredictions = ({ seasonData, userEmail }) => {
 
     const [noPreviousPrediction, setNoPreviousPrediction] = useState(false);
     const [previousEvents, setPreviousEvents] = useState([]);
@@ -86,64 +87,56 @@ export const PreviousPredictions = ({ seasonData, userEmail, color, padding }) =
     }
 
     return (
-        <div className={`previous-predictions ${padding && 'page-padding'}`}>
-            <PrimaryHeading
-                title="Previous Predictions"
-                accentColour={color}
-                backgroundColour="white"
-                textColour="black"
-            />
-            <div className="previous-predictions-flex">
-                {previousEvents.length > 0 ? (
-                    previousEvents.map((event, index) => (
-                        <div className={`event ${expandedEvents[index] && 'expanded'}`} key={index} onClick={() => handleClick(index, event.competitionId)}>
-                            <div className="competition-bar">
-                                <div className="left">
-                                    <p className="round">R{index + 1}</p>
-                                    <div className="details">
-                                        <img src={getCountryFlag(event.competitionCountry)} className="flag" />
-                                        <p className="competition">{event.competitionName}</p>
-                                    </div>
-                                </div>
-                                {expandedEvents[index] ? <CloseIcon /> : <ExpandIcon />}
+        <div className="previous-predictions">
+            {previousEvents.length > 0 ? (
+                previousEvents.map((event, index) => (
+                    <div className={`event ${expandedEvents[index] && 'expanded'}`} key={index} onClick={() => handleClick(index, event.competitionId)}>
+                        <div className="competition-bar">
+                            <div className="round">
+                                <h2>{index + 1}</h2>
                             </div>
-                            {expandedEvents[index] && previousPrediction.length > 0 ? (
-                                    <div className="prediction-details">
-                                        {previousPrediction.map((prediction, index) => (
-                                            <div className="prediction" key={index}>
-                                                <div className="left">
-                                                    <p className="position">P{index + 1}</p>
-                                                    <div className="driver">
-                                                        <img src={prediction.driverImage} />
-                                                        <p>{prediction.driverFirstName}</p>
-                                                        <p className='name'>{prediction.driverLastName}</p>
-                                                    </div>
+                            <div className="name-and-flag" style={{ backgroundImage: `url(${getCountryFlag(event.competitionCountry)})` }}>
+                                <h2>{event.competitionCountry}</h2>
+                                <div className="opaque-layer"></div>
+                                {expandedEvents[index] ? <UpChevronIcon /> : <DownChevronIcon />}
+                            </div>
+                        </div>
+                        {expandedEvents[index] && previousPrediction.length > 0 ? (
+                                <div className="prediction-details">
+                                    {previousPrediction.map((prediction, index) => (
+                                        <div className="prediction" key={index}>
+                                            <div className="left">
+                                                <p className="position">P{index + 1}</p>
+                                                <div className="driver">
+                                                    <img src={prediction.driverImage} />
+                                                    <p>{prediction.driverFirstName}</p>
+                                                    <p className='name'>{prediction.driverLastName}</p>
                                                 </div>
                                             </div>
-                                        ))}
-                                        <div className="previous-points">
-                                            <h3>{previousPoints ? previousPoints : '...'} points scored</h3>
                                         </div>
+                                    ))}
+                                    <div className="previous-points">
+                                        <h3>{previousPoints ? previousPoints : '...'} points scored</h3>
                                     </div>
-                            ) : expandedEvents[index] && previousPrediction.length === 0 ? (
-                                noPreviousPrediction ? (
-                                    <div className="prediction-details">
-                                        <p style={{ color: 'white', paddingBottom: '0.5rem' }}>Prediction doesn't exist.</p>
-                                    </div>
-                                ) : (
-                                    <div className="prediction-details">
-                                        <LoaderWhite />
-                                    </div>
-                                )
+                                </div>
+                        ) : expandedEvents[index] && previousPrediction.length === 0 ? (
+                            noPreviousPrediction ? (
+                                <div className="prediction-details">
+                                    <p style={{ color: 'white', paddingBottom: '0.5rem' }}>Prediction doesn't exist.</p>
+                                </div>
                             ) : (
-                                null
-                            )}
-                        </div>
-                    ))
-                ) : (
-                    <LoaderWhite />
-                )}
-            </div>
+                                <div className="prediction-details">
+                                    <LoaderWhite />
+                                </div>
+                            )
+                        ) : (
+                            null
+                        )}
+                    </div>
+                ))
+            ) : (
+                <LoaderWhite />
+            )}
         </div>
     )
 }

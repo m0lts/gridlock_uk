@@ -6,6 +6,7 @@ import { CountdownTimer } from '../Predictor/Countdown/CountdownTimer'
 import { UpdateModal } from './UpdateModal/UpdateModal'
 import { NextEventDefault } from '../../components/NextEventBox/NextEventDefault'
 import { AccountStats } from '../../components/AccountStats/AccountStats'
+import { GearIcon, PlusIcon, StatsIcon } from '../../components/Icons/Icons'
 
 
 export const Home = ({ seasonData, driverData }) => {
@@ -72,6 +73,18 @@ export const Home = ({ seasonData, driverData }) => {
             <AccountStats
                 userName={userName}
             />
+            <div className="middle-section">
+                <div className="two-buttons">
+                    <button className="btn black">
+                        <GearIcon />
+                        How to Play
+                    </button>
+                    <button className="btn white">
+                        <StatsIcon />
+                        View your stats
+                    </button>
+                </div>
+            </div>
 
             {/* <NextEvent
                 nextEvent={nextEvent}

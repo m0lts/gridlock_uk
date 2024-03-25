@@ -105,21 +105,26 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
 
     const gridItems = Array.from({ length: 10 }, (_, index) => (
         <div key={index} className="grid-item" onClick={() => handleGridItemClick(index)}>
+            <h3 className='position'>P{index + 1}</h3>
             {selectedDrivers[index] ? (
-                <div className='selected-grid-item'>
-                    <h1 style={{ color: `${getTeamColour(selectedDrivers[index].driverTeam)}` }}>{selectedDrivers[index].driverNumber}</h1>
+                <div className='selected-grid-item' style={{ border: `1px solid ${getTeamColour(selectedDrivers[index].driverTeam)}`, borderLeft: `5px solid ${getTeamColour(selectedDrivers[index].driverTeam)}`  }}>
+                    <h6>{selectedDrivers[index].driverNumber}</h6>
+                    <div className="image">
+                        <img src={selectedDrivers[index].driverImage} alt={selectedDrivers[index].driverLastName} />
+                    </div>
                     <div className="name">
                         <p>{selectedDrivers[index].driverFirstName}</p>
-                        <h4>{selectedDrivers[index].driverLastName}</h4>
+                        <h3>{selectedDrivers[index].driverLastName}</h3>
                     </div>
                 </div>
             ) : (
-                <>
+                <div className='selected-grid-item'>
+                    <h6>--</h6>
                     <div className="name">
                         <p>Select</p>
-                        <h4>P{index + 1}</h4>
+                        <h3>Driver</h3>
                     </div>
-                </>
+                </div>
             )}
         </div>
     ));
@@ -269,13 +274,16 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                         <div
                             key={index}
                             className="driver"
-                            style={{ border: `1px solid ${getTeamColour(driver.driverTeam)}`, boxShadow: `1px 1px 3px ${getTeamColour(driver.driverTeam)}` }}
+                            style={{ border: `1px solid ${getTeamColour(driver.driverTeam)}`, borderLeft: `5px solid ${getTeamColour(driver.driverTeam)}`  }}
                             onClick={() => {handleDriverSelection(driver); setShowError(false)}}
                         >
-                            <h1>{driver.driverNumber}</h1>
+                            <h6>{driver.driverNumber}</h6>
+                            <div className="image">
+                                <img src={driver.driverImage} alt={driver.driverLastName} />
+                            </div>
                             <div className="name">
                                 <p>{driver.driverFirstName}</p>
-                                <h4>{driver.driverLastName}</h4>
+                                <h3>{driver.driverLastName}</h3>
                             </div>
                         </div>
                     ))}
@@ -286,7 +294,7 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                     <div className="modal-msg">
                         <LoaderWhite />
                         <h3>{submittingPredictionMsg}</h3>
-                        <button className='btn btn-black' onClick={() => setShowPredictionModal(false)}>Close</button>
+                        <button className='btn white' onClick={() => setShowPredictionModal(false)}>Close</button>
                     </div>
                 </div>
             )}
@@ -294,7 +302,7 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                 <div className="submit-prediction">
                         {/* <button className="btn btn-white">Use Previous Prediction</button> */}
                         <button 
-                            className="btn btn-purple" 
+                            className="btn white" 
                             style={{ opacity: disableSubmitButton ? '0.5' : '1' }}
                             onClick={handleUserPrediction}
                             disabled={disableSubmitButton}

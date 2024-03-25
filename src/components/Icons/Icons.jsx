@@ -17,7 +17,12 @@ import { faCircleUser,
     faPlus,
     faCross,
     faX,
-    faAngleRight} from '@fortawesome/free-solid-svg-icons'
+    faAngleRight,
+    faChartSimple,
+    faAnglesDown,
+    faGaugeHigh,
+    faTriangleExclamation,
+    faTemperatureFull} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -107,6 +112,36 @@ export const UpChevronIcon = () => {
 export const RightChevronIcon = () => {
     return (
         <FontAwesomeIcon icon={faAngleRight} className='icon' />
+    )
+}
+export const PlusIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faPlus} className='icon' />
+    )
+}
+export const StatsIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faChartSimple} className='icon' />
+    )
+}
+export const DownforceIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faAnglesDown} className='icon' />
+    )
+}
+export const TrackEvoIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faGaugeHigh} className='icon' />
+    )
+}
+export const BrakingIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faTriangleExclamation} className='icon' />
+    )
+}
+export const TyreStressIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faTemperatureFull} className='icon' />
     )
 }
 

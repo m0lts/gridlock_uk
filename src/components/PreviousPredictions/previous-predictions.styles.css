@@ -1,0 +1,122 @@
+/* Previous predictions */
+.previous-predictions {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
+}
+.previous-predictions .event {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    border:1px solid var(--white);
+    border-radius: 0 5px 5px 0;
+    overflow: hidden;
+}
+.previous-predictions .event .competition-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: var(--black);
+    background-color: var(--white);
+    width:100%;
+    height: 50px;
+}
+.previous-predictions .event .round {
+    background-color: var(--black);
+    height:100%;
+    width:10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.previous-predictions .event .name-and-flag {
+    width:100%;
+    height:100%;
+    background-repeat: no-repeat;
+    background-size: 110% 150px;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+.previous-predictions .event .name-and-flag .opaque-layer {
+    background-color: rgba(255, 255, 255, 0.5);
+    width:100%;
+    height:100%;
+    position: absolute;
+}
+.previous-predictions .event .name-and-flag h2, .previous-predictions .event .name-and-flag .icon {
+    color: var(--black);
+    z-index: 2;
+    padding: 0 1em;
+}
+
+/* Expanded previous prediction */
+.previous-predictions-flex .event.expanded .competition-bar {
+    background-color: var(--black);
+    color: var(--white);
+    border-top:1px solid var(--white);
+    border-left:1px solid var(--white);
+    border-right:1px solid var(--white);
+}
+.previous-predictions-flex .event.expanded .round {
+    border-right: 1px solid var(--white);
+}
+.previous-predictions-flex .event .prediction-details {
+    border-bottom:1px solid var(--white);
+    border-left:1px solid var(--white);
+    border-right:1px solid var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1em;
+}
+.previous-predictions-flex .event .prediction-details .prediction {
+    color:var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:1rem;
+    width:90%;
+    border-bottom: 1px solid var(--grey);
+}
+.previous-predictions-flex .event .prediction-details .prediction:last-of-type {
+    border-bottom: none;
+}
+.previous-predictions-flex .event .prediction-details .prediction.header {
+    margin-top:1rem;
+    font-size: 0.8rem;
+}
+.previous-predictions-flex .event .prediction-details .prediction .driver {
+    display: flex;
+    align-items: center;
+    gap:0.5rem;
+}
+.previous-predictions-flex .event .prediction-details .prediction .driver img {
+    width:50px;
+    height:50px;
+}
+.previous-predictions-flex .event .prediction-details .prediction .driver .name {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.previous-predictions-flex .event .prediction-details .prediction .driver {
+    display: flex;
+}
+.previous-predictions-flex .event .prediction-details .prediction .color-block {
+    width: 10px;
+    height: 20px;
+    margin-right: 10px;
+}
+.previous-predictions-flex .event .prediction-details .previous-points {
+    color:var(--white);
+    margin-bottom: 1rem;
+}
+.previous-predictions-flex .event .prediction-details .previous-points h3 {
+    text-transform: uppercase;
+    font-weight: 500;
+}

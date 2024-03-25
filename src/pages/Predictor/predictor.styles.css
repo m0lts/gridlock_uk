@@ -1,38 +1,19 @@
+/* NEW */
 .predictor {
+    background-color: transparent;
+}
+.predictor .middle-section {
     background-color: var(--black);
+    padding: 0 5%;
 }
-.predictor .head .event {
-    padding: 1em 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+.predictor .bottom-section {
+    background: linear-gradient(to top, transparent, var(--black));
+    padding: 1em 5%;
+    padding-bottom: 5em;
 }
-.predictor .head .event .info {
-    width:100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap:1em;
-}
-.predictor .flag {
-    width:50px;
-}
-.predictor .head .event .countdown {
-    width:100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap:1em;
-    margin:0.5rem 0;
-}
-.predictor .head .time {
-    width:100%;
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+
+
+/* OLD */
 
 /* Predictor locked */
 .predictor-locked {
@@ -60,178 +41,3 @@
     color: var(--purple);
 
 }
-
-/* Track stats */
-.predictor .track-stats, .weather-forecast {
-    background-color: var(--white);
-    margin-bottom: 1em;
-}
-.predictor .track-stats h3 {
-    margin-top:1em;
-    text-align: center;
-    font-size: 1rem;
-}
-.predictor .track-stats .statistics {
-    padding:1em 0;
-    display: flex;
-    flex-direction: column;
-    gap:0.5em;
-}
-.predictor .track-stats .stat {
-    width:100%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap:2em;
-}
-.predictor .track-stats .stat p {
-    width:40%;
-}
-.predictor .track-stats .stat .value {
-    width:40%;
-    display: flex;
-    gap:0.5em;
-}
-
-/* Previous predictions */
-.previous-predictions-flex {
-    margin: 2rem 0;
-    width:100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.previous-predictions-flex .event {
-    width:100%;
-    display: flex;
-    flex-direction: column;
-    border:1px solid var(--black);
-}
-.previous-predictions-flex .event .competition-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding:10px;
-    color: var(--black);
-    background-color: var(--white);
-    width:100%;
-}
-.previous-predictions-flex .event .left {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 1rem;
-}
-.previous-predictions-flex .event .round {
-    font-weight: bold;
-    border-right: 1px solid var(--black);
-    padding-right: 10px;
-}
-.previous-predictions-flex .event .details {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap:2px;
-}
-.previous-predictions-flex .event .competition {
-    font-weight: 600;
-    text-transform: uppercase;
-}
-.previous-predictions-flex .event .flag {
-    width: 25px;
-    height: 25px;
-    margin-right: 10px;
-}
-
-/* Expanded previous prediction */
-.previous-predictions-flex .event.expanded .competition-bar {
-    background-color: var(--black);
-    color: var(--white);
-    border-top:1px solid var(--white);
-    border-left:1px solid var(--white);
-    border-right:1px solid var(--white);
-}
-.previous-predictions-flex .event.expanded .round {
-    border-right: 1px solid var(--white);
-}
-.previous-predictions-flex .event .prediction-details {
-    border-bottom:1px solid var(--white);
-    border-left:1px solid var(--white);
-    border-right:1px solid var(--white);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap:1em;
-}
-.previous-predictions-flex .event .prediction-details .prediction {
-    color:var(--white);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap:1rem;
-    width:90%;
-    border-bottom: 1px solid var(--grey);
-}
-.previous-predictions-flex .event .prediction-details .prediction:last-of-type {
-    border-bottom: none;
-}
-.previous-predictions-flex .event .prediction-details .prediction.header {
-    margin-top:1rem;
-    font-size: 0.8rem;
-}
-.previous-predictions-flex .event .prediction-details .prediction .driver {
-    display: flex;
-    align-items: center;
-    gap:0.5rem;
-}
-.previous-predictions-flex .event .prediction-details .prediction .driver img {
-    width:50px;
-    height:50px;
-}
-.previous-predictions-flex .event .prediction-details .prediction .driver .name {
-    text-transform: uppercase;
-    font-weight: 500;
-}
-.previous-predictions-flex .event .prediction-details .prediction .driver {
-    display: flex;
-}
-.previous-predictions-flex .event .prediction-details .prediction .color-block {
-    width: 10px;
-    height: 20px;
-    margin-right: 10px;
-}
-.previous-predictions-flex .event .prediction-details .previous-points {
-    color:var(--white);
-    margin-bottom: 1rem;
-}
-.previous-predictions-flex .event .prediction-details .previous-points h3 {
-    text-transform: uppercase;
-    font-weight: 500;
-}
-
-
-/* .predictor .weather {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width:100%;
-    padding-bottom: 2em;
-    gap:5%;
-}
-.predictor .weather .quali, .race {
-    margin-top:1em;
-    height:125px;
-    border:1px solid var(--black);
-    width:45%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap:1em;
-}
-
-.predictor .weather .icon {
-    font-size: 2.5em;
-} */
