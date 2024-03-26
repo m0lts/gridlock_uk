@@ -9,7 +9,6 @@ import { CircuitInformation } from "../CircuitInformation/CircuitInformation"
 
 export const NextEventCalendar = ({ nextEvent, roundNumber }) => {
 
-    console.log(nextEvent)
 
     return (
         <section className="next-event-box">
