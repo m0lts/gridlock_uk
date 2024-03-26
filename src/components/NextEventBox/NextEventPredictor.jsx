@@ -44,7 +44,7 @@ export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
     return (
         <section className="next-event-box">
             <div className="top">
-                <h2>Round {roundNumber}</h2>
+                <h3>Round {roundNumber}</h3>
                 <h4>{getEventDatesOverview(nextEvent[0].events)}</h4>
             </div>
             <Link to={'/'} className="middle link">

@@ -1,11 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PrimaryHeading, UpperCaseTitle } from '../../components/Typography/Titles/Titles'
 import './calendar.styles.css'
 import { getCountryFlag } from '../../utils/getCountryFlag';
 import { getEventDates } from '../../utils/getEventDates';
 import { LoaderWhite } from '../../components/Loader/Loader';
+import { NextEventCalendar } from '../../components/NextEventBox/NextEventCalendar';
 
 export const Calendar = ({ seasonData }) => {
+
+    const [nextEvent, setNextEvent] = useState([]);
+    const [roundNumber, setRoundNumber] = useState(0);
+
+    useEffect(() => {
+        const findNextEvent = () => {
+            const scheduledEvent = seasonData.find(event => event.status === 'Scheduled');
+
+            if (scheduledEvent) {
+                setRoundNumber(seasonData.indexOf(scheduledEvent) + 1);
+                setNextEvent([scheduledEvent]);
+            } else {
+                setNextEvent([]);
+            }
+        };
+        findNextEvent();
+    }, [seasonData]);
 
     const [expandedItem, setExpandedItem] = useState(null);
 
@@ -63,10 +81,16 @@ export const Calendar = ({ seasonData }) => {
             )}
         </div>
     ));
-
+console.log(seasonData)
     return (
-        <section className="calendar bckgrd-black page-padding">
-            <PrimaryHeading
+        <section className="calendar">
+            {(seasonData.length > 0 && nextEvent.length > 0) && (
+                <NextEventCalendar
+                    nextEvent={nextEvent}
+                    roundNumber={roundNumber}
+                />
+            )}
+            {/* <PrimaryHeading
                 title="Calendar"
                 textColour="black"
                 accentColour="green"
@@ -80,7 +104,7 @@ export const Calendar = ({ seasonData }) => {
                         {gridItems}
                     </>
                 )}
-            </div>
+            </div> */}
         </section>
     )
 }

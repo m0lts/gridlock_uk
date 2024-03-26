@@ -82,3 +82,70 @@
 .next-event-box .bottom .lower .h2 {
     background-color: var(--red);
 }
+
+
+/* Calendar version */
+.next-event-box .middle.centered {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0.5em 0;
+}
+.next-event-box .middle.centered .flag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+}
+.next-event-box .middle.centered .flag img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.next-event-box .competitions {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width:100%;
+    padding: 0 5px;
+    gap:5px;
+}
+.next-event-box .competitions .item {
+    border:1px solid white;
+    border-radius: 0 5px 5px 0;
+    width:100%;
+    display: flex;
+}
+.next-event-box .competitions .item .date {
+    background-color: var(--white);
+    width:15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding:5px 0;
+}
+.next-event-box .competitions .item .date h3 {
+    color:var(--black);
+    line-height: 1em;
+}
+.next-event-box .competitions .item .date h4 {
+    text-transform: uppercase;
+    font-size: 1em;
+    line-height: 1.25em;
+}
+.next-event-box .competitions .item .name-and-time {
+    background-color: var(--black);
+    width:85%;
+    border-radius: 0 5px 5px 0;
+    color: var(--white);
+    padding:10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+.next-event-box .competitions .item .name-and-time h2, .next-event-box .competitions .item .name-and-time p {
+    line-height: 1.25em;
+}
