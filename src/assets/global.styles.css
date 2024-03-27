@@ -264,5 +264,22 @@ h6 {
 
 
 
-
+.circular-flag {
+    width:30px;
+    height:30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.circular-flag.large {
+    width:40px;
+    height:40px;
+}
+.circular-flag img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
   

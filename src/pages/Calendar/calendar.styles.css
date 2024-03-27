@@ -6,54 +6,37 @@
     margin-top: 1em;
     padding:0 5%;
 }
-.calendar .events h3 {
+.calendar .events .subtitle {
     margin: 5px 0;
 }
-.calendar .events .list {
+.calendar .other-events {
     display: flex;
     flex-direction: column;
     gap: 5px;
     width:100%;
 }
-.calendar .events .list .item {
+.calendar .other-events .item {
+    border:1px solid var(--white);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:5px 1em;
+    background-color: var(--black);
+}
+.calendar .other-events .item .left {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    color: var(--black);
-    background-color: var(--white);
+    gap:1em;
+}
+.calendar .other-events .item .icon {
+    color: var(--white);
+}
+.calendar .other-events .item.expanded {
+    padding:0;
+}
+.calendar .other-events .next-event-box {
+    margin:0;
     width:100%;
-    height: 50px;
-    border:1px solid var(--white);
-    border-radius: 0 5px 5px 0;
-    overflow: hidden;
-}
-.calendar .events .list .item .round {
-    background-color: var(--black);
-    height:100%;
-    width:10%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.calendar .events .list .item .name-and-flag {
-    width:100%;
-    height:100%;
-    background-repeat: no-repeat;
-    background-size: 110% 150px;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-}
-.calendar .events .list .item .name-and-flag .opaque-layer {
-    background-color: rgba(255, 255, 255, 0.6);
-    width:100%;
-    height:100%;
-    position: absolute;
-}
-.calendar .events .list .item .name-and-flag h2, .calendar .events .list .item .name-and-flag .icon {
-    color: var(--black);
-    z-index: 2;
-    padding: 0 1em;
 }

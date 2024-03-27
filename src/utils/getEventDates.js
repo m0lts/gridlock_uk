@@ -95,14 +95,12 @@ export const getCompetitionTime = (competition) => {
     } else if (competition.type === 'Sprint Shootout') {
         const startTime = date.toLocaleString('en-GB', {
             hour: '2-digit',
-            minute: '2-digit',
-            timeZone: timeZone,
-            timeZoneName: 'short'
+            minute: '2-digit'
         });
         const finishTime = new Date(date);
         finishTime.setHours(finishTime.getMinutes() + 44);
 
-        return `${startTime} - ${finishTime.toLocaleString('en-GB', {
+        return `${startTime}-${finishTime.toLocaleString('en-GB', {
             hour: '2-digit',
             minute: '2-digit',
             timeZone: timeZone,
@@ -112,13 +110,11 @@ export const getCompetitionTime = (competition) => {
         const startTime = date.toLocaleString('en-GB', {
             hour: '2-digit',
             minute: '2-digit',
-            timeZone: timeZone,
-            timeZoneName: 'short'
         });
         const finishTime = new Date(date);
         finishTime.setHours(finishTime.getHours() + 1);
 
-        return `${startTime} - ${finishTime.toLocaleString('en-GB', {
+        return `${startTime}-${finishTime.toLocaleString('en-GB', {
             hour: '2-digit',
             minute: '2-digit',
             timeZone: timeZone,

@@ -47,9 +47,9 @@ export const NextEventDefault = ({ nextEvent, roundNumber }) => {
                 <h3>Round {roundNumber}</h3>
                 <h4>{getEventDatesOverview(nextEvent[0].events)}</h4>
             </div>
-            <Link to={'/'} className="middle link">
+            <Link to={'/calendar'} className="middle link">
                 <div className="left">
-                    <figure className="flag">
+                    <figure className="circular-flag large">
                         <img src={getCountryFlag(nextEvent[0].competitionCountry)} alt={`${nextEvent[0].competitionCountry} flag`} />
                     </figure>
                     <h1>{nextEvent[0].competitionCountry}</h1>

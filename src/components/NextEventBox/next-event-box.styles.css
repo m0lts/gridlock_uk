@@ -24,7 +24,7 @@
 .next-event-box .middle .left {
     display: flex;
     align-items: center;
-    gap:10%;
+    gap:1em;
 }
 .next-event-box .middle .left .flag {
     display: flex;
@@ -88,19 +88,7 @@
 .next-event-box .middle.centered {
     flex-direction: column;
     justify-content: flex-start;
-    padding: 0.5em 0;
-}
-.next-event-box .middle.centered .flag {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-}
-.next-event-box .middle.centered .flag img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    padding-top:1.5em;
 }
 .next-event-box .competitions {
     display: flex;
@@ -111,41 +99,40 @@
     padding: 0 5px;
     gap:5px;
 }
-.next-event-box .competitions .item {
-    border:1px solid white;
+.next-event-box .competitions .competition {
     border-radius: 0 5px 5px 0;
     width:100%;
     display: flex;
 }
-.next-event-box .competitions .item .date {
-    background-color: var(--white);
-    width:15%;
+.next-event-box .competitions .competition .date {
+    background-color: var(--grey);
+    width:20%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding:5px 0;
+    gap:2px;
 }
-.next-event-box .competitions .item .date h3 {
-    color:var(--black);
-    line-height: 1em;
-}
-.next-event-box .competitions .item .date h4 {
+.next-event-box .competitions .competition .date h4 {
     text-transform: uppercase;
     font-size: 1em;
-    line-height: 1.25em;
+    color: var(--white);
 }
-.next-event-box .competitions .item .name-and-time {
+.next-event-box .competitions .competition .name-and-time {
     background-color: var(--black);
     width:85%;
     border-radius: 0 5px 5px 0;
     color: var(--white);
     padding:10px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    gap:1em;
 }
-.next-event-box .competitions .item .name-and-time h2, .next-event-box .competitions .item .name-and-time p {
-    line-height: 1.25em;
+.next-event-box .competitions .competition .name-and-time p {
+    font-size: 0.8em;
+}
+.next-event-box .competitions .competition .name-and-time .see-results {
+    display: flex;
+    align-items: center;
+    gap:5px;
 }

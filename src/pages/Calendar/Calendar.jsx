@@ -32,6 +32,12 @@ export const Calendar = ({ seasonData }) => {
         findNextEvent();
     }, [seasonData]);
 
+    const [expandedItem, setExpandedItem] = useState(null);
+
+    const handleItemClick = (index) => {
+        setExpandedItem((prevExpandedItem) => (prevExpandedItem === index ? null : index));
+    };
+
     return (
         <section className="calendar">
             {(seasonData.length > 0 && nextEvent.length > 0) && (
@@ -42,35 +48,55 @@ export const Calendar = ({ seasonData }) => {
                     />
                     <div className="events">
                         <div className="previous">
-                            <h3>Previous Rounds</h3>
-                            <div className="list">
+                            <h3 className='subtitle'>Previous Rounds</h3>
+                            <div className="other-events">
                                 {previousEvents.map((event, index) => (
-                                    <div key={index} className="item">
-                                        <div className="round">
-                                            <h2>{index + 1}</h2>
-                                        </div>
-                                        <div className="name-and-flag" style={{ backgroundImage: `url(${getCountryFlag(event.competitionCountry)})` }}>
-                                            <h2>{event.competitionCountry}</h2>
-                                            <div className="opaque-layer"></div>
-                                            <DownChevronIcon />
-                                        </div>
+                                    <div key={index} className={`item ${expandedItem === index ? 'expanded' : ''}`} onClick={() => handleItemClick(index)}>
+                                        {expandedItem === index ? (
+                                            <NextEventCalendar
+                                                nextEvent={[event]}
+                                                roundNumber={index + 1}
+                                                expanded={true}
+                                            />
+                                        ) : (
+                                            <>
+                                                <div className='left'>
+                                                    <h3>R{index + 1}</h3>
+                                                    <figure className="circular-flag">
+                                                        <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} flag`} />
+                                                    </figure>
+                                                    <h3>{event.competitionCountry}</h3>
+                                                </div>
+                                                <DownChevronIcon />
+                                            </>
+                                        )}
                                     </div>
                                 ))}
                             </div>
                         </div>
                         <div className="upcoming">
-                            <h3>Upcoming Rounds</h3>
-                            <div className="list">
+                            <h3 className='subtitle'>Upcoming Rounds</h3>
+                            <div className="other-events">
                                 {upcomingEvents.map((event, index) => (
-                                    <div key={index} className="item">
-                                        <div className="round">
-                                            <h2>{index + 2 + previousEvents.length}</h2>
-                                        </div>
-                                        <div className="name-and-flag" style={{ backgroundImage: `url(${getCountryFlag(event.competitionCountry)})` }}>
-                                            <h2>{event.competitionCountry}</h2>
-                                            <div className="opaque-layer"></div>
-                                            <DownChevronIcon />
-                                        </div>
+                                    <div key={index} className={`item ${expandedItem === index + previousEvents.length ? 'expanded' : ''}`} onClick={() => handleItemClick(index + previousEvents.length)}>
+                                        {expandedItem === index + previousEvents.length ? (
+                                            <NextEventCalendar
+                                                nextEvent={[event]}
+                                                roundNumber={index + 2 + previousEvents.length}
+                                                expanded={true}
+                                            />
+                                        ) : (
+                                            <>
+                                                <div className='left'>
+                                                    <h3>R{index + 2 + previousEvents.length}</h3>
+                                                    <figure className="circular-flag">
+                                                        <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} flag`} />
+                                                    </figure>
+                                                    <h3>{event.competitionCountry}</h3>
+                                                </div>
+                                                <DownChevronIcon />
+                                            </>
+                                        )}
                                     </div>
                                 ))}
                             </div>
