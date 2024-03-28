@@ -11,62 +11,92 @@
     width:100%;
     display: flex;
     flex-direction: column;
-    border:1px solid var(--white);
-    border-radius: 0 5px 5px 0;
-    overflow: hidden;
+}
+.previous-predictions .event.expanded {
+    border: 1px solid var(--white);
+    border-radius: 5px;
+    background-color: var(--black);
 }
 .previous-predictions .event .competition-bar {
+    border:1px solid var(--white);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:5px 1em;
+    background-color: var(--black);
+}
+.previous-predictions .event.expanded .competition-bar {
+    border: none;
+}
+.previous-predictions .event .competition-bar .left {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    color: var(--black);
-    background-color: var(--white);
-    width:100%;
-    height: 50px;
+    gap:1em;
 }
-.previous-predictions .event .round {
-    background-color: var(--black);
-    height:100%;
+.previous-predictions .event .competition-bar .icon {
+    color: var(--white);
+}
+.previous-predictions .event .competition-bar.expanded {
+    padding:0;
+}
+
+/* Expanded previous prediction */
+.previous-predictions .prediction-details {
+    margin:5px auto;
+    width:95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.previous-predictions .driver-row {
+    display: flex;
+    width:100%;
+    justify-content: flex-start;
+    gap:0.75em;
+    align-items: center;
+}
+.previous-predictions .driver-row .position {
     width:10%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.previous-predictions .event .name-and-flag {
+.previous-predictions .driver-details {
+    background-color: var(--black);
+    min-height: 50px;
+    border:1px solid var(--white);
+    border-left:5px solid var(--white);
+    border-radius: 0 5px 5px 0;
     width:100%;
-    height:100%;
-    background-repeat: no-repeat;
-    background-size: 110% 150px;
-    background-position: center;
+    color: var(--white);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap:1em;
+    padding:0 1em;
+}
+.previous-predictions .driver-details .name {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    position: relative;
+    justify-content: flex-start;
+    gap: 0.25em;
 }
-.previous-predictions .event .name-and-flag .opaque-layer {
-    background-color: rgba(255, 255, 255, 0.6);
+.previous-predictions .driver-details .image {
+    width:50px;
+    height:50px;
+}
+.previous-predictions .driver-details .image img {
     width:100%;
     height:100%;
-    position: absolute;
-}
-.previous-predictions .event .name-and-flag h2, .previous-predictions .event .name-and-flag .icon {
-    color: var(--black);
-    z-index: 2;
-    padding: 0 1em;
+    object-fit: cover;
 }
 
-/* Expanded previous prediction */
-.previous-predictions-flex .event.expanded .competition-bar {
-    background-color: var(--black);
-    color: var(--white);
-    border-top:1px solid var(--white);
-    border-left:1px solid var(--white);
-    border-right:1px solid var(--white);
-}
-.previous-predictions-flex .event.expanded .round {
-    border-right: 1px solid var(--white);
-}
-.previous-predictions-flex .event .prediction-details {
+
+
+/* .previous-predictions-flex .event .prediction-details {
     border-bottom:1px solid var(--white);
     border-left:1px solid var(--white);
     border-right:1px solid var(--white);
@@ -119,4 +149,4 @@
 .previous-predictions-flex .event .prediction-details .previous-points h3 {
     text-transform: uppercase;
     font-weight: 500;
-}
+} */
