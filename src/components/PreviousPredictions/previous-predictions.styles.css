@@ -12,6 +12,9 @@
     display: flex;
     flex-direction: column;
 }
+.previous-predictions .event.unavailable {
+    display: none;
+}
 .previous-predictions .event.expanded {
     border: 1px solid var(--white);
     border-radius: 5px;
@@ -34,6 +37,12 @@
     align-items: center;
     justify-content: flex-start;
     gap:1em;
+}
+.previous-predictions .event .competition-bar .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:5px;
 }
 .previous-predictions .event .competition-bar .icon {
     color: var(--white);

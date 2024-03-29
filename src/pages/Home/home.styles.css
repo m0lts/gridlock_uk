@@ -62,3 +62,7 @@
 .home .middle-section {
     background-color: var(--black);
 }
+.home .lower-section {
+    background: linear-gradient(to bottom, var(--black), transparent);
+    padding: 2em 5%;
+}

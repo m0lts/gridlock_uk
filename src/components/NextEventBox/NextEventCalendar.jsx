@@ -6,53 +6,16 @@ import { getCompetitionDate, getCompetitionMonth, getCompetitionTime, getEventDa
 // Styles
 import './next-event-box.styles.css'
 import { CircuitInformation } from "../CircuitInformation/CircuitInformation"
-import { DownChevronIcon, UpChevronIcon } from "../Icons/Icons"
+import { DownChevronIcon, RightChevronIcon, UpChevronIcon } from "../Icons/Icons"
+import { Link } from "react-router-dom"
 
 export const NextEventCalendar = ({ nextEvent, roundNumber, expanded }) => {
-
-    const [expandedItem, setExpandedItem] = useState(null);
-
-    const handleItemClick = (index) => {
-        setExpandedItem((prevExpandedItem) => (prevExpandedItem === index ? null : index));
-    };
-
-    const [resultData, setResultData] = useState(null);
-
-    const fetchEventResult = async (event) => {
-        try {
-            const response = await fetch('/api/externalData/CallApi.js', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(`/rankings/races?race=${event.id}`),
-            });
-          
-            // Receive returned data and set state with data.
-            if (response.ok) {
-                  const responseData = await response.json();
-                  const dataArray = responseData.result.response;
-                setResultData(dataArray);
-            } else {
-                console.log('failure');
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        }
-    }
 
     return (
         <section className="next-event-box">
             <div className="top">
                 <h3>Round {roundNumber}</h3>
-                {expanded ? (
-                    <div className="right" style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
-                        <h4>{getEventDatesOverview(nextEvent[0].events)}</h4>
-                        <UpChevronIcon />   
-                    </div>
-                ) : (
-                    <h4>{getEventDatesOverview(nextEvent[0].events)}</h4>
-                )}
+                <h4>{getEventDatesOverview(nextEvent[0].events)}</h4>
             </div>
             <div className="middle centered">
                 <figure className="circular-flag large">
@@ -66,32 +29,25 @@ export const NextEventCalendar = ({ nextEvent, roundNumber, expanded }) => {
             />
             <div className="competitions">
                 {nextEvent[0].events.slice().reverse().map((event, index) => (
-                    <div key={index} className={`competition ${expandedItem === index ? 'expanded' : ''}`} onClick={(e) => { e.stopPropagation(); fetchEventResult(event); }}>
+                    <div key={index} className='competition'>
                         <div className="date">
                             <h3>{getCompetitionDate(event)}</h3>
                             <h4>{getCompetitionMonth(event)}</h4>
                         </div>
-                        <div className="name-and-time">
-                            {event.status === 'Scheduled' ? (
-                                <>
-                                    <h3>{event.type}</h3>
-                                    <p>{getCompetitionTime(event)}</p>
-                                </>
-                            ) : (
-                                <>
-                                    <h3>{event.type}</h3>
-                                    <div className="see-results">
-                                        <p>Results</p>
-                                        <DownChevronIcon />
-                                        {resultData && resultData.map((result, index) => (
-                                            <div key={index}>
-                                                <p>{result.driver.name}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </>
-                            )}
-                        </div>
+                        {event.status === 'Scheduled' ? (
+                            <div className="name-and-time">
+                                <h3>{event.type}</h3>
+                                <p>{getCompetitionTime(event)}</p>
+                            </div>
+                        ) : (
+                            <Link className='name-and-time link' to={`/session-result/${event.id}`} state={event}>
+                                <h3>{event.type}</h3>
+                                <div className="see-results">
+                                    <p>Results</p>
+                                    <RightChevronIcon />
+                                </div>
+                            </Link>
+                        )}
                     </div>
                 ))}
             </div>

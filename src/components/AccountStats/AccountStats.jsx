@@ -3,7 +3,7 @@ import { LockIcon, RightChevronIcon } from "../Icons/Icons";
 import { PrimaryHeading } from "../Typography/Titles/Titles"
 import './account-stats.styles.css'
 import { useEffect, useState } from 'react'
-import { LoaderBlack } from "../Loader/Loader";
+import { LoaderBlack, LoaderWhite } from "../Loader/Loader";
 
 
 export const AccountStats = ({ userName }) => {
@@ -89,7 +89,7 @@ export const AccountStats = ({ userName }) => {
                 <>
                     <h5>{userName}</h5>
                     {fetchingUserData ? (
-                        <LoaderBlack />
+                        <LoaderWhite />
                     ) : (
                         <>
                         <div className="stat-box">

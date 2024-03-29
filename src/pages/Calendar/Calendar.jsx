@@ -5,7 +5,8 @@ import { getCountryFlag } from '../../utils/getCountryFlag';
 import { getCompetitionDate, getCompetitionMonth, getEventDates, getEventDatesOverview } from '../../utils/getEventDates';
 import { LoaderWhite } from '../../components/Loader/Loader';
 import { NextEventCalendar } from '../../components/NextEventBox/NextEventCalendar';
-import { DownChevronIcon } from '../../components/Icons/Icons';
+import { DownChevronIcon, RightChevronIcon } from '../../components/Icons/Icons';
+import { Link } from 'react-router-dom';
 
 export const Calendar = ({ seasonData }) => {
 
@@ -51,26 +52,16 @@ export const Calendar = ({ seasonData }) => {
                             <h3 className='subtitle'>Previous Rounds</h3>
                             <div className="other-events">
                                 {previousEvents.map((event, index) => (
-                                    <div key={index} className={`item ${expandedItem === index ? 'expanded' : ''}`} onClick={() => handleItemClick(index)}>
-                                        {expandedItem === index ? (
-                                            <NextEventCalendar
-                                                nextEvent={[event]}
-                                                roundNumber={index + 1}
-                                                expanded={true}
-                                            />
-                                        ) : (
-                                            <>
-                                                <div className='left'>
-                                                    <h3>R{index + 1}</h3>
-                                                    <figure className="circular-flag">
-                                                        <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} flag`} />
-                                                    </figure>
-                                                    <h3>{event.competitionCountry}</h3>
-                                                </div>
-                                                <DownChevronIcon />
-                                            </>
-                                        )}
-                                    </div>
+                                    <Link key={index} className='item link' to={`/event/${event.competitionId}`} state={{event: event, round: index + 1}}>
+                                        <div className='left'>
+                                            <h3>R{index + 1}</h3>
+                                            <figure className="circular-flag">
+                                                <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} flag`} />
+                                            </figure>
+                                            <h3>{event.competitionCountry}</h3>
+                                        </div>
+                                        <RightChevronIcon />
+                                    </Link>
                                 ))}
                             </div>
                         </div>
@@ -78,26 +69,16 @@ export const Calendar = ({ seasonData }) => {
                             <h3 className='subtitle'>Upcoming Rounds</h3>
                             <div className="other-events">
                                 {upcomingEvents.map((event, index) => (
-                                    <div key={index} className={`item ${expandedItem === index + previousEvents.length ? 'expanded' : ''}`} onClick={() => handleItemClick(index + previousEvents.length)}>
-                                        {expandedItem === index + previousEvents.length ? (
-                                            <NextEventCalendar
-                                                nextEvent={[event]}
-                                                roundNumber={index + 2 + previousEvents.length}
-                                                expanded={true}
-                                            />
-                                        ) : (
-                                            <>
-                                                <div className='left'>
-                                                    <h3>R{index + 2 + previousEvents.length}</h3>
-                                                    <figure className="circular-flag">
-                                                        <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} flag`} />
-                                                    </figure>
-                                                    <h3>{event.competitionCountry}</h3>
-                                                </div>
-                                                <DownChevronIcon />
-                                            </>
-                                        )}
-                                    </div>
+                                    <Link key={index} className='item link' to={`/event/${event.competitionId}`} state={{event: event, round: index + 2 + previousEvents.length}}>
+                                        <div className='left'>
+                                            <h3>R{index + 2 + previousEvents.length}</h3>
+                                            <figure className="circular-flag">
+                                                <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} flag`} />
+                                            </figure>
+                                            <h3>{event.competitionCountry}</h3>
+                                        </div>
+                                        <RightChevronIcon />
+                                    </Link>
                                 ))}
                             </div>
                         </div>

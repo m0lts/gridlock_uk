@@ -1,0 +1,19 @@
+.session-result {
+    width:100%;
+    padding:0;
+}
+.session-result .heading {
+    padding: 0 5%;
+    width:100%;
+    padding-bottom: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, transparent, var(--black));
+}
+.session-result .results {
+    min-height: 100vh;
+    padding: 1em 5%;
+    padding-bottom: 5em;
+    background-color: var(--black);
+}

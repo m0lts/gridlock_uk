@@ -17,6 +17,8 @@ import { ErrorPage } from './pages/Error/ErrorPage'
 import { VerifyAccount } from './pages/VerifyAccount/VerifyAccount'
 import { MaintenancePage } from './pages/Maintenance/Maintenance'
 import { UserProfile } from './pages/UserProfile/UserProfile'
+import { EventPage } from './pages/Event/EventPage'
+import { SessionResult } from './pages/SessionResult/SessionResult'
 
 export default function App() {
 
@@ -75,6 +77,8 @@ export default function App() {
         <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/verifyaccount' element={<VerifyAccount />} />
         <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} />} /> 
+        <Route path='/event/:event' element={<EventPage />} />
+        <Route path='/session-result/:sessionId' element={<SessionResult />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />

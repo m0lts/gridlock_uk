@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { NextEvent } from './NextEvent/NextEvent'
-import { GridlockStats } from './GridlockStats/GridlockStats'
+import { GridlockStats } from '../../components/GridlockStats/GridlockStats'
 import './home.styles.css'
 import { CountdownTimer } from '../Predictor/Countdown/CountdownTimer'
 import { UpdateModal } from './UpdateModal/UpdateModal'
@@ -84,6 +84,13 @@ export const Home = ({ seasonData, driverData }) => {
                         View your stats
                     </button>
                 </div>
+            </div>
+            <div className="lower-section">
+                <GridlockStats
+                    nextEvent={nextEvent}
+                    driverData={driverData}
+                    seasonData={seasonData}
+                />
             </div>
 
             {/* <NextEvent

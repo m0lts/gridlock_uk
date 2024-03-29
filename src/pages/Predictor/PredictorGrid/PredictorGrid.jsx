@@ -8,7 +8,14 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     const [drivers, setDrivers] = useState([])
 
     useEffect(() => {
-        setDrivers(driverData);
+        const filterDriverData = (driverData) => {
+            const oliBearmanId = 101;
+            const filteredDrivers = driverData.filter(driver => driver.driverId !== oliBearmanId)
+            setDrivers(filteredDrivers);
+        }
+         if (driverData.length > 0) {
+            filterDriverData(driverData);
+        }
     }, [driverData]);
 
     const getTeamColour = (team) => {

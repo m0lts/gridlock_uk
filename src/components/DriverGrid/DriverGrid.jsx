@@ -1,66 +1,23 @@
+import { filterDriverResponse } from '../../utils/FilterApiResponses';
+import { getTeamColour } from '../../utils/getTeamColour'
 import './driver-grid.styles.css'
 
-export const DriverGrid = ({ drivers }) => {
-
-    const getTeamColour = (team) => {
-        switch (team) {
-            case 'Red Bull Racing':
-                return '#3671C6';
-                break;
-            case 'Mercedes-AMG Petronas':
-                return '#29F4D2';
-                break;
-            case 'McLaren Racing':
-                return '#FF8001';
-                break;
-            case 'Scuderia Ferrari':
-                return '#E8022D';
-                break;
-            case 'Scuderia Ferrari ':
-                return '#E8022D';
-                break;
-            case 'Scuderia Ferrari\n':
-                return '#E8022D';
-                break;
-            case 'Visa Cash App RB Formula One Team':
-                return '#6592FF';
-                break;
-            case 'Scuderia AlphaTauri Honda':
-                return '#6592FF';
-                break;
-            case 'Aston Martin F1 Team':
-                return '#239971';
-                break;
-            case 'Alpine F1 Team':
-                return '#FF87BC';
-                break;
-            case 'Williams F1 Team':
-                return '#63C4FF';
-                break;
-            case 'Stake F1 Team Kick Sauber':
-                return '#52E252';
-                break;
-            case 'Alfa Romeo':
-                return '#52E252';
-                break;
-            case 'Haas F1 Team':
-                return '#B6BABD';
-                break;
-            default:
-                return '#FFFFFF';
-                break;
-        }
-    }
-
+export const DriverListLarge = ({ drivers }) => {
     return (
-        <section className="driver-grid">
+        <section className="driver-grid large">
             {drivers.map((driver, index) => {
                 return (
-                    <div className="driver" key={index} >
-                        <h1 style={{ color: `${getTeamColour(driver.driverTeam)}`}}>{driver.driverNumber}</h1>
-                        <div className="name">
-                            <p>{driver.driverFirstName}</p>
-                            <h4>{driver.driverLastName}</h4>
+                    <div key={index} className="driver">
+                        <h3 className='driver-position'>P{index + 1}</h3>
+                        <div className='driver-details' style={{ border: `1px solid ${getTeamColour(driver.driverTeam)}`, borderLeft: `5px solid ${getTeamColour(driver.driverTeam)}` }}>
+                            <h6>{driver.driverNumber}</h6>
+                            <div className="driver-image">
+                                <img src={driver.driverImage} />
+                            </div>
+                            <div className="driver-name">
+                                <p>{driver.driverFirstName}</p>
+                                <h3>{driver.driverLastName}</h3>
+                            </div>
                         </div>
                     </div>
                 )
@@ -68,4 +25,70 @@ export const DriverGrid = ({ drivers }) => {
         </section>
     )
 
+}
+
+export const DriverListSmall = ({ prediction, result }) => {
+
+    const resultData = filterDriverResponse(result);
+
+    const pointsArray = prediction.map((predictedDriver, index) => {
+        const actualDriver = resultData.find(driver => driver.driverAbbr === predictedDriver.driverAbbr);
+        if (actualDriver) {
+            if (index === resultData.indexOf(actualDriver)) {
+                return 3;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0;
+        }
+    });
+
+    return (
+        <section className="driver-grid small">
+            <div className="prediction-column">
+                <h3 className='column-title'>Prediction</h3>
+                {prediction.map((driver, index) => {
+                    return (
+                        <div key={index} className="driver">
+                            <h3 className='driver-position'>P{index + 1}</h3>
+                            <div className='driver-details' style={{ border: `1px solid ${getTeamColour(driver.driverTeam)}`, borderLeft: `5px solid ${getTeamColour(driver.driverTeam)}` }}>
+                                <div className="driver-image">
+                                    <img src={driver.driverImage} />
+                                </div>
+                                <div className="driver-name">
+                                    <h3>{driver.driverAbbr}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+            <div className="result-column">
+                <h3 className='column-title'>Result</h3>
+                {resultData.map((driver, index) => {
+                    return (
+                        <div key={index} className="driver">
+                            <div className='driver-details' style={{ border: `1px solid ${getTeamColour(driver.driverTeam)}`, borderLeft: `5px solid ${getTeamColour(driver.driverTeam)}` }}>
+                                <div className="driver-image">
+                                    <img src={driver.driverImage} />
+                                </div>
+                                <div className="driver-name">
+                                    <h3>{driver.driverAbbr}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+            <div className="points-column">
+                <h3 className='column-title'>Points</h3>
+                {pointsArray.map((points, index) => (
+                    <div key={index} className="points">
+                        <h3 className='position'>+{points}</h3>
+                    </div>
+                ))}
+            </div>
+        </section>
+    )
 }

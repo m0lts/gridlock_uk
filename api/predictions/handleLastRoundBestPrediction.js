@@ -17,15 +17,16 @@ export default async function handler(request, response) {
         const dbCollection = db.collection("standings");
         const predictionsCollection = db.collection("predictions");
 
-        try {
+        if (request.method === "POST") {
+            const predictionCompetitionId = request.body;
 
             const userStandings = await dbCollection.find().toArray();
-
+            
             let highestPoints = { userEmail: null, competitionId: null, totalPoints: 0 };
-
+            
             for (const user of userStandings) {
                 for (const points of user.points) {
-                    if (points.points > highestPoints.totalPoints) {
+                    if (points.competitionId === predictionCompetitionId && points.points > highestPoints.totalPoints) {
                         highestPoints = {
                             userEmail: user.userEmail,
                             userName: user.userName,
@@ -50,7 +51,7 @@ export default async function handler(request, response) {
             });
 
 
-        } catch (error) {
+        } else {
             console.error('Error fetching or processing data:', error);
             response.status(500).json(error);
         }

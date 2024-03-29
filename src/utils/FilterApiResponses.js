@@ -46,7 +46,7 @@ export const filterDriverResponse = (response) => {
         const driverAbbrToUse = driver.driver.abbr === null ? driverAbbr : driver.driver.abbr;
 
         
-        if (!(driver.driver.id === oliBearmanId)) {
+        // if (!(driver.driver.id === oliBearmanId)) {
             filteredDrivers.push({
                 driverId: driver.driver.id,
                 driverFirstName: firstName,
@@ -57,7 +57,7 @@ export const filterDriverResponse = (response) => {
                 driverNumber: driver.driver.number,
                 driverImage: driver.driver.image,
             });
-        }
+        // }
     });
     
     return filteredDrivers;
