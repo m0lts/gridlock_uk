@@ -1,123 +1,99 @@
 import { useEffect, useState } from 'react'
 import { PrimaryHeading } from '../../components/Typography/Titles/Titles'
-import { DownChevronIcon, LockIcon, UpChevronIcon } from '../../components/Icons/Icons'
+import { DownChevronIcon, GearIcon, LockIcon, PlusIcon, RightChevronIcon, UpChevronIcon } from '../../components/Icons/Icons'
 import { Link } from 'react-router-dom'
 import './standings.styles.css'
-import { LoaderBlack } from '../../components/Loader/Loader'
+import { LoaderBlack, LoaderWhite } from '../../components/Loader/Loader'
+import { AccountStats } from '../../components/AccountStats/AccountStats'
 
 export const Standings = () => {
-
+    
     const userLoggedIn = localStorage.getItem('user');
     const user = JSON.parse(userLoggedIn);
     const userVerified = user ? user.verified : false;
+    const userName = user.username;
 
-    const [standings, setStandings] = useState([]);
-    const [leagues, setLeagues] = useState([]);
-    const [leagueStandings, setLeagueStandings] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [leaguesLoading, setLeaguesLoading] = useState(true);
+    // Save standings and league data to session storage
+    const standingsData = sessionStorage.getItem('standingsData');
+    const leaguesData = sessionStorage.getItem('leaguesData');
+
+    const [standings, setStandings] = useState(standingsData ? JSON.parse(standingsData) : []);
+    const [leagues, setLeagues] = useState(leaguesData ? JSON.parse(leaguesData) : []);
+    const [standingsUpdateTime, setStandingsUpdateTime] = useState(sessionStorage.getItem('standingsUpdateTime') ? new Date(sessionStorage.getItem('standingsUpdateTime')).toLocaleString() : '');
+    const [leaguesUpdateTime, setLeaguesUpdateTime] = useState(sessionStorage.getItem('leaguesUpdateTime') ? new Date(sessionStorage.getItem('leaguesUpdateTime')).toLocaleString() : '');
 
     useEffect(() => {
-        const fetchStandings = async () => {
+        const fetchStandingsAndLeagues = async () => {
             try {
-                const response = await fetch('/api/points/handlePointsCollection', {
+                const standingsResponse = await fetch('/api/points/handlePointsCollection', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     }
                 });
-                if (response.status === 200) {
-                    setLoading(false);
-                    const responseData = await response.json();
-                    const sortedStandings = [...responseData.usersWithTotalPoints].sort((a, b) => b.totalPoints - a.totalPoints);
+
+                if (standingsResponse.status === 200) {
+                    const standingsData = await standingsResponse.json();
+                    const sortedStandings = [...standingsData.usersWithTotalPoints].sort((a, b) => {
+                        if (b.totalPoints !== a.totalPoints) {
+                            return b.totalPoints - a.totalPoints;
+                        }
+                        return a.username.localeCompare(b.username);
+                    });
                     setStandings(sortedStandings);
-                }
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                setLoading(false);
-            }
-        }   
+                    sessionStorage.setItem('standingsData', JSON.stringify(sortedStandings));
+                    setStandingsUpdateTime(new Date().toLocaleString());
+                    sessionStorage.setItem('standingsUpdateTime', new Date().toLocaleString());
 
-        const fetchLeagues = async () => {
-            try {
-                const response = await fetch('/api/leagues/handleFindLeagues', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ user: user.username }),
-                });
-                if (response.status === 200) {
-                    const responseData = await response.json();
-                    setLeagues(responseData.leagues);
-                }
-            } catch (error) {
-                console.error('Error submitting form:', error);
-            }
-        }
-
-        fetchStandings();
-
-        if (userLoggedIn) {
-            fetchLeagues();
-        }
-
-    }, [])
-
-
-    useEffect(() => {
-        const fetchLeagueStandings = (leagues) => {
-            const leagueStandingsMap = {};
-
-            for (const league of leagues) {
-                const leagueName = league.leagueName;
-                const leagueMembers = league.leagueMembers;
-                const leagueStandings = [];
-
-                for (const member of leagueMembers) {
-                    const userPoints = standings.find(user => user.username === member);
-                    if (userPoints) {
-                        leagueStandings.push(userPoints);
-                    } else {
-                        leagueStandings.push({
-                            username: member,
-                            totalPoints: 0,
+                    try {
+                        const leaguesResponse = await fetch('/api/leagues/handleFindLeagues', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ user: userName }),
                         });
+                        if (leaguesResponse.status === 200) {
+                            const leaguesData = await leaguesResponse.json();
+                            const updatedLeagues = leaguesData.leagues.map(league => {
+                                const updatedLeagueMembers = league.leagueMembers.map(member => {
+                                    const memberStandings = sortedStandings.find(user => user.username === member);
+                                    return memberStandings ? { username: member, totalPoints: memberStandings.totalPoints } : member;
+                                });
+                                const sortedLeagueMembers = updatedLeagueMembers.sort((a, b) => {
+                                    if (b.totalPoints !== a.totalPoints) {
+                                        return b.totalPoints - a.totalPoints;
+                                    }
+                                    return a.username.localeCompare(b.username);
+                                });
+                                return { ...league, leagueMembers: sortedLeagueMembers };
+                            });
+                            setLeagues(updatedLeagues);
+                            sessionStorage.setItem('leaguesData', JSON.stringify(updatedLeagues));
+                            setLeaguesUpdateTime(new Date().toLocaleString());
+                            sessionStorage.setItem('leaguesUpdateTime', new Date().toLocaleString());
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
                     }
                 }
-                leagueStandingsMap[leagueName] = leagueStandings;
 
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
-           
-            setLeagueStandings(leagueStandingsMap);
-            setLeaguesLoading(false);
+        };
+
+        if (userName) {
+            fetchStandingsAndLeagues();
         }
 
-        if (leagues.length > 0 && standings.length > 0) {
-            fetchLeagueStandings(leagues);
-        }
-    }, [leagues, standings])
+    }, [userName]);
 
-    const sortStandings = (standings) => {
-        const sortedStandings = [...standings].sort((a, b) => b.totalPoints - a.totalPoints);
-        const standingsTable = sortedStandings.map((user, index) => {
-            if (user) {
-                return (
-                    <tr key={index}>
-                        <td className='col1'>{index + 1}</td>
-                        <td className="col2">
-                            <Link to={{ pathname: `/user/${user.username}`, state: { user } }} className='link'>
-                                {user.username}
-                            </Link>
-                        </td>
-                        <td className='col3'>{user.totalPoints}</td>
-                    </tr>
-                );
-            } else {
-                return null;
-            }
-        });
-        return standingsTable;
+    
+    const configUserPosition = (array) => {
+        const userIndex = array.findIndex(entry => entry.username === userName);
+        return userIndex !== -1 ? userIndex + 1 : 0
     }
 
 
@@ -264,10 +240,61 @@ export const Standings = () => {
         setSelectedLeague(selectedLeague === index ? null : index);
     };
 
-
     return (
         <section className='standings bckgrd-black'>
-            <div className="global-table page-padding bckgrd-white">
+            <AccountStats 
+                userName={userName}
+            />
+            <div className="two-buttons">
+                <button className="btn black">
+                    <PlusIcon />
+                    Join a league
+                </button>
+                <button className="btn white">
+                    <GearIcon />
+                    Create a league
+                </button>
+            </div>
+            <div className="leagues-section">
+                <h2>Standings</h2>
+                <div className="subtitle">
+                    <h3>Public Leagues</h3>
+                    <p className='last-updated-msg'>Last updated: {standingsUpdateTime}</p>
+                </div>
+                <div className="leagues">
+                    <Link className="league link" to={'/standings/global'} state={{ name: 'Global', standings: standings, admin: null, updateTime: standingsUpdateTime }}>
+                        <div className='left'>
+                            <h3 className='position-box'>{standings.length > 0 ? configUserPosition(standings) : '-'}</h3>
+                            <p>Global</p>
+                        </div>
+                        <RightChevronIcon />
+                    </Link>
+                </div>
+                <div className="subtitle">
+                    <h3>Private Leagues</h3>
+                    <p className='last-updated-msg'>Last updated: {leaguesUpdateTime}</p>
+                </div>
+                <div className="leagues">
+                    {leagues.length > 0 ? (
+                        leagues.map((league, index) => (
+                            <Link key={index} className="league link" to={`/standings/${league.leagueName}`} state={{ name: league.leagueName, standings: league.leagueMembers, admin: league.leagueAdmin, updateTime: leaguesUpdateTime }}>
+                                <div className='left'>
+                                    <h3 className='position-box'>{configUserPosition(league.leagueMembers)}</h3>
+                                    <p>{league.leagueName}</p>
+                                </div>
+                                <RightChevronIcon />
+                            </Link>
+                        ))
+                    ) : (
+                        <LoaderWhite />
+                    )}
+                </div>
+            </div>
+            <div className="bottom-filler">
+
+            </div>
+
+            {/* <div className="global-table page-padding bckgrd-white">
                 <PrimaryHeading
                     title="Global Standings"
                     accentColour="yellow"
@@ -453,7 +480,7 @@ export const Standings = () => {
                         </form>
                     )}
                 </div>
-            </div>
+            </div> */}
         </section>
     )
 }

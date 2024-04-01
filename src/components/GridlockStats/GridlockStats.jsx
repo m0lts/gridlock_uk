@@ -1,4 +1,4 @@
-import { DriverGrid, DriverListSmall } from "../DriverGrid/DriverGrid"
+import { DriverListSmall } from "../DriverGrid/DriverGrid"
 import { PrimaryHeading } from "../Typography/Titles/Titles"
 import { LoaderWhite } from "../Loader/Loader"
 import './gridlock-stats.styles.css'

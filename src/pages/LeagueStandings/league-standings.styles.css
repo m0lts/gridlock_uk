@@ -1,0 +1,79 @@
+.league-standings {
+    width:100%;
+    padding:0 5%;
+}
+.league-standings .subtitle {
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.league-standings .last-updated-msg {
+    color: var(--white);
+    font-size: 0.75em;
+}
+.league-standings .standings-table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:5px;
+    margin-bottom: 5em;
+    background-color: var(--black);
+    color:var(--white);
+}
+.league-standings .standings-table .table-row {
+    display: flex;
+    align-items: center;
+    width:100%;
+}
+.league-standings .standings-table .head {
+    font-size: 16px;
+    text-transform: uppercase;
+    background-color: var(--white);
+    color: var(--black);
+}
+.league-standings .standings-table .head .table-position, .standings-table .head .table-username, .standings-table .head .table-points {
+    padding:5px;
+    font-weight: 500;
+}
+.league-standings .standings-table .table-position {
+    width:15%;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.league-standings .standings-table .body .table-position {
+    background-color: var(--black);
+}
+.league-standings .standings-table .table-username {
+    width:65%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.league-standings .standings-table .table-points {
+    width:20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.league-standings .standings-table .body .table-points, .standings-table .body .table-position, .standings-table .body .table-username {
+    padding:10px 5px;
+    cursor: pointer;
+}
+.league-standings .standings-table .body .table-points .icon {
+    color: var(--grey);
+}
+.league-standings .standings-table .body .table-row {
+    border-bottom: 1px dashed var(--grey);
+    border-top: 0;
+}
+.league-standings .standings-table .body .table-row:last-child {
+    border-bottom: 0;
+}

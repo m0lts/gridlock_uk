@@ -253,6 +253,14 @@ h6 {
     font-size: 1em;
 }
 
+.back-button {
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding:5px 0;
+}
+
 
 
 

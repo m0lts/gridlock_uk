@@ -22,7 +22,8 @@ import { faCircleUser,
     faAnglesDown,
     faGaugeHigh,
     faTriangleExclamation,
-    faTemperatureFull} from '@fortawesome/free-solid-svg-icons'
+    faTemperatureFull,
+    faAngleLeft} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -112,6 +113,11 @@ export const UpChevronIcon = () => {
 export const RightChevronIcon = () => {
     return (
         <FontAwesomeIcon icon={faAngleRight} className='icon' />
+    )
+}
+export const LeftChevronIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faAngleLeft} className='icon' />
     )
 }
 export const PlusIcon = () => {

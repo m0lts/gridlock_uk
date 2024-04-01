@@ -19,6 +19,7 @@ import { MaintenancePage } from './pages/Maintenance/Maintenance'
 import { UserProfile } from './pages/UserProfile/UserProfile'
 import { EventPage } from './pages/Event/EventPage'
 import { SessionResult } from './pages/SessionResult/SessionResult'
+import { LeagueStandings } from './pages/LeagueStandings/LeagueStandings'
 
 export default function App() {
 
@@ -70,6 +71,7 @@ export default function App() {
         <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} />} />
         <Route path="/calendar" element={<Calendar seasonData={returnedEventData} />} />
         <Route path="/standings" element={<Standings />} />
+        <Route path="/standings/:leagueName" element={<LeagueStandings />} />
         <Route path="/account" element={<Account seasonData={returnedEventData} driverData={returnedDriverData} />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp seasonData={returnedEventData} />} />

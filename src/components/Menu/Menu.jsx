@@ -18,19 +18,19 @@ export const Menu = () => {
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to="/predictor" className="menu-link link" style={{ color: location.pathname === '/predictor' ? 'var(--purple)' : 'var(--white)'}}>
+                    <NavLink to="/predictor" className="menu-link link" style={{ color: location.pathname === '/predictor' ? 'var(--red)' : 'var(--white)'}}>
                         <PredictorIcon />
                         <p className="text">Predictor</p>
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to="/calendar" className="menu-link link" style={{ color: location.pathname === '/calendar' ? 'var(--green)' : 'var(--white)'}}>
+                    <NavLink to="/calendar" className="menu-link link" style={{ color: (location.pathname.includes('/calendar') || location.pathname.includes('event') || location.pathname.includes('session-result')) ? 'var(--red)' : 'var(--white)'}}>
                         <CalendarIcon />
                         <p className="text">Calendar</p>
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to="/standings" className="menu-link link" style={{ color: (location.pathname === '/standings' || location.pathname.startsWith('/user/')) ? 'var(--yellow)' : 'var(--white)'}}>
+                    <NavLink to="/standings" className="menu-link link" style={{ color: (location.pathname.includes('/standings') || location.pathname.startsWith('/user/')) ? 'var(--red)' : 'var(--white)'}}>
                         <StandingsIcon />
                         <p className="text">Standings</p>
                     </NavLink>
@@ -43,7 +43,7 @@ export const Menu = () => {
                             location.pathname === '/signup' || 
                             location.pathname === '/forgotpassword' || 
                             location.pathname === '/resetpassword'
-                            ) ? 'var(--blue)' : 'var(--white)'
+                            ) ? 'var(--red)' : 'var(--white)'
                     }}>
                         <AccountIcon />
                         <p className="text">{userLoggedIn ? 'Account' : 'Login'}</p>

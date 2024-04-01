@@ -1,7 +1,4 @@
-.standings {
-    min-height: 100vh;
-    padding-bottom: 3em;
-}
+
 .standings .table {
     margin-top: 1em;
     width:100%;
@@ -192,3 +189,59 @@
 } */
 
 
+.standings .account-stats {
+    margin: 0;
+}
+.standings .two-buttons {
+    background-color: var(--black);
+}
+.standings .leagues-section {
+    background-color: var(--black);
+    padding: 1em 5%;
+}
+.standings .leagues-section .subtitle {
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.standings .leagues-section .last-updated-msg {
+    color: var(--white);
+    font-size: 0.75em;
+}
+.standings .leagues-section .subtitle {
+    margin:5px 0;
+}
+.standings .leagues-section .leagues {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+}
+.standings .leagues-section .leagues .league {
+    border:1px solid var(--white);
+    background-color: var(--white);
+    border-radius: 0 5px 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1em;
+}
+.standings .leagues-section .leagues .league .left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:1em;
+}
+.standings .leagues-section .leagues .league .position-box {
+    background-color: var(--black);
+    min-width:50px;
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.standings .bottom-filler {
+    height: 75px;
+    background: linear-gradient(to top, transparent, var(--black));
+}

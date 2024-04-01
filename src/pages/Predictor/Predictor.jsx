@@ -2,7 +2,6 @@ import { PrimaryHeading, UpperCaseTitle } from '../../components/Typography/Titl
 import MonacoFlag from '../../assets/flags/monaco_flag.svg'
 import { useState, useEffect } from 'react';
 import './predictor.styles.css'
-import { DriverGrid } from '../../components/DriverGrid/DriverGrid';
 import { Parallelograms } from '../../components/Typography/Shapes/Shapes';
 import { RainIcon, SunIcon, LockIcon, ExpandIcon, CloseIcon } from '../../components/Icons/Icons';
 import { PredictorGrid } from './PredictorGrid/PredictorGrid';

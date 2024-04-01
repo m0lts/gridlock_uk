@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom"
+import { Link, useLocation, useParams } from "react-router-dom"
 import { LoaderWhite } from "../../components/Loader/Loader";
 import { filterDriverResponse } from "../../utils/FilterApiResponses";
 import { DriverListLarge } from "../../components/DriverGrid/DriverGrid";
 import './session-result.styles.css';
 import { getCountryFlag } from "../../utils/getCountryFlag";
+import { LeftChevronIcon } from "../../components/Icons/Icons";
 
 
 export const SessionResult = ({ sessionData }) => {
@@ -42,8 +43,16 @@ export const SessionResult = ({ sessionData }) => {
         fetchData();
     }, [sessionId]);
 
+    const handleGoBack = () => {
+        window.history.back();
+    }
+
     return (
         <section className="session-result">
+            <div className="back-button" onClick={handleGoBack}>
+                <LeftChevronIcon />
+                Back
+            </div>
             <div className="heading">
                 <div className="left">
                     <h3>{inheritedState.competition.name}</h3>
