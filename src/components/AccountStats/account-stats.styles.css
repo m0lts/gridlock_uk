@@ -21,23 +21,3 @@
     background-color: var(--transparent-grey);
     width: 100%;
 }
-
-/* User not logged in */
-.account-stats .locked {
-    background-color: var(--transparent-grey);
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding:1em;
-    gap:1em;
-}
-.account-stats .locked .icon {
-    color: var(--red);
-}
-.account-stats .locked:hover {
-    background-color: var(--black);
-    color: var(--white);
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-}

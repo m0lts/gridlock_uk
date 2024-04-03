@@ -269,6 +269,39 @@ h6 {
     color: var(--primary-black);
 }
 
+.whole-page-loader {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* User not logged in */
+.feature-locked {
+    background-color: var(--transparent-grey);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:1em;
+    gap:1em;
+}
+.feature-locked .icon {
+    color: var(--red);
+}
+.feature-locked:hover {
+    background-color: var(--black);
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
 
 
 

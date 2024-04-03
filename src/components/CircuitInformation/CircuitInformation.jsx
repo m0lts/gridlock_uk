@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react"
-import { getCircuitInfo } from "../../utils/getCircuitInfo"
+// Dependencies
+import { useState } from "react"
+// Components
 import { BrakingIcon, DownforceIcon, TrackEvoIcon, TyreStressIcon } from "../Icons/Icons";
-import './circuit-information.styles.css'
 import { Parallelograms } from "../Typography/Shapes/Shapes";
+// Utils
+import { getCircuitInfo } from "../../utils/getCircuitInfo"
+// Styles
+import './circuit-information.styles.css'
+
 
 export const CircuitInformation = ({ circuitName, circuitImage }) => {
 

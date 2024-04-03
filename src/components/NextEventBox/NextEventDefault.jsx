@@ -2,10 +2,11 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 // Components
-import { CountdownTimer } from "../../pages/Predictor/Countdown/CountdownTimer"
+import { CountdownTimer } from "../Countdown/CountdownTimer"
+import { RightChevronIcon } from "../Icons/Icons"
+// Utils
 import { getCountryFlag } from "../../utils/getCountryFlag"
 import { getEventDatesOverview } from "../../utils/getEventDates"
-import { RightChevronIcon } from "../Icons/Icons"
 // Styles
 import './next-event-box.styles.css'
 

@@ -1,25 +1,25 @@
+// Dependencies
 import { useState, useEffect } from 'react'
-import { NextEvent } from './NextEvent/NextEvent'
+// Components
 import { GridlockStats } from '../../components/GridlockStats/GridlockStats'
-import './home.styles.css'
-import { CountdownTimer } from '../Predictor/Countdown/CountdownTimer'
 import { UpdateModal } from './UpdateModal/UpdateModal'
 import { NextEventDefault } from '../../components/NextEventBox/NextEventDefault'
 import { AccountStats } from '../../components/AccountStats/AccountStats'
-import { GearIcon, PlusIcon, StatsIcon } from '../../components/Icons/Icons'
+import { GearIcon, StatsIcon } from '../../components/Icons/Icons'
+import { LoaderWhite } from '../../components/Loader/Loader'
+// Styles
+import './home.styles.css'
 
 
 export const Home = ({ seasonData, driverData }) => {
 
     const [nextEvent, setNextEvent] = useState([]);
-    const [qualifyingTime, setQualifyingTime] = useState('');
-    const [showNotification, setShowNotification] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [roundNumber, setRoundNumber] = useState(0);
 
     const userLoggedIn = localStorage.getItem('user');
     const user = JSON.parse(userLoggedIn);
-    const userName = user.username;
+    const userName = user ? user.username : null;
 
     useEffect(() => {
         const checkForUpdateModal = () => {
@@ -45,9 +45,6 @@ export const Home = ({ seasonData, driverData }) => {
         findNextEvent();
     }, [seasonData]);
 
-
-
-
     return (
         <section className="home">
             {showUpdateModal && (
@@ -56,53 +53,42 @@ export const Home = ({ seasonData, driverData }) => {
                     setShowUpdateModal={setShowUpdateModal}
                 />
             )}
-            {showNotification && (
-                <div className="notification">
-                    <h4>Qualifying starts soon!</h4>
-                    <CountdownTimer 
-                        qualiTime={qualifyingTime}
+            {(seasonData.length > 0 && nextEvent.length > 0) ? (
+                <>
+                    <NextEventDefault
+                        nextEvent={nextEvent}
+                        roundNumber={roundNumber}
                     />
+                    <AccountStats
+                        userName={userName}
+                    />
+                    {userName && (
+                        <div className="middle-section">
+                            <div className="two-buttons">
+                                <button className="btn black">
+                                    <GearIcon />
+                                    How to Play
+                                </button>
+                                <button className="btn white">
+                                    <StatsIcon />
+                                    View your stats
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    <div className="lower-section">
+                        <GridlockStats
+                            nextEvent={nextEvent}
+                            driverData={driverData}
+                            seasonData={seasonData}
+                        />
+                    </div>
+                </>
+            ) : (
+                <div className="whole-page-loader">
+                    <LoaderWhite />
                 </div>
             )}
-            {(seasonData.length > 0 && nextEvent.length > 0) && (
-                <NextEventDefault
-                    nextEvent={nextEvent}
-                    roundNumber={roundNumber}
-                />
-            )}
-            <AccountStats
-                userName={userName}
-            />
-            <div className="middle-section">
-                <div className="two-buttons">
-                    <button className="btn black">
-                        <GearIcon />
-                        How to Play
-                    </button>
-                    <button className="btn white">
-                        <StatsIcon />
-                        View your stats
-                    </button>
-                </div>
-            </div>
-            <div className="lower-section">
-                <GridlockStats
-                    nextEvent={nextEvent}
-                    driverData={driverData}
-                    seasonData={seasonData}
-                />
-            </div>
-
-            {/* <NextEvent
-                nextEvent={nextEvent}
-            />
-            <AccountStats />
-
-            <GridlockStats
-                nextEvent={nextEvent}
-                driverData={driverData}
-            />
-                        */}
         </section>
     )
 }

@@ -38,7 +38,6 @@ export default function App() {
             body: JSON.stringify(apiRequest),
         });
       
-        // Receive returned data and set state with data.
         if (response.ok) {
               const responseData = await response.json();
               const data = responseData.result.response;
@@ -57,7 +56,7 @@ export default function App() {
         }
     }
     
-      fetchData();
+    fetchData();
 
   }, [apiRequest])
 

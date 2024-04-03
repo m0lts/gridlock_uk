@@ -2,12 +2,14 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 // Components
-import { CountdownTimer } from "../../pages/Predictor/Countdown/CountdownTimer"
+import { CountdownTimer } from "../Countdown/CountdownTimer"
+import { GearIcon, RightChevronIcon, StandingsIcon } from "../Icons/Icons"
+// Utils
 import { getCountryFlag } from "../../utils/getCountryFlag"
 import { getEventDatesOverview } from "../../utils/getEventDates"
-import { GearIcon, RightChevronIcon } from "../Icons/Icons"
 // Styles
 import './next-event-box.styles.css'
+
 
 export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
 
@@ -16,15 +18,13 @@ export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
 
     useEffect(() => {
         const getQualiTime = () => {
-            if (nextEvent.length === 0) {
-                return;
-            }
+
             const quali = nextEvent[0].events.find(event => event.type === 'Qualifying');
             if (!quali) {
                 return;
             }
             const qualiTime = new Date(quali.date).getTime();
-            setQualifyingTime(qualiTime);    
+            setQualifyingTime(qualiTime);
 
             const currentTime = new Date().getTime();
             const difference = qualiTime - currentTime;
@@ -34,10 +34,13 @@ export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
             } else {
                 setPredictionsClosed(false);
             }
+
         }
+
         if (nextEvent.length > 0) {
             getQualiTime();
         }
+
     }, [nextEvent]);
 
 
@@ -80,7 +83,12 @@ export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
                             <GearIcon />
                             How to Play
                         </button>
-                        <button className="btn white">prev. prediction</button>
+                        <button className="btn white">
+                            <Link to={'/standings'} className="link">
+                                <StandingsIcon />
+                                Standings
+                            </Link>
+                        </button>
                     </div>
                 </div>
             )}

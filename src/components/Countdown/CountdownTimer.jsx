@@ -31,9 +31,11 @@ export const CountdownTimer = ({ qualiTime, event }) => {
 
     return (
         <>
-            {countdown !== '--:--:--:--' ? (
+            {countdown === '00:00:00:00' ? (
+                <h2 style={{ color: 'var(--red)' }}>CLOSED</h2>
+            ) : (
                 <h2>{countdown}</h2>
-            ) : null}
+            )}
         </>
     );
 };

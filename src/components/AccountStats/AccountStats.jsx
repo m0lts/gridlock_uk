@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
-import { LockIcon, RightChevronIcon } from "../Icons/Icons";
-import { PrimaryHeading } from "../Typography/Titles/Titles"
-import './account-stats.styles.css'
+// Dependencies
 import { useEffect, useState } from 'react'
-import { LoaderBlack, LoaderWhite } from "../Loader/Loader";
-
+import { Link } from "react-router-dom";
+// Components
+import { RightChevronIcon } from "../Icons/Icons";
+import { LoaderWhite } from "../Loader/Loader";
+// Styles
+import './account-stats.styles.css'
 
 export const AccountStats = ({ userName }) => {
 
@@ -132,8 +133,8 @@ export const AccountStats = ({ userName }) => {
                     )}                   
                 </>
             ) : (
-                <Link to={'/login'} className="link locked">
-                    <h3>Login here to view your stats</h3>
+                <Link to={'/login'} className="link feature-locked">
+                    <h3>Login to view your stats</h3>
                     <RightChevronIcon />
                 </Link>
             )}

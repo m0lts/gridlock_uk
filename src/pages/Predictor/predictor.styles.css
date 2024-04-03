@@ -1,6 +1,9 @@
-/* NEW */
 .predictor {
     background-color: transparent;
+}
+.predictor .feature-locked-cont {
+    padding:2em 5%;
+    background: linear-gradient(to bottom, transparent, var(--black));
 }
 .predictor .middle-section {
     background-color: var(--black);
@@ -12,32 +15,3 @@
     padding-bottom: 5em;
 }
 
-
-/* OLD */
-
-/* Predictor locked */
-.predictor-locked {
-    padding: 2em 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap:5%;
-    border: 1px solid var(--black);
-    color: var(--white);
-}
-.predictor-locked .icon {
-    color: var(--purple);
-    font-size: 2em;
-}
-.verify-account-box {
-    display: flex;
-    flex-direction: column;
-    color: var(--white);
-    text-align: center;
-    gap:0.5rem;
-}
-.verify-account-box .icon {
-    font-size: 2em;
-    color: var(--purple);
-
-}
