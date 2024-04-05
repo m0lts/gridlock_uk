@@ -77,3 +77,8 @@
 .league-standings .standings-table .body .table-row:last-child {
     border-bottom: 0;
 }
+
+/* League admin section */
+.league-standings .league-admin-options {
+    margin: 5px 0;
+}

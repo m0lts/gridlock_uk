@@ -1,4 +1,6 @@
-import { Link, useLocation } from "react-router-dom"
+// Dependencies
+import { useLocation } from "react-router-dom"
+// Components
 import { NextEventCalendar } from "../../components/NextEventBox/NextEventCalendar";
 import { LeftChevronIcon } from "../../components/Icons/Icons";
 
@@ -17,10 +19,12 @@ export const EventPage = () => {
                 <LeftChevronIcon />
                 Back
             </div>
-            <NextEventCalendar
-                nextEvent={[inheritedState.event]}
-                roundNumber={inheritedState.round}
-            />
+            <div className="next-event">
+                <NextEventCalendar
+                    nextEvent={[inheritedState.event]}
+                    roundNumber={inheritedState.round}
+                />
+            </div>
         </section>
     )
 }

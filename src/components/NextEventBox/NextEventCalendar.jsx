@@ -1,15 +1,16 @@
 // Dependencies
-import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 // Components
+import { CircuitInformation } from "../CircuitInformation/CircuitInformation"
+import { RightChevronIcon } from "../Icons/Icons"
+// Utils
 import { getCountryFlag } from "../../utils/getCountryFlag"
-import { getCompetitionDate, getCompetitionMonth, getCompetitionTime, getEventDates, getEventDatesOverview } from "../../utils/getEventDates"
+import { getCompetitionDate, getCompetitionMonth, getCompetitionTime, getEventDatesOverview } from "../../utils/getEventDates"
 // Styles
 import './next-event-box.styles.css'
-import { CircuitInformation } from "../CircuitInformation/CircuitInformation"
-import { DownChevronIcon, RightChevronIcon, UpChevronIcon } from "../Icons/Icons"
-import { Link } from "react-router-dom"
 
-export const NextEventCalendar = ({ nextEvent, roundNumber, expanded }) => {
+
+export const NextEventCalendar = ({ nextEvent, roundNumber }) => {
 
     return (
         <section className="next-event-box">

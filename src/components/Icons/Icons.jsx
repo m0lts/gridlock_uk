@@ -23,7 +23,8 @@ import { faCircleUser,
     faGaugeHigh,
     faTriangleExclamation,
     faTemperatureFull,
-    faAngleLeft} from '@fortawesome/free-solid-svg-icons'
+    faAngleLeft,
+    faClipboard} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -148,6 +149,11 @@ export const BrakingIcon = () => {
 export const TyreStressIcon = () => {
     return (
         <FontAwesomeIcon icon={faTemperatureFull} className='icon' />
+    )
+}
+export const CopyIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faClipboard} className='icon' />
     )
 }
 

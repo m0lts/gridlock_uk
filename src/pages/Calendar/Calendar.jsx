@@ -1,12 +1,15 @@
+// Dependencies
 import { useState, useEffect } from 'react';
-import { PrimaryHeading, UpperCaseTitle } from '../../components/Typography/Titles/Titles'
-import './calendar.styles.css'
-import { getCountryFlag } from '../../utils/getCountryFlag';
-import { getCompetitionDate, getCompetitionMonth, getEventDates, getEventDatesOverview } from '../../utils/getEventDates';
+import { Link } from 'react-router-dom';
+// Components
+import { RightChevronIcon } from '../../components/Icons/Icons';
 import { LoaderWhite } from '../../components/Loader/Loader';
 import { NextEventCalendar } from '../../components/NextEventBox/NextEventCalendar';
-import { DownChevronIcon, RightChevronIcon } from '../../components/Icons/Icons';
-import { Link } from 'react-router-dom';
+// Utils
+import { getCountryFlag } from '../../utils/getCountryFlag';
+// Styles
+import './calendar.styles.css'
+
 
 export const Calendar = ({ seasonData }) => {
 
@@ -33,20 +36,16 @@ export const Calendar = ({ seasonData }) => {
         findNextEvent();
     }, [seasonData]);
 
-    const [expandedItem, setExpandedItem] = useState(null);
-
-    const handleItemClick = (index) => {
-        setExpandedItem((prevExpandedItem) => (prevExpandedItem === index ? null : index));
-    };
-
     return (
         <section className="calendar">
-            {(seasonData.length > 0 && nextEvent.length > 0) && (
+            {(seasonData.length > 0 && nextEvent.length > 0) ? (
                 <>
-                    <NextEventCalendar
-                        nextEvent={nextEvent}
-                        roundNumber={roundNumber}
-                    />
+                    <div className="next-event">
+                        <NextEventCalendar
+                            nextEvent={nextEvent}
+                            roundNumber={roundNumber}
+                        />
+                    </div>
                     <div className="events">
                         <div className="previous">
                             <h3 className='subtitle'>Previous Rounds</h3>
@@ -84,6 +83,10 @@ export const Calendar = ({ seasonData }) => {
                         </div>
                     </div>
                 </>
+            ) : (
+                <div className="whole-page-loader">
+                    <LoaderWhite />
+                </div>
             )}
         </section>
     )

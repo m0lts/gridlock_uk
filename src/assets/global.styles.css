@@ -229,7 +229,7 @@ h6 {
 .two-buttons .btn {
     width:49%;
 }
-.btn.white, .btn.black {
+.btn.white, .btn.black, .btn.red {
     padding:0.5em 1em;
     display: flex;
     justify-content: center;
@@ -247,6 +247,10 @@ h6 {
 .btn.black {
     background-color: var(--black);
     color: var(--white);
+}
+.btn.red {
+    background-color: var(--red);
+    color:var(--white);
 }
 .btn .icon {
     color: var(--red);
