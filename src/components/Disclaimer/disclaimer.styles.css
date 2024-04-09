@@ -1,0 +1,7 @@
+.disclaimer {
+    padding: 0 5%;
+    color: var(--white);
+}
+.disclaimer p {
+    margin:0.5em 0;
+}

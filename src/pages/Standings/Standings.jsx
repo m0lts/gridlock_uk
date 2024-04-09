@@ -15,7 +15,7 @@ export const Standings = () => {
     const userLoggedIn = localStorage.getItem('user');
     const user = JSON.parse(userLoggedIn);
     const userVerified = user ? user.verified : false;
-    const userName = user.username;
+    const userName = user ? user.username : null;
 
     // Sort standings and league data
     const standingsData = sessionStorage.getItem('standingsData');
@@ -87,8 +87,38 @@ export const Standings = () => {
             }
         };
 
+        const fetchStandingsOnly = async () => {
+            try {
+                const standingsResponse = await fetch('/api/points/handlePointsCollection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                if (standingsResponse.status === 200) {
+                    const standingsData = await standingsResponse.json();
+                    const sortedStandings = [...standingsData.usersWithTotalPoints].sort((a, b) => {
+                        if (b.totalPoints !== a.totalPoints) {
+                            return b.totalPoints - a.totalPoints;
+                        }
+                        return a.username.localeCompare(b.username);
+                    });
+                    setStandings(sortedStandings);
+                    sessionStorage.setItem('standingsData', JSON.stringify(sortedStandings));
+                    setStandingsUpdateTime(new Date().toLocaleString());
+                    sessionStorage.setItem('standingsUpdateTime', new Date().toLocaleString());
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
         if (userName) {
             fetchStandingsAndLeagues();
+        } else {
+            fetchStandingsOnly();
         }
 
     }, [userName]);
@@ -131,7 +161,7 @@ export const Standings = () => {
             />
 
             {/* Check if user is verified before showing league options buttons */}
-            {userVerified ? (
+            {userVerified && userLoggedIn ? (
                 <div className="two-buttons">
                     <button className="btn black" onClick={() => setShowJoinLeague(!showJoinLeague)}>
                         <PlusIcon />
@@ -142,7 +172,7 @@ export const Standings = () => {
                         Create a league
                     </button>
                 </div>
-            ) : (
+            ) : userLoggedIn && !userVerified ? (
                 <div className="two-buttons">
                     <button className="btn white" style={{ width: '100%' }} onClick={handleSendVerificationLink}>
                         {verifyButtonText}
@@ -151,6 +181,8 @@ export const Standings = () => {
                         )}
                     </button>
                 </div>
+            ) : (
+                null
             )}
 
             {/* Show league names and the user's positions in them. User can click on a league to see the full standings */}
@@ -163,31 +195,35 @@ export const Standings = () => {
                 <div className="leagues">
                     <Link className="league link" to={'/standings/global'} state={{ name: 'Global', standings: standings, admin: null, updateTime: standingsUpdateTime }}>
                         <div className='left'>
-                            <h3 className='position-box'>{standings.length > 0 ? configUserPosition(standings) : '-'}</h3>
+                            <h3 className='position-box'>{standings.length > 0 && userLoggedIn ? configUserPosition(standings) : '-'}</h3>
                             <p>Global</p>
                         </div>
                         <RightChevronIcon />
                     </Link>
                 </div>
-                <div className="subtitle">
-                    <h3>Private Leagues</h3>
-                    <p className='last-updated-msg'>Last updated: {leaguesUpdateTime}</p>
-                </div>
-                <div className="leagues">
-                    {leagues.length > 0 ? (
-                        leagues.map((league, index) => (
-                            <Link key={index} className="league link" to={`/standings/${league.leagueName}`} state={{ name: league.leagueName, standings: league.leagueMembers, admin: league.leagueAdmin, updateTime: leaguesUpdateTime, user: userName, code: league._id }}>
-                                <div className='left'>
-                                    <h3 className='position-box'>{configUserPosition(league.leagueMembers)}</h3>
-                                    <p>{league.leagueName}</p>
-                                </div>
-                                <RightChevronIcon />
-                            </Link>
-                        ))
-                    ) : (
-                        <LoaderWhite />
-                    )}
-                </div>
+                {userLoggedIn && userVerified && (
+                    <>
+                        <div className="subtitle">
+                            <h3>Private Leagues</h3>
+                            <p className='last-updated-msg'>Last updated: {leaguesUpdateTime}</p>
+                        </div>
+                        <div className="leagues">
+                            {leagues.length > 0 ? (
+                                leagues.map((league, index) => (
+                                    <Link key={index} className="league link" to={`/standings/${league.leagueName}`} state={{ name: league.leagueName, standings: league.leagueMembers, admin: league.leagueAdmin, updateTime: leaguesUpdateTime, user: userName, code: league._id }}>
+                                        <div className='left'>
+                                            <h3 className='position-box'>{configUserPosition(league.leagueMembers)}</h3>
+                                            <p>{league.leagueName}</p>
+                                        </div>
+                                        <RightChevronIcon />
+                                    </Link>
+                                ))
+                            ) : (
+                                <LoaderWhite />
+                            )}
+                        </div>
+                    </>
+                )}
             </div>
             <div className="bottom-filler"></div>
 

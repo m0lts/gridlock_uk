@@ -1,0 +1,12 @@
+.help-page .get-in-touch {
+    background: linear-gradient(to bottom, transparent, var(--black));
+}
+.help-page .how-to-play {
+    background-color: var(--black);
+    padding-top:2em;
+    padding-bottom: 2em;
+}
+.help-page .disclaimer {
+    background: linear-gradient(to top, transparent, var(--black));
+    margin-bottom: 5em;
+}

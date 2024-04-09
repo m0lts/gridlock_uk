@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { PrimaryHeading } from "../../../components/Typography/Titles/Titles"
+import { PrimaryHeading } from "../../components/Typography/Titles/Titles"
 import { useNavigate } from 'react-router-dom';
-import { getCountryFlag } from "../../../utils/getCountryFlag";
-import { getTeamColour } from "../../../utils/getTeamColour";
+import { getCountryFlag } from "../../utils/getCountryFlag";
+import { getTeamColour } from "../../utils/getTeamColour";
+import './settings.styles.css';
 
-
-export const Profile = ({ user, seasonData, driverData }) => {
+export const Settings = ({ user, seasonData, driverData }) => {
 
     // Log out logic
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { LoaderBlack } from "../../components/Loader/Loader";
+import { LoaderWhite } from "../../components/Loader/Loader";
 
 
 export default function SignUp({ seasonData }) {
@@ -122,7 +122,7 @@ export default function SignUp({ seasonData }) {
                             <Link to='/' className="forgot-password-link">Go to homepage</Link>
                         </div>
                     ) : (
-                        <LoaderBlack />
+                        <LoaderWhite />
                     )
                 ) : (
                 <form className="account-form" onSubmit={handleSubmit}>
@@ -203,10 +203,10 @@ export default function SignUp({ seasonData }) {
                     </div>
                     <button 
                         type="submit" 
-                        className={`btn btn-purple ${emailError || passwordError || verifyPasswordError || usernameError ? 'disabled' : ''}`}
+                        className={`btn white ${emailError || passwordError || verifyPasswordError || usernameError ? 'disabled' : ''}`}
                         disabled={emailError || passwordError || verifyPasswordError || usernameError}
                     >
-                        Submit
+                        Sign up
                     </button>
                     <div className="legal-box">
                         <p>By signing up, you agree to our <Link to='https://app.termly.io/document/terms-of-service/5ff14f74-440f-4efc-847c-ad668d378a47' className="forgot-password-link">Terms of Service</Link> and <Link to='https://app.termly.io/document/privacy-policy/3c0c4470-16e7-44b1-8700-97ba61830c3e' className="forgot-password-link">Privacy Policy</Link>.</p>

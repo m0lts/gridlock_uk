@@ -11,6 +11,8 @@ export const filterEventResponse = (response) => {
                 event.type = 'Sprint Shootout';
             }
 
+            
+
             const competitionId = event.competition.id;
             const existingCompetition = groupedCompetitions.find(comp => comp.competitionId === competitionId);
             if (existingCompetition) {

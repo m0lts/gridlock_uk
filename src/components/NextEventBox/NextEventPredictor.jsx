@@ -80,8 +80,10 @@ export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
                     </div>
                     <div className="two-buttons narrow">
                         <button className="btn black">
-                            <GearIcon />
-                            How to Play
+                            <Link to={'/help'} className="link">
+                                <GearIcon />
+                                How to Play
+                            </Link>
                         </button>
                         <button className="btn white">
                             <Link to={'/standings'} className="link">

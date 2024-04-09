@@ -20,6 +20,8 @@ import { UserProfile } from './pages/UserProfile/UserProfile'
 import { EventPage } from './pages/Event/EventPage'
 import { SessionResult } from './pages/SessionResult/SessionResult'
 import { LeagueStandings } from './pages/LeagueStandings/LeagueStandings'
+import { HelpPage } from './pages/Help/Help'
+import { Settings } from './pages/Settings/Settings'
 
 export default function App() {
 
@@ -41,6 +43,7 @@ export default function App() {
         if (response.ok) {
               const responseData = await response.json();
               const data = responseData.result.response;
+              console.log(data);
 
               if (apiRequest.includes('races')) {
                 setReturnedEventData(filterEventResponse(data));
@@ -71,7 +74,6 @@ export default function App() {
         <Route path="/calendar" element={<Calendar seasonData={returnedEventData} />} />
         <Route path="/standings" element={<Standings />} />
         <Route path="/standings/:leagueName" element={<LeagueStandings />} />
-        <Route path="/account" element={<Account seasonData={returnedEventData} driverData={returnedDriverData} />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp seasonData={returnedEventData} />} />
         <Route path='/forgotpassword' element={<ForgotPassword />} />
@@ -80,11 +82,16 @@ export default function App() {
         <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} />} /> 
         <Route path='/event/:event' element={<EventPage />} />
         <Route path='/session-result/:sessionId' element={<SessionResult />} />
+        <Route path='/help' element={<HelpPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />
     </div>
   )
 }
+
+// Redundant code:
+{/* <Route path="/account" element={<Account seasonData={returnedEventData} driverData={returnedDriverData} />} /> */}
+
 
 

@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { LoaderWhite } from '../../components/Loader/Loader';
 import { GetInTouch } from './GetInTouch/GetInTouch';
-import { Profile } from './Profile/Profile';
 
 export const Account = ({ seasonData, driverData }) => {
 

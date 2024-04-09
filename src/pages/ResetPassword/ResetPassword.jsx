@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom"
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom'
-import { LoaderBlack } from "../../components/Loader/Loader";
+import { LoaderWhite } from "../../components/Loader/Loader";
 
 export default function ResetPassword() {
 
@@ -84,7 +84,7 @@ export default function ResetPassword() {
             <div className="body">
                 <h1 className="title">Reset Password</h1>
                 {formSubmitted ? (
-                    <LoaderBlack />
+                    <LoaderWhite />
                 ) : (
                     <form className="account-form" onSubmit={handleSubmit}>
                         <div className="input-group">
@@ -113,7 +113,7 @@ export default function ResetPassword() {
                         </div>
                         <button 
                             type="submit" 
-                            className={`btn btn-purple ${passwordError || verifyPasswordError ? 'disabled' : ''}`}
+                            className={`btn white ${passwordError || verifyPasswordError ? 'disabled' : ''}`}
                             disabled={passwordError || verifyPasswordError}    
                         >
                             Submit

@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import './menu.styles.css'
-import { AccountIcon, CalendarIcon, HomeIcon, PredictorIcon, StandingsIcon } from '../Icons/Icons'
+import { AccountIcon, CalendarIcon, HomeIcon, PredictorIcon, QuestionIcon, StandingsIcon } from '../Icons/Icons'
 
 export const Menu = () => {
 
@@ -36,17 +36,9 @@ export const Menu = () => {
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to={`${userLoggedIn ? '/account' : '/login'}`} className="menu-link link" style={{
-                        color: (
-                            location.pathname === '/account' || 
-                            location.pathname === '/login' || 
-                            location.pathname === '/signup' || 
-                            location.pathname === '/forgotpassword' || 
-                            location.pathname === '/resetpassword'
-                            ) ? 'var(--red)' : 'var(--white)'
-                    }}>
-                        <AccountIcon />
-                        <p className="text">{userLoggedIn ? 'Account' : 'Login'}</p>
+                    <NavLink to="/help" className="menu-link link" style={{ color: location.pathname === '/help' ? 'var(--red)' : 'var(--white)'}}>
+                        <QuestionIcon />
+                        <p className="text">Help</p>
                     </NavLink>
                 </li>
             </ul>

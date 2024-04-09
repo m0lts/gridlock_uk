@@ -36,13 +36,16 @@ export const UserProfile = ({ seasonData }) => {
         fetchUserRecord();
     }, [user])
 
+    const handleGoBack = () => {
+        window.history.back();
+    }
 
     return (
         <section className="user">
-            <Link to="/standings" className="link back-button">
+            <div className="back-button" onClick={handleGoBack}>
                 <LeftChevronIcon />
                 Back
-            </Link>
+            </div>
             <AccountStats
                 userName={user}
             />

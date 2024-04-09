@@ -13,6 +13,7 @@ export const EventPage = () => {
         window.history.back();
     }
 
+    console.log(inheritedState)
     return (
         <section className="calendar">
             <div className="back-button" onClick={handleGoBack}>

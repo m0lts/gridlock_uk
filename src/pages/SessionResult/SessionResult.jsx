@@ -47,6 +47,7 @@ export const SessionResult = ({ sessionData }) => {
         window.history.back();
     }
 
+
     return (
         <section className="session-result">
             <div className="back-button" onClick={handleGoBack}>

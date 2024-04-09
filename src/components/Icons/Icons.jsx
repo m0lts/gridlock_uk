@@ -24,7 +24,8 @@ import { faCircleUser,
     faTriangleExclamation,
     faTemperatureFull,
     faAngleLeft,
-    faClipboard} from '@fortawesome/free-solid-svg-icons'
+    faClipboard,
+    faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -154,6 +155,11 @@ export const TyreStressIcon = () => {
 export const CopyIcon = () => {
     return (
         <FontAwesomeIcon icon={faClipboard} className='icon' />
+    )
+}
+export const QuestionIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faQuestionCircle} className='icon' />
     )
 }
 

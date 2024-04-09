@@ -1,5 +1,6 @@
 // Dependencies
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 // Components
 import { GridlockStats } from '../../components/GridlockStats/GridlockStats'
 import { UpdateModal } from './UpdateModal/UpdateModal'
@@ -66,12 +67,16 @@ export const Home = ({ seasonData, driverData }) => {
                         <div className="middle-section">
                             <div className="two-buttons">
                                 <button className="btn black">
-                                    <GearIcon />
-                                    How to Play
+                                    <Link to={'/help'} className="link">
+                                        <GearIcon />
+                                        How to Play
+                                    </Link>
                                 </button>
                                 <button className="btn white">
-                                    <StatsIcon />
-                                    View your stats
+                                    <Link to={{ pathname: `/user/${user.username}`, state: { user } }} className='link'>
+                                        <StatsIcon />
+                                        View your stats
+                                    </Link>
                                 </button>
                             </div>
                         </div>
