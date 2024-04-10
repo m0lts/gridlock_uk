@@ -1,11 +1,15 @@
+// Dependencies
 import { useState, useEffect } from 'react';
-import { PrimaryHeading } from '../Typography/Titles/Titles';
-import { getCountryFlag } from '../../utils/getCountryFlag';
-import { ExpandIcon, CloseIcon, DownChevronIcon, UpChevronIcon } from '../Icons/Icons';
+// Components
+import { DownChevronIcon, UpChevronIcon } from '../Icons/Icons';
 import { LoaderWhite } from '../Loader/Loader';
-import { getTeamColour } from '../../utils/getTeamColour';
-import './previous-predictions.styles.css';
 import { DriverListSmall } from '../DriverGrid/DriverGrid';
+// Utils
+import { getCountryFlag } from '../../utils/getCountryFlag';
+import { getTeamColour } from '../../utils/getTeamColour';
+// Styles
+import './previous-predictions.styles.css';
+
 
 export const PreviousPredictionsv1 = ({ seasonData, userEmail }) => {
 

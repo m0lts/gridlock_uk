@@ -1,7 +1,8 @@
-import { Link, useParams } from "react-router-dom"
+// Dependencies
+import { useState } from "react"
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom'
+// Components
 import { LoaderWhite } from "../../components/Loader/Loader";
 
 export default function ResetPassword() {

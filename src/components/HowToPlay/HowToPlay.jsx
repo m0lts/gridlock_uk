@@ -1,3 +1,4 @@
+// Styles
 import './how-to-play.styles.css'
 
 

@@ -1,5 +1,7 @@
+// Utils
 import { filterDriverResponse } from '../../utils/FilterApiResponses';
 import { getTeamColour } from '../../utils/getTeamColour'
+// Styles
 import './driver-grid.styles.css'
 
 export const DriverListLarge = ({ drivers }) => {

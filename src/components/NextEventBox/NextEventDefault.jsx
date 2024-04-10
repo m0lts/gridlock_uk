@@ -10,6 +10,7 @@ import { getEventDatesOverview } from "../../utils/getEventDates"
 // Styles
 import './next-event-box.styles.css'
 
+
 export const NextEventDefault = ({ nextEvent, roundNumber }) => {
 
     const [qualifyingTime, setQualifyingTime] = useState('00:00:00:00');

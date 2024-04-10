@@ -1,6 +1,8 @@
+// Components
 import { Disclaimer } from '../../components/Disclaimer/Disclaimer';
 import { GetInTouch } from '../../components/GetInTouch/GetInTouch'
 import { HowToPlay } from '../../components/HowToPlay/HowToPlay';
+// Styles
 import './help.styles.css'
 
 export const HelpPage = () => {

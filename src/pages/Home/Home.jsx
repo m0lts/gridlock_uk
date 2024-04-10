@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 // Components
 import { GridlockStats } from '../../components/GridlockStats/GridlockStats'
-import { UpdateModal } from './UpdateModal/UpdateModal'
+import { UpdateModal } from '../../components/UpdateModal/UpdateModal'
 import { NextEventDefault } from '../../components/NextEventBox/NextEventDefault'
 import { AccountStats } from '../../components/AccountStats/AccountStats'
 import { GearIcon, StatsIcon } from '../../components/Icons/Icons'
@@ -24,7 +24,8 @@ export const Home = ({ seasonData, driverData }) => {
 
     useEffect(() => {
         const checkForUpdateModal = () => {
-            const updateModal = localStorage.getItem('updateModal');
+            localStorage.removeItem('updateModal');
+            const updateModal = localStorage.getItem('updateModalv2');
             if (!updateModal) {
                 setShowUpdateModal(true);
             }

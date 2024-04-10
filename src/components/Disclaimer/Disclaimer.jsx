@@ -1,3 +1,4 @@
+// Styles
 import './disclaimer.styles.css'
 
 export const Disclaimer = () => {

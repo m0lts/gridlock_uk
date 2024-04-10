@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom'
 import { AccountStats } from '../../components/AccountStats/AccountStats'
 import { GearIcon, PlusIcon, RightChevronIcon } from '../../components/Icons/Icons'
 import { LoaderWhite } from '../../components/Loader/Loader'
-// Styles
-import './standings.styles.css'
 import { JoinLeagueModal } from '../../components/LeagueOptions/JoinLeagueModal'
 import { CreateLeagueModal } from '../../components/LeagueOptions/CreateLeagueModal'
+// Styles
+import './standings.styles.css'
+
 
 export const Standings = () => {
     

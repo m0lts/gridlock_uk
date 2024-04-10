@@ -1,5 +1,12 @@
 .maintenance-page {
     height:100vh;
+    padding:0 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    text-align: center;
 }
 .maintenance-page .icon {
     width:100%;

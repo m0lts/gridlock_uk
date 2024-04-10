@@ -1,7 +1,10 @@
+// Dependencies
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
 import { useLocation } from "react-router-dom";
-import { LoaderBlack } from "../../components/Loader/Loader";
+// Components
+import { LoaderWhite } from "../../components/Loader/Loader";
+
 
 export const VerifyAccount = () => {
 
@@ -57,7 +60,7 @@ export const VerifyAccount = () => {
     }, [token, userEmail]);
 
     return (
-        <div className="gateway-page page-padding bckgrd-white">
+        <div className="gateway-page">
             <h1 style={{ marginBottom : '1rem' }} className="title">Verify Account</h1>
             {userVerified ? (
                 <>
@@ -67,7 +70,7 @@ export const VerifyAccount = () => {
                     </Link>
                 </>
             ) : (
-                <LoaderBlack />
+                <LoaderWhite />
             )}
         </div>
     )

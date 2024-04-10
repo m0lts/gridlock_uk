@@ -1,6 +1,9 @@
+// Dependencies
 import { NavLink, useLocation } from 'react-router-dom'
+// Components
+import { CalendarIcon, HomeIcon, PredictorIcon, QuestionIcon, StandingsIcon } from '../Icons/Icons'
+// Styles
 import './menu.styles.css'
-import { AccountIcon, CalendarIcon, HomeIcon, PredictorIcon, QuestionIcon, StandingsIcon } from '../Icons/Icons'
 
 export const Menu = () => {
 

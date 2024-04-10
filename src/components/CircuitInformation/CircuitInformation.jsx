@@ -2,7 +2,7 @@
 import { useState } from "react"
 // Components
 import { BrakingIcon, DownforceIcon, TrackEvoIcon, TyreStressIcon } from "../Icons/Icons";
-import { Parallelograms } from "../Typography/Shapes/Shapes";
+import { Parallelograms } from "../Parallelograms/Shapes";
 // Utils
 import { getCircuitInfo } from "../../utils/getCircuitInfo"
 // Styles

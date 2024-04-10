@@ -50,7 +50,7 @@ export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
                 <h3>Round {roundNumber}</h3>
                 <h4>{getEventDatesOverview(nextEvent[0].events)}</h4>
             </div>
-            <Link to={'/calendar'} className="middle link">
+            <Link to={`/event/${nextEvent[0].competitionId}`} className="middle link" state={{event: nextEvent[0], round: roundNumber}}>
                 <div className="left">
                     <figure className="circular-flag large">
                         <img src={getCountryFlag(nextEvent[0].competitionCountry)} alt={`${nextEvent[0].competitionCountry} flag`} />

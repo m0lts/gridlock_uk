@@ -1,4 +1,6 @@
+// Dependencies
 import { Link } from 'react-router-dom';
+// Styles
 import './error-page.styles.css'
 
 export const ErrorPage = () => {

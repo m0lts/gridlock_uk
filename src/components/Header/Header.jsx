@@ -1,8 +1,11 @@
+// Dependencies
 import { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+// Components
 import { AccountIcon } from '../Icons/Icons'
 import { DefaultLogo } from '../Logos/Logos'
+// Styles
 import './header.styles.css'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 export const Header = () => {
 

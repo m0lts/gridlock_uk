@@ -1,14 +1,14 @@
+// Dependencies
 import { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
+// Components
 import { Header } from './components/Header/Header'
+// Pages
 import { Home } from './pages/Home/Home'
 import { Menu } from './components/Menu/Menu'
 import { Predictor } from './pages/Predictor/Predictor'
-import './assets/global.styles.css'
 import { Calendar } from './pages/Calendar/Calendar'
 import { Standings } from './pages/Standings/Standings'
-import { Account } from './pages/Account/Account'
-import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
 import LogIn from './pages/Login/Login'
 import SignUp from './pages/Signup/Signup'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
@@ -21,7 +21,11 @@ import { EventPage } from './pages/Event/EventPage'
 import { SessionResult } from './pages/SessionResult/SessionResult'
 import { LeagueStandings } from './pages/LeagueStandings/LeagueStandings'
 import { HelpPage } from './pages/Help/Help'
-import { Settings } from './pages/Settings/Settings'
+// Utils
+import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
+// Styles
+import './assets/global.styles.css'
+
 
 export default function App() {
 
@@ -88,9 +92,6 @@ export default function App() {
     </div>
   )
 }
-
-// Redundant code:
-{/* <Route path="/account" element={<Account seasonData={returnedEventData} driverData={returnedDriverData} />} /> */}
 
 
 

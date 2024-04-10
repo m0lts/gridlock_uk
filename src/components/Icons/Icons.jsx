@@ -1,3 +1,4 @@
+// Dependencies
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleUser,
     faSun, 

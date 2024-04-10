@@ -1,5 +1,4 @@
 export const getCountryFlag = (country) => {
-
     if (country === 'Bahrain') {
         return `https://flagcdn.com/w160/bh.png`;
     } else if (country === 'Saudi Arabia') {

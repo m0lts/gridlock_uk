@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom"
+// Dependencies
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
-import './login.styles.css';
+import { Link, useNavigate } from "react-router-dom"
+// Components
 import { LoaderWhite } from "../../components/Loader/Loader";
+// Styles
+import './login.styles.css';
+
 
 export default function LogIn() {
 

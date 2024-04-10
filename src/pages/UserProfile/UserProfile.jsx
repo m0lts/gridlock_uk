@@ -1,12 +1,14 @@
+// Dependencies
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import './user-profile.styles.css';
+import { useParams } from "react-router-dom";
+// Components
 import { LoaderWhite } from "../../components/Loader/Loader";
-import { PrimaryHeading } from "../../components/Typography/Titles/Titles";
-import { CloseIcon, ExpandIcon, LeftChevronIcon } from "../../components/Icons/Icons";
-import { getCountryFlag } from "../../utils/getCountryFlag";
+import { LeftChevronIcon } from "../../components/Icons/Icons";
 import { PreviousPredictions } from "../../components/PreviousPredictions/PreviousPredictions";
 import { AccountStats } from "../../components/AccountStats/AccountStats";
+// Styles
+import './user-profile.styles.css';
+
 
 export const UserProfile = ({ seasonData }) => {
 

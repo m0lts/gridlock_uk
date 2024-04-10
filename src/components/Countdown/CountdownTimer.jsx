@@ -1,3 +1,4 @@
+// Dependencies
 import { useState, useEffect } from 'react';
 
 export const CountdownTimer = ({ qualiTime, event }) => {

@@ -1,4 +1,6 @@
+// Dependencies
 import { useState, useEffect } from "react";
+// Styles
 import './get-in-touch.styles.css';
 
 export const GetInTouch = ({ user }) => {

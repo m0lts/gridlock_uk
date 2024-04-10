@@ -1,12 +1,11 @@
-import { Link, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
+// Dependencies
+import { useState } from "react"
+import { Link } from "react-router-dom"
+// Components
 import { LoaderWhite } from "../../components/Loader/Loader";
 
 
 export default function SignUp({ seasonData }) {
-
-    // SET UP NAVIGATE
-    const navigate = useNavigate();
 
     // SET STATES
     // For data packet to be sent to database
