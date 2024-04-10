@@ -120,12 +120,12 @@ export const getCircuitInfo = {
       'downforce': 4
     },
     "Marina Bay Street Circuit": {
-      'traction': 1,
-      'track evolution': 1,
-      'braking': 1,
-      'asphalt abrasion': 1,
-      'tyre stress': 1,
-      'downforce': 1
+      'traction': 4,
+      'track evolution': 4,
+      'braking': 5,
+      'asphalt abrasion': 3,
+      'tyre stress': 2,
+      'downforce': 5
     },
     "Suzuka International Racing Course": {
       'traction': 3,

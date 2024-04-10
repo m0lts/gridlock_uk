@@ -1,14 +1,14 @@
+// Dependencies
 import { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
+// Components
 import { Header } from './components/Header/Header'
+// Pages
 import { Home } from './pages/Home/Home'
 import { Menu } from './components/Menu/Menu'
 import { Predictor } from './pages/Predictor/Predictor'
-import './assets/global.styles.css'
 import { Calendar } from './pages/Calendar/Calendar'
 import { Standings } from './pages/Standings/Standings'
-import { Account } from './pages/Account/Account'
-import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
 import LogIn from './pages/Login/Login'
 import SignUp from './pages/Signup/Signup'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
@@ -17,6 +17,15 @@ import { ErrorPage } from './pages/Error/ErrorPage'
 import { VerifyAccount } from './pages/VerifyAccount/VerifyAccount'
 import { MaintenancePage } from './pages/Maintenance/Maintenance'
 import { UserProfile } from './pages/UserProfile/UserProfile'
+import { EventPage } from './pages/Event/EventPage'
+import { SessionResult } from './pages/SessionResult/SessionResult'
+import { LeagueStandings } from './pages/LeagueStandings/LeagueStandings'
+import { HelpPage } from './pages/Help/Help'
+// Utils
+import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
+// Styles
+import './assets/global.styles.css'
+
 
 export default function App() {
 
@@ -35,7 +44,6 @@ export default function App() {
             body: JSON.stringify(apiRequest),
         });
       
-        // Receive returned data and set state with data.
         if (response.ok) {
               const responseData = await response.json();
               const data = responseData.result.response;
@@ -54,7 +62,7 @@ export default function App() {
         }
     }
     
-      fetchData();
+    fetchData();
 
   }, [apiRequest])
 
@@ -68,18 +76,22 @@ export default function App() {
         <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} />} />
         <Route path="/calendar" element={<Calendar seasonData={returnedEventData} />} />
         <Route path="/standings" element={<Standings />} />
-        <Route path="/account" element={<Account seasonData={returnedEventData} driverData={returnedDriverData} />} />
+        <Route path="/standings/:leagueName" element={<LeagueStandings />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp seasonData={returnedEventData} />} />
         <Route path='/forgotpassword' element={<ForgotPassword />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/verifyaccount' element={<VerifyAccount />} />
         <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} />} /> 
+        <Route path='/event/:event' element={<EventPage />} />
+        <Route path='/session-result/:sessionId' element={<SessionResult />} />
+        <Route path='/help' element={<HelpPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />
     </div>
   )
 }
+
 
 

@@ -1,194 +1,56 @@
-.standings {
-    min-height: 100vh;
-    padding-bottom: 3em;
+.standings .account-stats {
+    margin: 0;
 }
-.standings .table {
-    margin-top: 1em;
+.standings .two-buttons {
+    background-color: var(--black);
+}
+.standings .leagues-section {
+    background-color: var(--black);
+    padding: 1em 5%;
+}
+.standings .leagues-section .subtitle {
+    display: flex;
     width:100%;
+    justify-content: space-between;
+    align-items: center;
 }
-.standings .table .head th {
-    text-transform: uppercase;
-    font-weight: 400;
+.standings .leagues-section .last-updated-msg {
+    color: var(--white);
     font-size: 0.75em;
-    border-bottom: 1px solid var(--black);
 }
-.standings .table tr:nth-of-type(even) {
-    background-color: var(--black);
-    color: var(--white);
-    
+.standings .leagues-section .subtitle {
+    margin:5px 0;
 }
-/* black table */
-.standings .table.black .head th {
-    border-bottom: 1px solid var(--white);
+.standings .leagues-section .leagues {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
 }
-.standings .table.black tr:nth-of-type(even) {
+.standings .leagues-section .leagues .league {
+    border:1px solid var(--white);
     background-color: var(--white);
-    color: var(--black);
-}
-.standings .table .col1, .col2, .col3 {
-    display: inline-block;
-    vertical-align: top;
-    padding: 0.5em 0;
-}
-.standings .table .col1 {
-    width:15%;
-    text-align: center;
-}
-.standings .table .col2 {
-    width:70%;
-    text-align: left;
-    padding-left: 2em;
-}
-.standings .table .col3 {
-    width:15%;
-    text-align: center;
-}
-
-/* User's leagues */
-
-.user-leagues {
-    margin-top: 2em;
-}
-.standings .league-tables {
-    margin-bottom: 4rem;
-}
-
-/* User not logged in */
-.standings .league-section .not-logged-in {
-    margin: 0 auto;
-}
-.standings .league-section .not-logged-in .icon {
-    color: var(--yellow);
-    font-size: 1.5rem;
-}
-/* user not verified */
-.standings .verify-account-box.yellow .icon {
-    color: var(--yellow);
-}
-
-/* join and create league section */
-.standings .league-section {
-    background-color: var(--black);
-    padding:1rem 0;
-    position: fixed;
-    bottom:50px;
-    left:0;
-    right:0;
-    margin:0 auto;
+    border-radius: 0 5px 5px 0;
     display: flex;
-    flex-direction: column;
-    gap: 1em;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1em;
 }
-
-.standings .league-form {
+.standings .leagues-section .leagues .league .left {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap:0.5rem;
-    width:90%;
-    margin:0 auto;
+    gap:1em;
 }
-.standings .league-form .input-group {
-    display: flex;
-    flex-direction: column;
-    gap:0.5rem;
-    width:100%;
-}
-.standings .league-form .input-group label {
-    font-size: 1rem;
-}
-.standings .league-form .input-group input {
-    height: 2rem;
-    padding: 1rem 0.5rem;
-    border: 1px solid var(--white);
+.standings .leagues-section .leagues .league .position-box {
     background-color: var(--black);
-    color: var(--white);
-    font-size: 1rem;
-    font-family: var(--font-family);
-}
-.standings .league-form .input-group input:focus {
-    outline: none;
-    border: 1px solid var(--red);
-}
-.standings .league-form .btn {
-    margin-top: 1rem;
-}
-.standings .league-form .league-code {
+    min-width:50px;
+    min-height: 50px;
     display: flex;
-    flex-direction: column;
-    gap:0.5rem;
-    width:100%;
-}
-.standings .league-form .league-code .label {
-    font-size: 1rem;
-    font-weight: 400;
-}
-.standings .league-form .league-code .code {
-    padding: 0.5rem;
-    border: 1px solid var(--white);
-    background-color: var(--black);
-    color: var(--white);
-    display: flex;
-    justify-content: space-between;
-}
-
-.standings .league-created {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-}
-
-
-.standings .league-title {
-    display: flex;
-    justify-content: space-between;
-
-}
-.standings .league-title .primary-heading {
-    width:100%;
-}
-.standings .league-title .btn {
-    display: flex;
-    align-items: center;
     justify-content: center;
-    gap:0.25rem;
-    border:1px solid transparent !important;
-}
-
-.standings .league-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    gap:0.5em;
-    background-color: var(--white);
-    color: var(--black);
-    text-align: center;
-    padding: 0.5em ;
 }
-.standings .league-details .delete-league {
-    color: var(--red);
-    font-size: 0.8em;
-    cursor: pointer;
+.standings .bottom-filler {
+    height: 75px;
+    background: linear-gradient(to top, transparent, var(--black));
 }
-/* .standings .league-details-modal {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    padding: 1em;
-    background-color: var(--black);
-    color: var(--white);
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px 0 var(--black);
-} */
-
-

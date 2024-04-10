@@ -1,4 +1,6 @@
+// Dependencies
 import { useState, useEffect } from 'react'
+// Styles
 import './loader.styles.css'
 
 export const LoaderBlack = () => {
@@ -7,7 +9,7 @@ export const LoaderBlack = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentStage(prevStage => (prevStage % 15) + 1);
-        }, 75); // Change the interval duration as needed
+        }, 75);
 
         return () => clearInterval(interval);
     }, []);
@@ -34,7 +36,7 @@ export const LoaderWhite = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentStage(prevStage => (prevStage % 15) + 1);
-        }, 75); // Change the interval duration as needed
+        }, 75);
 
         return () => clearInterval(interval);
     }, []);

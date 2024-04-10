@@ -1,12 +1,13 @@
+// Dependencies
 import { NavLink, useLocation } from 'react-router-dom'
+// Components
+import { CalendarIcon, HomeIcon, PredictorIcon, QuestionIcon, StandingsIcon } from '../Icons/Icons'
+// Styles
 import './menu.styles.css'
-import { AccountIcon, CalendarIcon, HomeIcon, PredictorIcon, StandingsIcon } from '../Icons/Icons'
 
 export const Menu = () => {
 
     const location = useLocation()
-
-    const userLoggedIn = localStorage.getItem('user');
 
     return (
         <nav className="menu">
@@ -18,35 +19,27 @@ export const Menu = () => {
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to="/predictor" className="menu-link link" style={{ color: location.pathname === '/predictor' ? 'var(--purple)' : 'var(--white)'}}>
+                    <NavLink to="/predictor" className="menu-link link" style={{ color: location.pathname === '/predictor' ? 'var(--red)' : 'var(--white)'}}>
                         <PredictorIcon />
                         <p className="text">Predictor</p>
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to="/calendar" className="menu-link link" style={{ color: location.pathname === '/calendar' ? 'var(--green)' : 'var(--white)'}}>
+                    <NavLink to="/calendar" className="menu-link link" style={{ color: (location.pathname.includes('/calendar') || location.pathname.includes('event') || location.pathname.includes('session-result')) ? 'var(--red)' : 'var(--white)'}}>
                         <CalendarIcon />
                         <p className="text">Calendar</p>
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to="/standings" className="menu-link link" style={{ color: (location.pathname === '/standings' || location.pathname.startsWith('/user/')) ? 'var(--yellow)' : 'var(--white)'}}>
+                    <NavLink to="/standings" className="menu-link link" style={{ color: (location.pathname.includes('/standings') || location.pathname.startsWith('/user/')) ? 'var(--red)' : 'var(--white)'}}>
                         <StandingsIcon />
                         <p className="text">Standings</p>
                     </NavLink>
                 </li>
                 <li className="menu-item">
-                    <NavLink to={`${userLoggedIn ? '/account' : '/login'}`} className="menu-link link" style={{
-                        color: (
-                            location.pathname === '/account' || 
-                            location.pathname === '/login' || 
-                            location.pathname === '/signup' || 
-                            location.pathname === '/forgotpassword' || 
-                            location.pathname === '/resetpassword'
-                            ) ? 'var(--blue)' : 'var(--white)'
-                    }}>
-                        <AccountIcon />
-                        <p className="text">{userLoggedIn ? 'Account' : 'Login'}</p>
+                    <NavLink to="/help" className="menu-link link" style={{ color: location.pathname === '/help' ? 'var(--red)' : 'var(--white)'}}>
+                        <QuestionIcon />
+                        <p className="text">Help</p>
                     </NavLink>
                 </li>
             </ul>

@@ -1,16 +1,12 @@
+// Styles
 import './how-to-play.styles.css'
-import { PrimaryHeading } from '../../components/Typography/Titles/Titles'
 
-export const HowToPlay = ({ backgroundColour, textColour, accentColour }) => {
+
+export const HowToPlay = () => {
     return (
-        <section className={`how-to-play bckgrd-${backgroundColour}`}>
-            <PrimaryHeading
-                title="How to play"
-                accentColour={accentColour}
-                backgroundColour={backgroundColour === "black" ? "white" : "black"}
-                textColour={textColour === "white" ? "black" : "white"}
-            />
-            <div className={`info ${textColour}`}>
+        <section className='how-to-play'>
+            <h2>How to play Gridlock</h2>
+            <div className='info'>
                 <div className="sec1">
                     <h3>Overview:</h3>
                     <p>Gridlock is a F1 prediction app. Each weekend users predict which drivers they think will finish in what position.</p>
@@ -45,11 +41,11 @@ export const HowToPlay = ({ backgroundColour, textColour, accentColour }) => {
                     </div>
                     <div className="grid">
                         <h1>3 <span>points</span></h1>
-                        <p>For predicting each driver in the correct position.</p>
+                        <p>For predicting a driver in the correct position.</p>
                     </div>
                     <div className="grid">
                         <h1>10 <span>bonus points</span></h1>
-                        <p>For getting all 10 drivers in the correct position.</p>
+                        <p>For getting all 10 drivers in their correct finishing position.</p>
                     </div>
                     <p>The maximum available points per weekend is 40 points.</p>
                 </div>

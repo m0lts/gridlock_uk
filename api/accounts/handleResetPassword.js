@@ -14,7 +14,6 @@ export default async function handler(request, response) {
 
     try {
         mongoClient = await (new MongoClient(uri, options)).connect();
-        console.log("Just Connected!");
 
         const db = mongoClient.db("gridlock");
         const dbCollection = db.collection("accounts");
@@ -60,7 +59,6 @@ export default async function handler(request, response) {
         // Close database connection
         if (mongoClient) {
             await mongoClient.close();
-            console.log("MongoDB connection closed.");
         }
     }
 }

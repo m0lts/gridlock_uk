@@ -43,6 +43,8 @@ export default async function handler(request, response) {
             response.status(200).json({
                 userName: highestPoints.userName,
                 competitionName: bestPrediction.competition,
+                competitionCountry: bestPrediction.country,
+                competitionId: bestPrediction.competitionId,
                 totalPoints: highestPoints.totalPoints,
                 userPrediction
             });

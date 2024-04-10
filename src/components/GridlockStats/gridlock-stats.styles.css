@@ -1,0 +1,39 @@
+.gridlock-stats {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 5em;
+}
+.gridlock-stats .section {
+    width: 100%;
+}
+.gridlock-stats .gridlock-points {
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+/* Best prediction and best prediction last round section */
+.gridlock-stats .best-prediction .subtitle, .gridlock-stats .best-prediction-last-round .subtitle  {
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.gridlock-stats .best-prediction .details, .gridlock-stats .best-prediction-last-round .details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top:5px;
+    margin-bottom: 1em;
+}
+.gridlock-stats .best-prediction .details h3, .gridlock-stats .best-prediction-last-round .details h3 {
+    text-transform: none;
+}
+
+
+/* Gridlock points section */
+.gridlock-points .details {
+    text-align: center;
+    padding:5px 0;
+}

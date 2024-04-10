@@ -1,48 +1,51 @@
 .predictor-grid {
-    color: var(--white);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 2em;
-    padding-bottom: 2em;
-}
-.predictor-grid.flex {
-    color: var(--white);
+    padding:2.5em 5%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 2em;
+    gap:5px;
+    background: linear-gradient(to bottom, transparent, var(--black));
 }
 .predictor-grid .grid-item {
-    border:1px solid var(--white);
-    background-color: var(--dark-grey);
-    height: 125px;
     display: flex;
-    flex-direction: column;
+    width:100%;
+    justify-content: flex-start;
+    gap:0.75em;
+    align-items: center;
+}
+.predictor-grid .grid-item .position {
+    width:10%;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap:5px;
 }
-.predictor-grid .grid-item .icon {
-    font-size: 1.5em;
-}
-.predictor-grid .grid-item .name {
-    text-align: center;
-}
-.predictor-grid .grid-item:nth-child(even) {
-    margin-top: 1em;
-}
-
-/* Selected grid item */
 .predictor-grid .selected-grid-item {
     background-color: var(--black);
+    min-height: 50px;
+    border:1px solid var(--white);
+    border-left:5px solid var(--white);
+    border-radius: 0 5px 5px 0;
     width:100%;
-    height: 100%;
     color: var(--white);
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     align-items: center;
+    gap:1em;
+    padding:0 1em;
+}
+.predictor-grid .selected-grid-item .name {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.25em;
+}
+.predictor-grid .selected-grid-item .image {
+    width:50px;
+    height:50px;
+}
+.predictor-grid .selected-grid-item .image img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
 }
 
 /* Selection modal */
@@ -57,21 +60,37 @@
     padding:2em;
     padding-bottom: 5em;
     overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
 }
 .selection-modal .driver {
     background-color: var(--black);
+    min-height: 50px;
+    border-radius: 0 5px 5px 0;
+    width:100%;
     color: var(--white);
-    border: 1px solid var(--white);
-    margin-bottom: 0.5em;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding: 0 0.5em;
+    gap:1em;
+    padding:0 1em;
 }
-.selection-modal .name {
+.selection-modal .driver .name {
     display: flex;
     align-items: center;
-    gap:0.5em;
+    justify-content: flex-start;
+    gap: 0.25em;
+}
+.selection-modal .driver .image {
+    width:50px;
+    height:50px;
+    margin-bottom: 2px;
+}
+.selection-modal .driver .image img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
 }
 
 .predictor-grid .submit-prediction {
@@ -90,26 +109,20 @@
 
 /* Predictor locked */
 .predictor-grid-locked {
-    grid-column: span 2;
-    background-color: var(--black);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap:1em;
+    background-color: var(--transparent-grey);
+    border-radius: 5px;
+    width:fit-content;
     padding: 1em;
-    border: 1px solid var(--white);
     text-align: center;
+    margin: 0 auto;
+    margin-top: 1em;
 }
-.predictor-grid-locked div .icon {
-    font-size: 2.5em;
-    color: var(--purple);
-    margin:1rem 0;
-}
-.predictor-grid-locked p {
+.predictor-grid-locked h3 {
     color: var(--white);
 }
 
+
+/* Prediction modal */
 .predictor-grid .prediction-modal {
     backdrop-filter: blur(5px);
     position: fixed;
@@ -132,29 +145,11 @@
     justify-content: center;
     align-items: center;
     gap:1em;
-    background-color: var(--black);
+    background-color: var(--transparent-grey);
     padding:2rem;
-    border: 1px solid var(--white);
     color: var(--white);
     text-align: center;
     margin-bottom: 1em;
+    border-radius: 5px;
 }
-.predictor-grid .prediction-modal .modal-msg .icon {
-    font-size: 2rem;
-    color: var(--purple);
-    animation: spin 2s linear infinite;
-}
-.predictor-grid .loading {
-    text-align: center;
-    grid-column: span 2;
-}
-.predictor-grid .loading .icon {
-    font-size: 2rem;
-    color: var(--purple);
-    animation: spin 2s linear infinite;
 
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}

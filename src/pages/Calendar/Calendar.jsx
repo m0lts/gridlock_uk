@@ -1,86 +1,93 @@
-import { useState } from 'react';
-import { PrimaryHeading, UpperCaseTitle } from '../../components/Typography/Titles/Titles'
-import './calendar.styles.css'
-import { getCountryFlag } from '../../utils/getCountryFlag';
-import { getEventDates } from '../../utils/getEventDates';
+// Dependencies
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+// Components
+import { RightChevronIcon } from '../../components/Icons/Icons';
 import { LoaderWhite } from '../../components/Loader/Loader';
+import { NextEventCalendar } from '../../components/NextEventBox/NextEventCalendar';
+// Utils
+import { getCountryFlag } from '../../utils/getCountryFlag';
+// Styles
+import './calendar.styles.css'
+
 
 export const Calendar = ({ seasonData }) => {
 
-    const [expandedItem, setExpandedItem] = useState(null);
+    const [nextEvent, setNextEvent] = useState([]);
+    const [previousEvents, setPreviousEvents] = useState([]);
+    const [upcomingEvents, setUpcomingEvents] = useState([]);
+    const [roundNumber, setRoundNumber] = useState(0);
 
-    const handleGridItemClick = (index) => {
-        setExpandedItem((prevExpandedItem) => (prevExpandedItem === index ? null : index));
-    };
+    useEffect(() => {
+        const findNextEvent = () => {
+            const scheduledEvent = seasonData.find(event => event.status === 'Scheduled');
+            const previousEventsCollection = seasonData.filter(event => event.status === 'Completed');
+            const upcomingEventsCollection = seasonData.filter(event => event.status === 'Scheduled' && event !== scheduledEvent);
+            
+            if (scheduledEvent && previousEventsCollection && upcomingEventsCollection) {
+                setRoundNumber(seasonData.indexOf(scheduledEvent) + 1);
+                setNextEvent([scheduledEvent]);
+                setPreviousEvents(previousEventsCollection);
+                setUpcomingEvents(upcomingEventsCollection);
+            } else {
+                setNextEvent([]);
+            }
+        };
+        findNextEvent();
+    }, [seasonData]);
 
-
-    const gridItems = seasonData.map((event, index) => (
-        <div 
-            key={index} 
-            className={`grid-item ${expandedItem === index ? 'expanded' : ''}`}
-            onClick={() => handleGridItemClick(index)}
-        >
-            {expandedItem === index ? (
+    return (
+        <section className="calendar">
+            {(seasonData.length > 0 && nextEvent.length > 0) ? (
                 <>
-                    <h3>Round {index + 1}</h3>
-                    <div className="location">
-                        <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} Flag`} />
-                        <UpperCaseTitle
-                            title={event.competitionCountry}
-                            colour="white"
+                    <div className="next-event">
+                        <NextEventCalendar
+                            nextEvent={nextEvent}
+                            roundNumber={roundNumber}
                         />
                     </div>
-                    <div className="track">
-                        <img src={event.competitionCircuit} alt="placeholder" />
-                        <h3 className='name'>{event.events[0].circuit.name}</h3>
-                    </div>
-                    <div className="program">
-                        <div className="sessions">
-                            {getEventDates(event.events).map((event, index) => (
-                                <p key={index} className="session">
-                                    {Object.keys(event)[0]}:
-                                </p>
-                            ))}
+                    <div className="events">
+                        <div className="previous">
+                            <h3 className='subtitle'>Previous Rounds</h3>
+                            <div className="other-events">
+                                {previousEvents.map((event, index) => (
+                                    <Link key={index} className='item link' to={`/event/${event.competitionId}`} state={{event: event, round: index + 1}}>
+                                        <div className='left'>
+                                            <h3>R{index + 1}</h3>
+                                            <figure className="circular-flag">
+                                                <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} flag`} />
+                                            </figure>
+                                            <h3>{event.competitionCountry}</h3>
+                                        </div>
+                                        <RightChevronIcon />
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
-                        <div className="times">
-                            {getEventDates(event.events).map((event, index) => (
-                                <p key={index} className="time">
-                                    {Object.values(event)[0]}
-                                </p>
-                            ))}
+                        <div className="upcoming">
+                            <h3 className='subtitle'>Upcoming Rounds</h3>
+                            <div className="other-events">
+                                {upcomingEvents.map((event, index) => (
+                                    <Link key={index} className='item link' to={`/event/${event.competitionId}`} state={{event: event, round: index + 2 + previousEvents.length}}>
+                                        <div className='left'>
+                                            <h3>R{index + 2 + previousEvents.length}</h3>
+                                            <figure className="circular-flag">
+                                                <img src={getCountryFlag(event.competitionCountry)} alt={`${event.competitionCountry} flag`} />
+                                            </figure>
+                                            <h3>{event.competitionCountry}</h3>
+                                        </div>
+                                        <RightChevronIcon />
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </>
             ) : (
-                <>
-                    <UpperCaseTitle
-                        title={index + 1}
-                        colour="white"
-                    />
-                    <img src={getCountryFlag(event.competitionCountry)} alt="placeholder" />
-                    <h3>{event.competitionCountry}</h3>
-                </>
-            )}
-        </div>
-    ));
-
-    return (
-        <section className="calendar bckgrd-black page-padding">
-            <PrimaryHeading
-                title="Calendar"
-                textColour="black"
-                accentColour="green"
-                backgroundColour="white"
-            />
-            <div className={`${seasonData.length === 0 ? 'flex' : 'grid'}`}>
-                {seasonData.length === 0 ? (
+                <div className="whole-page-loader">
                     <LoaderWhite />
-                ) : (
-                    <>
-                        {gridItems}
-                    </>
-                )}
-            </div>
+                </div>
+            )}
         </section>
     )
 }

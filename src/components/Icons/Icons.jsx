@@ -1,3 +1,4 @@
+// Dependencies
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleUser,
     faSun, 
@@ -16,7 +17,16 @@ import { faCircleUser,
     faArrowRight,
     faPlus,
     faCross,
-    faX} from '@fortawesome/free-solid-svg-icons'
+    faX,
+    faAngleRight,
+    faChartSimple,
+    faAnglesDown,
+    faGaugeHigh,
+    faTriangleExclamation,
+    faTemperatureFull,
+    faAngleLeft,
+    faClipboard,
+    faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -101,6 +111,56 @@ export const DownChevronIcon = () => {
 export const UpChevronIcon = () => {
     return (
         <FontAwesomeIcon icon={faAngleUp} className='icon' />
+    )
+}
+export const RightChevronIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faAngleRight} className='icon' />
+    )
+}
+export const LeftChevronIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faAngleLeft} className='icon' />
+    )
+}
+export const PlusIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faPlus} className='icon' />
+    )
+}
+export const StatsIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faChartSimple} className='icon' />
+    )
+}
+export const DownforceIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faAnglesDown} className='icon' />
+    )
+}
+export const TrackEvoIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faGaugeHigh} className='icon' />
+    )
+}
+export const BrakingIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faTriangleExclamation} className='icon' />
+    )
+}
+export const TyreStressIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faTemperatureFull} className='icon' />
+    )
+}
+export const CopyIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faClipboard} className='icon' />
+    )
+}
+export const QuestionIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faQuestionCircle} className='icon' />
     )
 }
 

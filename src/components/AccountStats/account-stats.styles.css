@@ -1,0 +1,23 @@
+.account-stats .stats, .stats-locked {
+    padding: 1em 0;
+}
+/* User logged in */
+.account-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:5px;
+    width:100%;
+    padding: 0 5%;
+    margin-top: 2em;
+    background: linear-gradient(to bottom, transparent, var(--black));
+}
+.account-stats .stat-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius:5px;
+    background-color: var(--transparent-grey);
+    width: 100%;
+}

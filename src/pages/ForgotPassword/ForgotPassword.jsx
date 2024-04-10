@@ -1,7 +1,9 @@
+// Dependencies
+import { useState } from "react"
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { LoaderBlack } from "../../components/Loader/Loader";
+// Components
+import { LoaderWhite } from "../../components/Loader/Loader";
 
 export default function ForgotPassword() {
 
@@ -84,7 +86,7 @@ export default function ForgotPassword() {
                     </div>
                     </>
                 ) : formSubmitted ? (
-                    <LoaderBlack />
+                    <LoaderWhite />
                 ) : (
                     <form className="account-form" onSubmit={handleSubmit}>
                     <div className="input-group">
@@ -98,7 +100,7 @@ export default function ForgotPassword() {
                         />
                         {emailError && <div className="error-message">{emailError}</div>}
                     </div>
-                    <button type="submit" className="btn btn-purple">Submit</button>
+                    <button type="submit" className="btn white">Submit</button>
                     </form>
                 )}
             </div>

@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom"
+// Dependencies
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"
+// Components
+import { LoaderWhite } from "../../components/Loader/Loader";
+// Styles
 import './login.styles.css';
-import logo from "../../assets/logos/logo-white.png";
-import { LoaderBlack } from "../../components/Loader/Loader";
+
 
 export default function LogIn() {
 
@@ -85,11 +87,11 @@ export default function LogIn() {
     };
 
     return (
-        <section className="gateway-page bckgrd-white page-padding">
+        <section className="gateway-page">
             <div className="body">
                 <h1 className="title">Log in</h1>
                 {formSubmitted ? (
-                    <LoaderBlack />
+                    <LoaderWhite />
                 ) : (
                 <form className="account-form" onSubmit={handleSubmit}>
                     <div className="input-group">
@@ -116,10 +118,10 @@ export default function LogIn() {
                     </div>
                     <button 
                         type="submit" 
-                        className={`btn btn-purple ${passwordError || emailError ? 'disabled' : ''}`}
+                        className={`btn white ${passwordError || emailError ? 'disabled' : ''}`}
                         disabled={passwordError || emailError}
                     >
-                        Submit
+                        Log in
                     </button>
                     <div className="forgot-password-message">
                         <Link to='/forgotpassword' className="forgot-password-link">

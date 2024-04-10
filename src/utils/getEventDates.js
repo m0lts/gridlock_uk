@@ -59,9 +59,66 @@ export const getEventDatesOverview = (events) => {
 
     const formattedEndDate = endDate.toLocaleString('en-GB', {
         day: 'numeric',
-        month: 'short',
-        year: 'numeric'
+        month: 'long',
     });
 
     return `${formattedStartDate}-${formattedEndDate}`;
+}
+
+export const getCompetitionDate = (competition) => {
+    const date = new Date(competition.date);
+
+    return date.toLocaleString('en-GB', {
+        day: '2-digit',
+    });
+}
+
+export const getCompetitionMonth = (competition) => {
+    const date = new Date(competition.date);
+
+    return date.toLocaleString('en-GB', {
+        month: 'short',
+    });
+}
+
+export const getCompetitionTime = (competition) => {
+    const date = new Date(competition.date);
+    const timeZone = competition.timezone;
+
+    if (competition.type === 'Race' || competition.type === 'Sprint') {
+        return date.toLocaleString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: timeZone,
+            timeZoneName: 'short'
+        });
+    } else if (competition.type === 'Sprint Shootout') {
+        const startTime = date.toLocaleString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        const finishTime = new Date(date);
+        finishTime.setHours(finishTime.getMinutes() + 44);
+
+        return `${startTime}-${finishTime.toLocaleString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: timeZone,
+            timeZoneName: 'short'
+        })}`;
+    } else {
+        const startTime = date.toLocaleString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+        const finishTime = new Date(date);
+        finishTime.setHours(finishTime.getHours() + 1);
+
+        return `${startTime}-${finishTime.toLocaleString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: timeZone,
+            timeZoneName: 'short'
+        })}`;
+    }
 }

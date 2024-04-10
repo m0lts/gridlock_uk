@@ -1,0 +1,104 @@
+/* Previous predictions */
+.previous-predictions {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
+}
+.previous-predictions .event {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+}
+.previous-predictions .event.unavailable {
+    display: none;
+}
+.previous-predictions .event.expanded {
+    border: 1px solid var(--white);
+    border-radius: 5px;
+    background-color: var(--black);
+}
+.previous-predictions .event .competition-bar {
+    border:1px solid var(--white);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:5px 1em;
+    background-color: var(--black);
+}
+.previous-predictions .event.expanded .competition-bar {
+    border: none;
+}
+.previous-predictions .event .competition-bar .left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:1em;
+}
+.previous-predictions .event .competition-bar .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:5px;
+}
+.previous-predictions .event .competition-bar .icon {
+    color: var(--white);
+}
+.previous-predictions .event .competition-bar.expanded {
+    padding:0;
+}
+
+/* Expanded previous prediction */
+.previous-predictions .prediction-details {
+    margin:5px auto;
+    width:95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.previous-predictions .driver-row {
+    display: flex;
+    width:100%;
+    justify-content: flex-start;
+    gap:0.75em;
+    align-items: center;
+}
+.previous-predictions .driver-row .position {
+    width:10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.previous-predictions .driver-details {
+    background-color: var(--black);
+    min-height: 50px;
+    border:1px solid var(--white);
+    border-left:5px solid var(--white);
+    border-radius: 0 5px 5px 0;
+    width:100%;
+    color: var(--white);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap:1em;
+    padding:0 1em;
+}
+.previous-predictions .driver-details .name {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.25em;
+}
+.previous-predictions .driver-details .image {
+    width:50px;
+    height:50px;
+}
+.previous-predictions .driver-details .image img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}

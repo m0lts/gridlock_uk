@@ -1,0 +1,109 @@
+.league-options-modal {
+    backdrop-filter: blur(5px);
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    z-index:10;
+    padding:2em;
+    padding-bottom: 5em;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.league-options-modal .close-modal-btn {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    font-size: 1.25em;
+    cursor: pointer;
+    background-color: transparent;
+    border:none;
+}
+.league-options-modal .modal-content {
+    background-color: var(--transparent-grey);
+    padding:2rem;
+    color: var(--white);
+    border-radius: 5px;
+    position: relative;
+}
+.league-options-modal .modal-form {
+    padding:1em 0;
+    display: flex;
+    flex-direction: column;
+    gap:0.5em;
+}
+.league-options-modal .modal-section {
+    margin:1em 0;
+}
+.league-options-modal .modal-section p {
+    margin:5px 0;
+}
+.league-options-modal .buffer-modal {
+    backdrop-filter: blur(5px);
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    z-index:100;
+    padding:2em;
+    padding-bottom: 5em;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.league-options-modal .buffer-modal-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+    background-color: var(--black);
+    padding:2rem;
+    color: var(--white);
+    border-radius: 5px;
+    position: relative;
+}
+
+.input-cont {
+    display: flex;
+    flex-direction: column;
+}
+.input-cont label {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.input-cont input, .input-cont .input-flex {
+    padding: 0.5em;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--white);
+    color: var(--black);
+    font-family: var(--primary-font);
+}
+.input-cont input:focus {
+    outline: 1px solid var(--red);
+}
+.input-cont .input-flex {
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.input-cont .input-flex input {
+    width:80%;
+}
+.input-cont .input-flex input:focus {
+    outline:none;
+}
+.input-cont .input-flex .icon {
+    font-size: 1.5em;
+}
+.error {
+    color: var(--red);
+}

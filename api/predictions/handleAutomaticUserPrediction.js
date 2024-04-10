@@ -65,16 +65,21 @@ export default async function handler(request, response) {
             const driverAbbr = lastName.substring(0, 3).toUpperCase();
             
             const driverAbbrToUse = driver.driver.abbr === null ? driverAbbr : driver.driver.abbr;
+
+            // Drivers to remove from the list
+            const oliBearmanId = 101;
             
-            filteredDrivers.push({
-                driverId: driver.driver.id,
-                driverFirstName: firstName,
-                driverLastName: lastName,
-                driverAbbr: driverAbbrToUse,
-                driverTeam: driver.team.name,
-                driverNumber: driver.driver.number,
-                driverImage: driver.driver.image,
-            });
+            if (!(driver.driver.id === oliBearmanId)) {
+                filteredDrivers.push({
+                    driverId: driver.driver.id,
+                    driverFirstName: firstName,
+                    driverLastName: lastName,
+                    driverAbbr: driverAbbrToUse,
+                    driverTeam: driver.team.name,
+                    driverNumber: driver.driver.number,
+                    driverImage: driver.driver.image,
+                });
+            }
         });
 
         function getRandomDrivers(drivers, count) {
