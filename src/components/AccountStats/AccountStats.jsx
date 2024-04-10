@@ -1,21 +1,28 @@
-import { Link } from "react-router-dom";
-import { LockIcon } from "../../../components/Icons/Icons";
-import { PrimaryHeading } from "../../../components/Typography/Titles/Titles"
-import './account-stats.styles.css'
+// Dependencies
 import { useEffect, useState } from 'react'
-import { LoaderBlack } from "../../../components/Loader/Loader";
+import { Link } from "react-router-dom";
+// Components
+import { RightChevronIcon } from "../Icons/Icons";
+import { LoaderWhite } from "../Loader/Loader";
+// Styles
+import './account-stats.styles.css'
 
+export const AccountStats = ({ userName }) => {
 
-export const AccountStats = () => {
+    // Get user data from local storage
+    const storedUser = localStorage.getItem('user');
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    const storedUsername = user ? user.username : null;
 
-    // Check if user is logged in
-    const userLoggedIn = localStorage.getItem('user');
-    const user = JSON.parse(userLoggedIn);
+    // Get data from session storage
+    const storedUserPosition = sessionStorage.getItem('userPosition');
+    const storedUserPoints = sessionStorage.getItem('userPoints');
+    const storedUserAveragePoints = sessionStorage.getItem('userAveragePoints');
 
     const [fetchingUserData, setFetchingUserData] = useState(false);
-    const [userPosition, setUserPosition] = useState(0);
-    const [userPoints, setUserPoints] = useState(0);
-    const [userAveragePoints, setUserAveragePoints] = useState(0);
+    const [userPosition, setUserPosition] = useState((storedUserPosition && storedUsername === userName) ? storedUserPosition : '-');
+    const [userPoints, setUserPoints] = useState((storedUserPoints && storedUsername === userName) ? storedUserPoints : '-');
+    const [userAveragePoints, setUserAveragePoints] = useState((storedUserAveragePoints && storedUsername === userName) ? storedUserAveragePoints : '-');
 
 
     const configPosition = (position) => {
@@ -52,18 +59,29 @@ export const AccountStats = () => {
                             return;
                         }
                     
-                        const sortedStandings = usersWithTotalPoints.sort((a, b) => b.totalPoints - a.totalPoints);
-                        const userIndex = sortedStandings.findIndex(entry => entry.username === user.username);
+                        const sortedStandings = usersWithTotalPoints.sort((a, b) => {
+                            if (b.totalPoints !== a.totalPoints) {
+                                return b.totalPoints - a.totalPoints;
+                            }
+                            return a.username.localeCompare(b.username);
+                        });
+                        const userIndex = sortedStandings.findIndex(entry => entry.username === userName);
                         setUserPosition(configPosition(userIndex !== -1 ? userIndex + 1 : 0));
-                    
+                        
                         const userPoints = userIndex !== -1 ? sortedStandings[userIndex].totalPoints : 0;
                         setUserPoints(userPoints);
-                    
-                        const userWeekends = rawStandings.filter(entry => entry.userName === user.username);
+                        
+                        const userWeekends = rawStandings.filter(entry => entry.userName === userName);
                         const userWeekendPoints = userWeekends.flatMap(weekend => weekend.points.map(point => point.points));
                         const averagePoints = userWeekendPoints.reduce((a, b) => a + b, 0) / userWeekendPoints.length;
-                        setUserAveragePoints(averagePoints);
-
+                        const formattedAveragePoints = averagePoints % 1 === 0 ? averagePoints.toFixed(0) : averagePoints.toFixed(2);
+                        setUserAveragePoints(formattedAveragePoints);
+                        
+                        if (storedUsername === userName) {
+                            sessionStorage.setItem('userPosition', configPosition(userIndex !== -1 ? userIndex + 1 : 0));
+                            sessionStorage.setItem('userPoints', userPoints);
+                            sessionStorage.setItem('userAveragePoints', formattedAveragePoints);
+                        }
                         setFetchingUserData(false);
                     } catch (error) {
                         console.error('Error fetching or processing data:', error);
@@ -78,47 +96,46 @@ export const AccountStats = () => {
                 setFetchingUserData(false);
             }
         }   
-        if (userLoggedIn) {
+        if (userName) {
             fetchStandings();
-            setFetchingUserData(true);
+            if (!storedUserPosition || !storedUserPoints || !storedUserAveragePoints) {
+                setFetchingUserData(true);
+            } else {
+                setFetchingUserData(false);
+            }
         }
 
     }, [])
     
 
     return (
-        <section className="account-stats page-padding">
-            <PrimaryHeading 
-                title="Account Stats"
-                textColour="white"
-                accentColour="red"
-                backgroundColour="black"
-            />
-            {userLoggedIn ? (
-                fetchingUserData ? (
-                    <LoaderBlack />
-                ) : (
-                    <div className="stats">
-                        <div className="stats-item">
-                            <p>Global Rank</p>
+        <section className="account-stats">
+            {userName ? (
+                <>
+                    <h5>{userName}</h5>
+                    {fetchingUserData ? (
+                        <LoaderWhite />
+                    ) : (
+                        <>
+                        <div className="stat-box">
+                            <h3>Global Rank</h3>
                             <h1>{userPosition ? userPosition : '0'}</h1>
                         </div>
-                        <div className="stats-item">
-                            <p>Points</p>
+                        <div className="stat-box">
+                            <h3>Points Scored This Season</h3>
                             <h1>{userPoints ? userPoints : '0'}</h1>
                         </div>
-                        <div className="stats-item">
-                            <p>Average points per weekend</p>
+                        <div className="stat-box">
+                            <h3>Average Points Per Prediction</h3>
                             <h1>{userAveragePoints ? userAveragePoints : '0'}</h1>
                         </div>
-                    </div>
-                )
+                        </>
+                    )}                   
+                </>
             ) : (
-                <Link to='/login' className="link">
-                    <button className="stats-locked btn btn-black center">
-                        <LockIcon />
-                        <h3>Login to view your stats</h3>
-                    </button>
+                <Link to={'/login'} className="link feature-locked">
+                    <h3>Login to view your stats</h3>
+                    <RightChevronIcon />
                 </Link>
             )}
         </section>
