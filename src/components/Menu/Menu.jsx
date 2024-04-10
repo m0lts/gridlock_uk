@@ -6,8 +6,6 @@ export const Menu = () => {
 
     const location = useLocation()
 
-    const userLoggedIn = localStorage.getItem('user');
-
     return (
         <nav className="menu">
             <ul className="menu-list">

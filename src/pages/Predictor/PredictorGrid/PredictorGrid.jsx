@@ -1,7 +1,6 @@
 // Dependencies
 import { useEffect, useState } from 'react';
 // Components
-import { LockIcon } from '../../../components/Icons/Icons';
 import { LoaderWhite } from '../../../components/Loader/Loader';
 // Utils
 import { getTeamColour } from '../../../utils/getTeamColour';
@@ -32,6 +31,11 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     const [selectedDrivers, setSelectedDrivers] = useState(Array(10).fill(null));
     
     const handleGridItemClick = (index) => {
+
+        if (qualiTime < Date.now()) {
+            return;
+        }
+
         if (selectedDrivers[index]) {
             setDrivers(prevDrivers => [...prevDrivers, selectedDrivers[index]]);
             setSelectedDrivers(prevSelectedDrivers => {

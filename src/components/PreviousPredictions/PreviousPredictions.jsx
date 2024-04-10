@@ -256,11 +256,18 @@ export const PreviousPredictions = ({ seasonData, userEmail }) => {
         return points;
     }
 
+    const checkQualifyingEvent = (event) => {
+        const qualifyingEvent = event.events.find(e => e.type === 'Qualifying');
+        const qualifyingCompleted = qualifyingEvent.status === 'Completed' ? true : false;
+        return qualifyingCompleted;
+    }
+
+
     return (
         <div className="previous-predictions">
             {(seasonData.length > 0 && userPoints.length > 0) ? (
                 seasonData.map((event, index) => (
-                    <div className={`event ${expandedEvents[index] && 'expanded'} ${event.status === 'Scheduled' && 'unavailable'}`} key={index} onClick={() => handleClick(index, event.competitionId, event.events.find(e => e.type === 'Race').id)}>
+                    <div className={`event ${expandedEvents[index] && 'expanded'} ${!checkQualifyingEvent(event) && 'unavailable'}`} key={index} onClick={() => handleClick(index, event.competitionId, event.events.find(e => e.type === 'Race').id)}>
                         <div className="competition-bar">
                             <div className='left'>
                                 <h3>R{index + 1}</h3>

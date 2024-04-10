@@ -43,7 +43,6 @@ export default function App() {
         if (response.ok) {
               const responseData = await response.json();
               const data = responseData.result.response;
-              console.log(data);
 
               if (apiRequest.includes('races')) {
                 setReturnedEventData(filterEventResponse(data));
