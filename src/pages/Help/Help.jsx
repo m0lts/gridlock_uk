@@ -12,11 +12,22 @@ export const HelpPage = () => {
 
     return (
         <section className='help-page'>
-            <GetInTouch
-                user={user}
-            />
-            <HowToPlay />
-            <Disclaimer />
+            {userLoggedIn ? (
+                <>
+                    <GetInTouch
+                        user={user}
+                    />
+                    <HowToPlay />
+                    <Disclaimer />
+                </>
+            ) : (
+                <>
+                    <div className="top-gradient">
+                        <HowToPlay />
+                    </div>
+                    <Disclaimer />
+                </>
+            )}
         </section>
     )
 }

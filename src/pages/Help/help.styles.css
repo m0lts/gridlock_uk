@@ -10,3 +10,9 @@
     background: linear-gradient(to top, transparent, var(--black));
     margin-bottom: 5em;
 }
+.help-page .top-gradient {
+    background: linear-gradient(to bottom, transparent, var(--black));
+}
+.help-page .top-gradient .how-to-play {
+    background: none;
+}
