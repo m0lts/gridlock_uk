@@ -64,7 +64,7 @@ export const VerifyAccount = () => {
             <h1 style={{ marginBottom : '1rem' }} className="title">Verify Account</h1>
             {userVerified ? (
                 <>
-                    <p style={{ marginBottom : '1rem' }}>Thank you for verifying your account.</p>
+                    <p style={{ marginBottom : '1rem', color: 'var(--white)' }}>Thank you for verifying your account.</p>
                     <Link to='/'className="forgot-password-link">
                             Return to Homepage
                     </Link>

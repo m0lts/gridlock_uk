@@ -26,7 +26,9 @@ export const AccountStats = ({ userName }) => {
 
 
     const configPosition = (position) => {
-        if (position === 1) {
+        if (position === 0) {
+            return '-';
+        } else if (position === 1) {
             return `${position}st`;
         } else if (position === 2) {
             return `${position}nd`;
@@ -73,7 +75,12 @@ export const AccountStats = ({ userName }) => {
                         
                         const userWeekends = rawStandings.filter(entry => entry.userName === userName);
                         const userWeekendPoints = userWeekends.flatMap(weekend => weekend.points.map(point => point.points));
-                        const averagePoints = userWeekendPoints.reduce((a, b) => a + b, 0) / userWeekendPoints.length;
+                        let averagePoints;
+                        if (userWeekendPoints.length === 0) {
+                            averagePoints = 0;
+                        } else {
+                            averagePoints = userWeekendPoints.reduce((a, b) => a + b, 0) / userWeekendPoints.length;
+                        }                        
                         const formattedAveragePoints = averagePoints % 1 === 0 ? averagePoints.toFixed(0) : averagePoints.toFixed(2);
                         setUserAveragePoints(formattedAveragePoints);
                         

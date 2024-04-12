@@ -23,11 +23,13 @@ export const Standings = () => {
     const leaguesData = sessionStorage.getItem('leaguesData');
     const [standings, setStandings] = useState(standingsData ? JSON.parse(standingsData) : []);
     const [leagues, setLeagues] = useState(leaguesData ? JSON.parse(leaguesData) : []);
+    const [loadingPrivateLeagues, setLoadingPrivateLeagues] = useState(false);
     const [standingsUpdateTime, setStandingsUpdateTime] = useState(sessionStorage.getItem('standingsUpdateTime') ? new Date(sessionStorage.getItem('standingsUpdateTime')).toLocaleString() : '');
     const [leaguesUpdateTime, setLeaguesUpdateTime] = useState(sessionStorage.getItem('leaguesUpdateTime') ? new Date(sessionStorage.getItem('leaguesUpdateTime')).toLocaleString() : '');
 
     useEffect(() => {
         const fetchStandingsAndLeagues = async () => {
+            setLoadingPrivateLeagues(true);
             try {
                 const standingsResponse = await fetch('/api/points/handlePointsCollection', {
                     method: 'POST',
@@ -76,15 +78,18 @@ export const Standings = () => {
                             sessionStorage.setItem('leaguesData', JSON.stringify(updatedLeagues));
                             setLeaguesUpdateTime(new Date().toLocaleString());
                             sessionStorage.setItem('leaguesUpdateTime', new Date().toLocaleString());
+                            setLoadingPrivateLeagues(false);
                         }
                         
                     } catch (error) {
                         console.error('Error fetching data:', error);
+                        setLoadingPrivateLeagues(false);
                     }
                 }
 
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setLoadingPrivateLeagues(false);
             }
         };
 
@@ -124,7 +129,6 @@ export const Standings = () => {
 
     }, [userName]);
 
-    
     const configUserPosition = (array) => {
         const userIndex = array.findIndex(entry => entry.username === userName);
         return userIndex !== -1 ? userIndex + 1 : 0
@@ -209,7 +213,7 @@ export const Standings = () => {
                             <p className='last-updated-msg'>Last updated: {leaguesUpdateTime}</p>
                         </div>
                         <div className="leagues">
-                            {leagues.length > 0 ? (
+                            {(leagues.length > 0 && !loadingPrivateLeagues) ? (
                                 leagues.map((league, index) => (
                                     <Link key={index} className="league link" to={`/standings/${league.leagueName}`} state={{ name: league.leagueName, standings: league.leagueMembers, admin: league.leagueAdmin, updateTime: leaguesUpdateTime, user: userName, code: league._id }}>
                                         <div className='left'>
@@ -219,8 +223,10 @@ export const Standings = () => {
                                         <RightChevronIcon />
                                     </Link>
                                 ))
-                            ) : (
+                            ) : leagues.length === 0 && loadingPrivateLeagues ? (
                                 <LoaderWhite />
+                            ) : (
+                                <p className='no-leagues-msg' style={{ color: 'var(--white)', fontSize: '12px' }}>Your private leagues will appear here if you create or join one.</p>
                             )}
                         </div>
                     </>

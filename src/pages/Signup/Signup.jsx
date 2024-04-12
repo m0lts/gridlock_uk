@@ -117,7 +117,7 @@ export default function SignUp({ seasonData }) {
                 {formSubmitted ? (
                     signUpSuccess ? (
                         <div className="sign-up-success">
-                            <p style={{ marginBottom: '1rem'}}>We have sent you an email to verify your account. You won't be able to submit a prediction until your account is verified. If you haven't received an email, ensure you check your spam/junk mailbox.</p>
+                            <p style={{ marginBottom: '1rem', color: 'var(--white)' }}>We have sent you an email to verify your account. You won't be able to submit a prediction until your account is verified. If you haven't received an email, ensure you check your spam/junk mailbox.</p>
                             <Link to='/' className="forgot-password-link">Go to homepage</Link>
                         </div>
                     ) : (

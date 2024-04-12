@@ -25,7 +25,7 @@ export default async function handler(request, response) {
             if (userStandings) {
                 response.status(200).json(userStandings.points);
             } else {
-                response.status(201).json({ message: 'No prediction submitted for this race.' });
+                response.status(201).json({ message: 'No predictions to display.' });
             }            
 
         } else {
