@@ -96,9 +96,9 @@ export const getCompetitionTime = (competition) => {
         const startTime = date.toLocaleString('en-GB', {
             hour: '2-digit',
             minute: '2-digit'
-        });
+        }); 
         const finishTime = new Date(date);
-        finishTime.setHours(finishTime.getMinutes() + 44);
+        finishTime.setMinutes(finishTime.getMinutes() + 44);
 
         return `${startTime}-${finishTime.toLocaleString('en-GB', {
             hour: '2-digit',
