@@ -1,6 +1,6 @@
 .parallelogram {
-    width: 15px;
-    height: 10px;
+    width: 10px;
+    height: 7px;
     background-color: var(--black);
     -webkit-transform: skew(-30deg);
     -moz-transform: skew(-30deg);

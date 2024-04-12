@@ -1,5 +1,5 @@
 .calendar {
-    margin-bottom: 5em;
+    margin-bottom: 50px;
 }
 .calendar .back-button {
     padding: 5px 2.5%;
@@ -48,4 +48,7 @@
 .calendar .other-events .next-event-box {
     margin:0;
     width:100%;
+}
+.calendar .next-event {
+    padding-bottom: 2em;
 }

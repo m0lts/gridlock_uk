@@ -31,7 +31,7 @@
     align-items: center;
 }
 .driver-grid.small .driver-position {
-    width:10%;
+    width:5%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,6 +43,8 @@
     border-left:5px solid var(--white);
     border-radius: 0 5px 5px 0;
     width:100%;
+    max-width: 100px;
+    min-width: 100px;
     color: var(--white);
     display: flex;
     justify-content: flex-start;

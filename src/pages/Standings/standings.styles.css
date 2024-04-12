@@ -42,6 +42,9 @@
     justify-content: flex-start;
     gap:1em;
 }
+.standings .leagues-section .leagues .league .left p {
+    font-size: 14px;
+}
 .standings .leagues-section .leagues .league .position-box {
     background-color: var(--black);
     min-width:50px;
