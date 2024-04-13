@@ -102,7 +102,11 @@
 }
 .driver-grid.large .driver-details .driver-name {
     display: flex;
-    gap:0.5em;
+    align-items: center;
+    gap:5px;
+}
+.driver-grid.large .driver-details .driver-name h3 {
+    font-size: 16px;
 }
 .driver-grid.large .driver-details .driver-image {
     width:50px;

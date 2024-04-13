@@ -36,7 +36,10 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 0.25em;
+    gap: 5px;
+}
+.predictor-grid .selected-grid-item .name h3 {
+    font-size: 16px;
 }
 .predictor-grid .selected-grid-item .image {
     width:50px;
