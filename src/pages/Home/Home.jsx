@@ -8,6 +8,8 @@ import { NextEventDefault } from '../../components/NextEventBox/NextEventDefault
 import { AccountStats } from '../../components/AccountStats/AccountStats'
 import { GearIcon, StatsIcon } from '../../components/Icons/Icons'
 import { LoaderWhite } from '../../components/Loader/Loader'
+// Utils
+import { getTokenFromCookie } from '../../utils/cookieFunctions'
 // Styles
 import './home.styles.css'
 
@@ -32,6 +34,7 @@ export const Home = ({ seasonData, driverData }) => {
         }
         checkForUpdateModal();
     }, [])
+
 
     useEffect(() => {
         const findNextEvent = () => {

@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb";
 import bcrypt from 'bcrypt';
 import sendgrid from '@sendgrid/mail';
 import client from "@sendgrid/client";
+import jwt from "jsonwebtoken";
 
 
 // Send grid API key
@@ -102,7 +103,9 @@ export default async function handler(request, response) {
                 return;
             } else {
                 await dbCollection.insertOne(formData);
-                response.status(201).json({ message: 'Email successfully sent' });
+                const userDocument = await dbCollection.findOne({ email });
+                const jwtToken = jwt.sign({ email: userDocument.email, username: userDocument.username, user_id: userDocument._id, verified: userDocument.verified }, process.env.JWT_SECRET, { expiresIn: '1d' });
+                response.status(201).json({ jwtToken });
             }
 
             } else {

@@ -25,10 +25,12 @@ import { HelpPage } from './pages/Help/Help'
 import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
 // Styles
 import './assets/global.styles.css'
+import { getTokenFromCookie } from './utils/cookieFunctions'
 
 
 export default function App() {
 
+  // API request
   const [apiRequest, setApiRequest] = useState('races?season=2024&timezone=Europe/London');
   const [returnedEventData, setReturnedEventData] = useState([]);
   const [returnedDriverData, setReturnedDriverData] = useState([]);
@@ -66,6 +68,41 @@ export default function App() {
 
   }, [apiRequest])
 
+        // User data
+        const [userName, setUserName] = useState('');
+        const [userId, setUserId] = useState('');
+        const [verified, setVerified] = useState(false);
+        const [fetchingUserData, setFetchingUserData] = useState(true);
+    
+        useEffect(() => {
+            // Function to decode JWT token
+            const decodeToken = (token) => {
+                try {
+                    const tokenParts = token.split('.');
+                    const encodedPayload = tokenParts[1];
+                    const decodedPayload = atob(encodedPayload);
+                    return JSON.parse(decodedPayload);
+                } catch (error) {
+                    console.error('Error decoding token:', error);
+                    return null;
+                }
+            };
+    
+            // Retrieve JWT token from cookie
+            const token = getTokenFromCookie();
+    
+            // Decode JWT token to get user information
+            const decodedToken = decodeToken(token);
+            if (decodedToken && decodedToken.username) {
+                setUserName(decodedToken.username);
+                setUserId(decodedToken.user_id);
+                setVerified(decodedToken.verified);
+            }
+    
+            setFetchingUserData(false);
+        }, []);
+
+        console.log(userName, userId, verified)
 
   return (
     <div className="app">
