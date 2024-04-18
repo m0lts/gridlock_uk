@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 // Components
 import { LoaderWhite } from "../../components/Loader/Loader";
 // Utils
-import { saveTokenToCookie} from "../../utils/cookieFunctions";
+import { decodeToken, saveTokenToCookie} from "../../utils/cookieFunctions";
 
 
 
-export default function SignUp({ seasonData }) {
+export default function SignUp({ user, setUser }) {
 
     // SET STATES
     // For data packet to be sent to database
@@ -89,11 +89,9 @@ export default function SignUp({ seasonData }) {
             if (response.ok) {
                 const responseData = await response.json();
                 saveTokenToCookie(responseData.jwtToken);
-                console.log('Token:', responseData.jwtToken);
-                // WHEN USER SIGNS UP, REFRESH PAGE TO VERIFY TOKEN AND SEND USER TO HOMEPAGE
-                // setSignUpSuccess(true);
+                const decodedToken = decodeToken(responseData.jwtToken);
+                setUser(decodedToken);
                 navigate('/');
-                window.location.reload();
               } else if (response.status === 400) {
                 // Email already taken
                 setEmailError('* Email already in use.');
@@ -121,14 +119,6 @@ export default function SignUp({ seasonData }) {
             <div className="body">
                 <h1 className="title">{signUpSuccess ? 'Success!' : 'Sign Up'}</h1>
                 {formSubmitted ? (
-                    // signUpSuccess ? (
-                    //     <div className="sign-up-success">
-                    //         <p style={{ marginBottom: '1rem', color: 'var(--white)' }}>We have sent you an email to verify your account. You won't be able to submit a prediction until your account is verified. If you haven't received an email, ensure you check your spam/junk mailbox.</p>
-                    //         <Link to='/' className="forgot-password-link">Go to homepage</Link>
-                    //     </div>
-                    // ) : (
-                    //     <LoaderWhite />
-                    // )
                     <LoaderWhite />
                 ) : (
                 <form className="account-form" onSubmit={handleSubmit}>

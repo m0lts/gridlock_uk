@@ -25,7 +25,7 @@ import { HelpPage } from './pages/Help/Help'
 import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
 // Styles
 import './assets/global.styles.css'
-import { getTokenFromCookie } from './utils/cookieFunctions'
+import { decodeToken, getTokenFromCookie } from './utils/cookieFunctions'
 
 
 export default function App() {
@@ -68,61 +68,44 @@ export default function App() {
 
   }, [apiRequest])
 
-        // User data
-        const [userName, setUserName] = useState('');
-        const [userId, setUserId] = useState('');
-        const [verified, setVerified] = useState(false);
-        const [fetchingUserData, setFetchingUserData] = useState(true);
-    
-        useEffect(() => {
-            // Function to decode JWT token
-            const decodeToken = (token) => {
-                try {
-                    const tokenParts = token.split('.');
-                    const encodedPayload = tokenParts[1];
-                    const decodedPayload = atob(encodedPayload);
-                    return JSON.parse(decodedPayload);
-                } catch (error) {
-                    console.error('Error decoding token:', error);
-                    return null;
-                }
-            };
-    
-            // Retrieve JWT token from cookie
-            const token = getTokenFromCookie();
-    
-            // Decode JWT token to get user information
-            const decodedToken = decodeToken(token);
-            if (decodedToken && decodedToken.username) {
-                setUserName(decodedToken.username);
-                setUserId(decodedToken.user_id);
-                setVerified(decodedToken.verified);
-            }
-    
-            setFetchingUserData(false);
-        }, []);
+  // User data
+  const [user, setUser] = useState(null);
 
-        console.log(userName, userId, verified)
+  useEffect(() => {
+    // Retrieve JWT token from cookie
+    const token = getTokenFromCookie();
+    if (!token) {
+        return;
+    }
+
+    // Decode JWT token to get user information
+    const decodedToken = decodeToken(token);
+    if (decodedToken) {
+        setUser(decodedToken);
+    }
+  }, []);
+
+  console.log(user)
 
   return (
     <div className="app">
-      <Header />
+      <Header user={user} />
       {/* <MaintenancePage /> */}
       <Routes>
-        <Route path="/" element={<Home seasonData={returnedEventData} driverData={returnedDriverData} />} />
-        <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} />} />
-        <Route path="/calendar" element={<Calendar seasonData={returnedEventData} />} />
-        <Route path="/standings" element={<Standings />} />
-        <Route path="/standings/:leagueName" element={<LeagueStandings />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp seasonData={returnedEventData} />} />
-        <Route path='/forgotpassword' element={<ForgotPassword />} />
-        <Route path='/resetpassword' element={<ResetPassword />} />
-        <Route path='/verifyaccount' element={<VerifyAccount />} />
-        <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} />} /> 
-        <Route path='/event/:event' element={<EventPage />} />
+        <Route path="/" element={<Home seasonData={returnedEventData} driverData={returnedDriverData} user={user} />} />
+        <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} user={user} />} />
+        <Route path="/calendar" element={<Calendar seasonData={returnedEventData} user={user} />} />
+        <Route path="/standings" element={<Standings user={user} />} />
+        <Route path="/standings/:leagueName" element={<LeagueStandings user={user} />} />
+        <Route path="/login" element={<LogIn user={user} setUser={setUser} />} />
+        <Route path="/signup" element={<SignUp seasonData={returnedEventData} setUser={setUser} user={user} />} />
+        <Route path='/forgotpassword' element={<ForgotPassword user={user} />} />
+        <Route path='/resetpassword' element={<ResetPassword user={user} />} />
+        <Route path='/verifyaccount' element={<VerifyAccount user={user} />} />
+        <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} user={user} />} /> 
+        <Route path='/event/:event' element={<EventPage user={user} />} />
         <Route path='/session-result/:sessionId' element={<SessionResult />} />
-        <Route path='/help' element={<HelpPage />} />
+        <Route path='/help' element={<HelpPage user={user} />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />

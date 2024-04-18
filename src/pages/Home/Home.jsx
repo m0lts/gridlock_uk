@@ -8,21 +8,15 @@ import { NextEventDefault } from '../../components/NextEventBox/NextEventDefault
 import { AccountStats } from '../../components/AccountStats/AccountStats'
 import { GearIcon, StatsIcon } from '../../components/Icons/Icons'
 import { LoaderWhite } from '../../components/Loader/Loader'
-// Utils
-import { getTokenFromCookie } from '../../utils/cookieFunctions'
 // Styles
 import './home.styles.css'
 
 
-export const Home = ({ seasonData, driverData }) => {
+export const Home = ({ seasonData, driverData, user }) => {
 
     const [nextEvent, setNextEvent] = useState([]);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [roundNumber, setRoundNumber] = useState(0);
-
-    const userLoggedIn = localStorage.getItem('user');
-    const user = JSON.parse(userLoggedIn);
-    const userName = user ? user.username : null;
 
     useEffect(() => {
         const checkForUpdateModal = () => {
@@ -65,9 +59,9 @@ export const Home = ({ seasonData, driverData }) => {
                         roundNumber={roundNumber}
                     />
                     <AccountStats
-                        userName={userName}
+                        username={user ? user.username : null}
                     />
-                    {userName && (
+                    {user && (
                         <div className="middle-section">
                             <div className="two-buttons">
                                 <button className="btn black">

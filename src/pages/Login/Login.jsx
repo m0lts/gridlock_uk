@@ -3,11 +3,13 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 // Components
 import { LoaderWhite } from "../../components/Loader/Loader";
+// Utils
+import { decodeToken, saveTokenToCookie } from "../../utils/cookieFunctions";
 // Styles
 import './login.styles.css';
 
 
-export default function LogIn() {
+export default function LogIn({ user, setUser }) {
 
     // SET NAVIGATE
     const navigate = useNavigate();
@@ -67,8 +69,9 @@ export default function LogIn() {
             // Handle relative responses and edit modal message.
             if (response.ok) {
                 const responseData = await response.json();
-                delete responseData.userRecord.password;
-                localStorage.setItem('user', JSON.stringify(responseData.userRecord));
+                saveTokenToCookie(responseData.jwtToken);
+                const decodedToken = decodeToken(responseData.jwtToken);
+                setUser(decodedToken);
                 navigate('/');
               } else if (response.status === 400) {
                 setFormSubmitted(false);

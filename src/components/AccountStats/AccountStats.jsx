@@ -4,15 +4,28 @@ import { Link } from "react-router-dom";
 // Components
 import { RightChevronIcon } from "../Icons/Icons";
 import { LoaderWhite } from "../Loader/Loader";
+// Utils
+import { decodeToken, getTokenFromCookie } from '../../utils/cookieFunctions';
 // Styles
 import './account-stats.styles.css'
 
-export const AccountStats = ({ userName }) => {
+export const AccountStats = ({ username }) => {
 
-    // Get user data from local storage
-    const storedUser = localStorage.getItem('user');
-    const user = storedUser ? JSON.parse(storedUser) : null;
-    const storedUsername = user ? user.username : null;
+    const [storedUsername, setStoredUsername] = useState(null);
+
+    useEffect(() => {
+        // Retrieve JWT token from cookie
+        const token = getTokenFromCookie();
+        if (!token) {
+            return;
+        }
+    
+        // Decode JWT token to get user information
+        const decodedToken = decodeToken(token);
+        if (decodedToken) {
+            setStoredUsername(decodedToken.username);
+        }
+    }, []);
 
     // Get data from session storage
     const storedUserPosition = sessionStorage.getItem('userPosition');
@@ -20,9 +33,9 @@ export const AccountStats = ({ userName }) => {
     const storedUserAveragePoints = sessionStorage.getItem('userAveragePoints');
 
     const [fetchingUserData, setFetchingUserData] = useState(false);
-    const [userPosition, setUserPosition] = useState((storedUserPosition && storedUsername === userName) ? storedUserPosition : '-');
-    const [userPoints, setUserPoints] = useState((storedUserPoints && storedUsername === userName) ? storedUserPoints : '-');
-    const [userAveragePoints, setUserAveragePoints] = useState((storedUserAveragePoints && storedUsername === userName) ? storedUserAveragePoints : '-');
+    const [userPosition, setUserPosition] = useState((storedUserPosition && storedUsername === username) ? storedUserPosition : '-');
+    const [userPoints, setUserPoints] = useState((storedUserPoints && storedUsername === username) ? storedUserPoints : '-');
+    const [userAveragePoints, setUserAveragePoints] = useState((storedUserAveragePoints && storedUsername === username) ? storedUserAveragePoints : '-');
 
 
     const configPosition = (position) => {
@@ -67,13 +80,13 @@ export const AccountStats = ({ userName }) => {
                             }
                             return a.username.localeCompare(b.username);
                         });
-                        const userIndex = sortedStandings.findIndex(entry => entry.username === userName);
+                        const userIndex = sortedStandings.findIndex(entry => entry.username === username);
                         setUserPosition(configPosition(userIndex !== -1 ? userIndex + 1 : 0));
                         
                         const userPoints = userIndex !== -1 ? sortedStandings[userIndex].totalPoints : 0;
                         setUserPoints(userPoints);
                         
-                        const userWeekends = rawStandings.filter(entry => entry.userName === userName);
+                        const userWeekends = rawStandings.filter(entry => entry.userName === username);
                         const userWeekendPoints = userWeekends.flatMap(weekend => weekend.points.map(point => point.points));
                         let averagePoints;
                         if (userWeekendPoints.length === 0) {
@@ -84,7 +97,7 @@ export const AccountStats = ({ userName }) => {
                         const formattedAveragePoints = averagePoints % 1 === 0 ? averagePoints.toFixed(0) : averagePoints.toFixed(2);
                         setUserAveragePoints(formattedAveragePoints);
                         
-                        if (storedUsername === userName) {
+                        if (storedUsername === username) {
                             sessionStorage.setItem('userPosition', configPosition(userIndex !== -1 ? userIndex + 1 : 0));
                             sessionStorage.setItem('userPoints', userPoints);
                             sessionStorage.setItem('userAveragePoints', formattedAveragePoints);
@@ -103,7 +116,7 @@ export const AccountStats = ({ userName }) => {
                 setFetchingUserData(false);
             }
         }   
-        if (userName) {
+        if (username) {
             fetchStandings();
             if (!storedUserPosition || !storedUserPoints || !storedUserAveragePoints) {
                 setFetchingUserData(true);
@@ -117,9 +130,9 @@ export const AccountStats = ({ userName }) => {
 
     return (
         <section className="account-stats">
-            {userName ? (
+            {username ? (
                 <>
-                    <h5>{userName}</h5>
+                    <h5>{username}</h5>
                     {fetchingUserData ? (
                         <LoaderWhite />
                     ) : (

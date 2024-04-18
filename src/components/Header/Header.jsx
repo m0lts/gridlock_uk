@@ -4,15 +4,12 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 // Components
 import { AccountIcon } from '../Icons/Icons'
 import { DefaultLogo } from '../Logos/Logos'
+// Utils
+import { removeTokenFromCookie } from '../../utils/cookieFunctions'
 // Styles
 import './header.styles.css'
 
-export const Header = () => {
-
-    // Get user data from local storage
-    const storedUser = localStorage.getItem('user');
-    const user = storedUser ? JSON.parse(storedUser) : null;
-    const storedUsername = user ? user.username : null;
+export const Header = ({ user }) => {
 
     const [showAccountMenu, setShowAccountMenu] = useState(false);
 
@@ -20,7 +17,7 @@ export const Header = () => {
     const location = useLocation();
 
     const handleLogout = () => {
-        localStorage.removeItem('user');
+        removeTokenFromCookie();
         navigate('/');
         window.location.reload();
     }
@@ -29,7 +26,7 @@ export const Header = () => {
     return (
         <header className="header">
             <DefaultLogo />
-            {storedUsername ? (
+            {user ? (
                 <div className="account-icon" onClick={() => setShowAccountMenu(!showAccountMenu)}>
                     <AccountIcon />
                 </div>

@@ -18,3 +18,16 @@ export const getTokenFromCookie = () => {
 export const removeTokenFromCookie = () => {
     document.cookie = 'jwtToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
 };
+
+// Function to decode JWT token
+export const decodeToken = (token) => {
+    try {
+        const tokenParts = token.split('.');
+        const encodedPayload = tokenParts[1];
+        const decodedPayload = atob(encodedPayload);
+        return JSON.parse(decodedPayload);
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
+};
