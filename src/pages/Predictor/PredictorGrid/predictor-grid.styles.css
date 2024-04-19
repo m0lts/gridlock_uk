@@ -62,6 +62,7 @@
     z-index:10;
     padding:2em;
     padding-bottom: 5em;
+    margin-bottom: 50px;
     overflow: scroll;
     display: flex;
     flex-direction: column;
