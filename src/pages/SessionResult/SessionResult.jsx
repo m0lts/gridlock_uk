@@ -57,8 +57,15 @@ export const SessionResult = () => {
 
                 if (response.ok) {
                     const responseData = await response.json();
-                    const thirdQualifyingResultId = responseData.result.response.filter(result => result.type === '3rd Qualifying')[0].id;
-                    const secondQualifyingResultId = responseData.result.response.filter(result => result.type === '2nd Qualifying')[0].id;
+                    let thirdQualifyingResultId;
+                    let secondQualifyingResultId;
+                    if (inheritedState.type === 'Qualifying') {
+                        thirdQualifyingResultId = responseData.result.response.filter(result => result.type === '3rd Qualifying')[0].id;
+                        secondQualifyingResultId = responseData.result.response.filter(result => result.type === '2nd Qualifying')[0].id;
+                    } else {
+                        thirdQualifyingResultId = responseData.result.response.filter(result => result.type === '3rd Sprint Shootout')[0].id;
+                        secondQualifyingResultId = responseData.result.response.filter(result => result.type === '2nd Sprint Shootout')[0].id;
+                    }
                     const secondResponse = await fetch('/api/externalData/CallApi.js', {
                         method: 'POST',
                         headers: {
