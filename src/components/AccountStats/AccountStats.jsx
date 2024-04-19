@@ -125,7 +125,7 @@ export const AccountStats = ({ username }) => {
             }
         }
 
-    }, [])
+    }, [storedUsername])
     
 
     return (

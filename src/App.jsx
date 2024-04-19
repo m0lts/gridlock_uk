@@ -26,6 +26,7 @@ import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResp
 // Styles
 import './assets/global.styles.css'
 import { decodeToken, getTokenFromCookie } from './utils/cookieFunctions'
+import { VerificationModal } from './components/VerificationModal/VerificationModal'
 
 
 export default function App() {
@@ -70,6 +71,7 @@ export default function App() {
 
   // User data
   const [user, setUser] = useState(null);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
 
   useEffect(() => {
     // Retrieve JWT token from cookie
@@ -81,7 +83,10 @@ export default function App() {
     // Decode JWT token to get user information
     const decodedToken = decodeToken(token);
     if (decodedToken) {
-        setUser(decodedToken);
+      setUser(decodedToken);
+      if (decodedToken.verified === false) {
+        setShowVerificationModal(true);
+      }
     }
   }, []);
 
@@ -109,6 +114,13 @@ export default function App() {
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />
+      {showVerificationModal && 
+        <VerificationModal 
+          user={user}
+          setShowModal={setShowVerificationModal}
+          showModal={showVerificationModal}
+        />
+      }
     </div>
   )
 }

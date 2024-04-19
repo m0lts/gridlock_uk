@@ -25,10 +25,10 @@
     border-radius: 5px;
 }
 .get-in-touch .report-form textarea:focus {
-    outline: 2px solid var(--blue);
+    outline: 2px solid var(--white);
 }
 .get-in-touch .uploading {
     text-align: center;
     margin:2rem 0;
-    color: var(--blue);
+    color: var(--white);
 }

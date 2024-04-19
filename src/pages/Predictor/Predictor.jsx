@@ -12,22 +12,19 @@ import { CircuitInformation } from '../../components/CircuitInformation/CircuitI
 import './predictor.styles.css'
 
 
-export const Predictor = ({ seasonData, driverData }) => {
+export const Predictor = ({ seasonData, driverData, user }) => {
 
-    // Check if user is logged in and verified
-    const userLoggedIn = localStorage.getItem('user');
-    const user = JSON.parse(userLoggedIn);
     const [userVerified, setUserVerified] = useState(true);
     const [verifyButtonText, setVerifyButtonText] = useState();
 
     // On page load, check if user is verified
     useEffect(() => {
-        if (userLoggedIn) {
+        if (user) {
             if (!user.verified) {
                 setUserVerified(false);
             }
         }
-    }, [userLoggedIn])
+    }, [user])
 
     // Resend verification link if user is not verified
     const handleSendVerificationLink = async () => {
@@ -87,7 +84,7 @@ export const Predictor = ({ seasonData, driverData }) => {
                     />
 
                     {/* Check if user is logged in and verified */}
-                    {userLoggedIn && userVerified ? (
+                    {user && userVerified ? (
                         <>
                             <div className="predictions">
                                 <PredictorGrid
@@ -99,7 +96,7 @@ export const Predictor = ({ seasonData, driverData }) => {
                                 />
                             </div>
                         </>
-                    ) : !userVerified && userLoggedIn ? (
+                    ) : !userVerified && user ? (
                         <div className='feature-locked-cont' onClick={handleSendVerificationLink}>
                             <div className='feature-locked'>
                                 {verifyButtonText ? (
@@ -112,7 +109,7 @@ export const Predictor = ({ seasonData, driverData }) => {
                                 )}
                             </div>
                         </div>
-                    ) : !userLoggedIn && (
+                    ) : !user && (
                         <div className="feature-locked-cont">
                             <Link to={"/login"} className='link feature-locked'>
                                 <h3>Login to make a prediction</h3>
@@ -130,7 +127,7 @@ export const Predictor = ({ seasonData, driverData }) => {
                     </div>
 
                     {/* Only show previous predictions if user logged in and verified */}
-                    {(userLoggedIn && userVerified) ? (
+                    {(user && userVerified) ? (
                         <div className="bottom-section">
                             <h2 style={{ marginBottom: '0.5em' }}>Your Previous Predictions</h2>
                             <PreviousPredictions

@@ -11,21 +11,16 @@ import { CreateLeagueModal } from '../../components/LeagueOptions/CreateLeagueMo
 import './standings.styles.css'
 
 
-export const Standings = () => {
+export const Standings = ({ user }) => {
     
-    const userLoggedIn = localStorage.getItem('user');
-    const user = JSON.parse(userLoggedIn);
-    const userVerified = user ? user.verified : false;
-    const userName = user ? user.username : null;
-
     // Sort standings and league data
     const standingsData = sessionStorage.getItem('standingsData');
     const leaguesData = sessionStorage.getItem('leaguesData');
     const [standings, setStandings] = useState(standingsData ? JSON.parse(standingsData) : []);
     const [leagues, setLeagues] = useState(leaguesData ? JSON.parse(leaguesData) : []);
     const [loadingPrivateLeagues, setLoadingPrivateLeagues] = useState(false);
-    const [standingsUpdateTime, setStandingsUpdateTime] = useState(sessionStorage.getItem('standingsUpdateTime') ? new Date(sessionStorage.getItem('standingsUpdateTime')).toLocaleString() : '');
-    const [leaguesUpdateTime, setLeaguesUpdateTime] = useState(sessionStorage.getItem('leaguesUpdateTime') ? new Date(sessionStorage.getItem('leaguesUpdateTime')).toLocaleString() : '');
+    const [standingsUpdateTime, setStandingsUpdateTime] = useState(sessionStorage.getItem('standingsUpdateTime') ? sessionStorage.getItem('leaguesUpdateTime') : '');
+    const [leaguesUpdateTime, setLeaguesUpdateTime] = useState(sessionStorage.getItem('leaguesUpdateTime') ? sessionStorage.getItem('leaguesUpdateTime') : '');
 
     useEffect(() => {
         const fetchStandingsAndLeagues = async () => {
@@ -57,7 +52,7 @@ export const Standings = () => {
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({ user: userName }),
+                            body: JSON.stringify({ user: user.username }),
                         });
                         if (leaguesResponse.status === 200) {
                             const leaguesData = await leaguesResponse.json();
@@ -121,16 +116,16 @@ export const Standings = () => {
             }
         };
 
-        if (userName) {
+        if (user) {
             fetchStandingsAndLeagues();
         } else {
             fetchStandingsOnly();
         }
 
-    }, [userName]);
+    }, [user]);
 
     const configUserPosition = (array) => {
-        const userIndex = array.findIndex(entry => entry.username === userName);
+        const userIndex = array.findIndex(entry => entry.username === user.username);
         return userIndex !== -1 ? userIndex + 1 : 0
     }
 
@@ -161,12 +156,18 @@ export const Standings = () => {
         <section className='standings'>
 
             {/* User's Gridlock stats */}
-            <AccountStats 
-                userName={userName}
-            />
+            {user ? (
+                <AccountStats 
+                    username={user.username}
+                />
+            ) : (
+                <AccountStats
+                    username={null}
+                />
+            )}
 
             {/* Check if user is verified before showing league options buttons */}
-            {userVerified && userLoggedIn ? (
+            {user && user.verified ? (
                 <div className="two-buttons">
                     <button className="btn black" onClick={() => setShowJoinLeague(!showJoinLeague)}>
                         <PlusIcon />
@@ -177,7 +178,7 @@ export const Standings = () => {
                         Create a league
                     </button>
                 </div>
-            ) : userLoggedIn && !userVerified ? (
+            ) : user && !user.verified ? (
                 <div className="two-buttons">
                     <button className="btn white" style={{ width: '100%' }} onClick={handleSendVerificationLink}>
                         {verifyButtonText}
@@ -200,34 +201,34 @@ export const Standings = () => {
                 <div className="leagues">
                     <Link className="league link" to={'/standings/global'} state={{ name: 'Global', standings: standings, admin: null, updateTime: standingsUpdateTime }}>
                         <div className='left'>
-                            <h3 className='position-box'>{standings.length > 0 && userLoggedIn ? configUserPosition(standings) : '-'}</h3>
+                            <h3 className='position-box'>{standings.length > 0 && user ? configUserPosition(standings) : '-'}</h3>
                             <p>Global</p>
                         </div>
                         <RightChevronIcon />
                     </Link>
                 </div>
-                {userLoggedIn && userVerified && (
+                {user && user.verified && (
                     <>
                         <div className="subtitle">
                             <h3>Private Leagues</h3>
                             <p className='last-updated-msg'>Last updated: {leaguesUpdateTime}</p>
                         </div>
                         <div className="leagues">
-                            {(leagues.length > 0 && !loadingPrivateLeagues) ? (
-                                leagues.map((league, index) => (
-                                    <Link key={index} className="league link" to={`/standings/${league.leagueName}`} state={{ name: league.leagueName, standings: league.leagueMembers, admin: league.leagueAdmin, updateTime: leaguesUpdateTime, user: userName, code: league._id }}>
-                                        <div className='left'>
-                                            <h3 className='position-box'>{configUserPosition(league.leagueMembers)}</h3>
-                                            <p>{league.leagueName}</p>
-                                        </div>
-                                        <RightChevronIcon />
-                                    </Link>
-                                ))
-                            ) : leagues.length === 0 && loadingPrivateLeagues ? (
-                                <LoaderWhite />
-                            ) : (
-                                <p className='no-leagues-msg' style={{ color: 'var(--white)', fontSize: '12px' }}>Your private leagues will appear here if you create or join one.</p>
-                            )}
+                        {(leagues.length > 0 || (sessionStorage.getItem('leaguesData') && !loadingPrivateLeagues)) ? (
+                            leagues.map((league, index) => (
+                                <Link key={index} className="league link" to={`/standings/${league.leagueName}`} state={{ name: league.leagueName, standings: league.leagueMembers, admin: league.leagueAdmin, updateTime: leaguesUpdateTime, user: user.username, code: league._id }}>
+                                    <div className='left'>
+                                        <h3 className='position-box'>{configUserPosition(league.leagueMembers)}</h3>
+                                        <p>{league.leagueName}</p>
+                                    </div>
+                                    <RightChevronIcon />
+                                </Link>
+                            ))
+                        ) : (loadingPrivateLeagues ? (
+                            <LoaderWhite />
+                        ) : (
+                            <p className='no-leagues-msg' style={{ color: 'var(--white)', fontSize: '12px' }}>Your private leagues will appear here if you create or join one.</p>
+                        ))}
                         </div>
                     </>
                 )}
@@ -235,8 +236,8 @@ export const Standings = () => {
             <div className="bottom-filler"></div>
 
             {/* Modals for creating and joining a league */}
-            {showCreateLeague && <CreateLeagueModal setShowModal={setShowCreateLeague} showModal={showCreateLeague} userName={userName} />}
-            {showJoinLeague && <JoinLeagueModal setShowModal={setShowJoinLeague} showModal={showJoinLeague} userName={userName} />}
+            {showCreateLeague && <CreateLeagueModal setShowModal={setShowCreateLeague} showModal={showCreateLeague} userName={user.username} />}
+            {showJoinLeague && <JoinLeagueModal setShowModal={setShowJoinLeague} showModal={showJoinLeague} userName={user.username} />}
 
         </section>
     )
