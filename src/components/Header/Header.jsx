@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 // Components
 import { AccountIcon } from '../Icons/Icons'
-import { DefaultLogo } from '../Logos/Logos'
+import { DefaultLogo, NoLinkLogo } from '../Logos/Logos'
 // Utils
 import { removeTokenFromCookie } from '../../utils/cookieFunctions'
 // Styles
@@ -25,13 +25,17 @@ export const Header = ({ user }) => {
 
     return (
         <header className="header">
-            <DefaultLogo />
-            {user ? (
+            {location.pathname === '/verifyaccount' ? (
+                <NoLinkLogo />
+            ) : (
+                <DefaultLogo />
+            )}
+            {(location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/forgotpassword' || location.pathname === '/resetpassword' || location.pathname === '/verifyaccount') ? (
+                null
+            ) : user ? (
                 <div className="account-icon" onClick={() => setShowAccountMenu(!showAccountMenu)}>
                     <AccountIcon />
                 </div>
-            ) : (location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/forgotpassword' || location.pathname === '/resetpassword') ? (
-                null
             ) : (
                 <Link className='btn white link' to={'/login'}>
                     Login

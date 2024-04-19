@@ -49,8 +49,8 @@ export default async function handler(request, response) {
                 return;
             }
 
-            const generateRandomToken = (length) => {
-                const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+            const generateRandomCode = (length) => {
+                const characters = '0123456789'
                 let token = '';
                 for (let i = 0; i < length; i++) {
                     const randomIndex = Math.floor(Math.random() * characters.length);
@@ -59,10 +59,10 @@ export default async function handler(request, response) {
                 return token;
             };
 
-            const verificationToken = generateRandomToken(24);
-            formData.verificationToken = verificationToken;
+            const verificationCode = generateRandomCode(6);
+            formData.verificationToken = verificationCode;
 
-            const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
+            // const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
 
             const msg = {
                 to: email,
@@ -72,7 +72,7 @@ export default async function handler(request, response) {
                 },
                 templateId: 'd-f9b818d2289e4c2da46e434c87a9b9e9',
                 dynamic_template_data: {
-                    verificationLink: verificationLink,
+                    verificationLink: verificationCode,
                     username: formData.username
                 }
             };

@@ -91,7 +91,7 @@ export default function SignUp({ user, setUser }) {
                 saveTokenToCookie(responseData.jwtToken);
                 const decodedToken = decodeToken(responseData.jwtToken);
                 setUser(decodedToken);
-                navigate('/');
+                navigate('/verifyaccount');
               } else if (response.status === 400) {
                 // Email already taken
                 setEmailError('* Email already in use.');

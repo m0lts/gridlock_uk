@@ -133,24 +133,6 @@ export const Standings = ({ user }) => {
     // League creation and joining functionality
     const [showCreateLeague, setShowCreateLeague] = useState(false);
     const [showJoinLeague, setShowJoinLeague] = useState(false);
-    const [verifyButtonText, setVerifyButtonText] = useState('Please verify your account before creating or joining a league');
-
-    const handleSendVerificationLink = async () => {
-        setVerifyButtonText('Sending Link...');
-        const response = await fetch('/api/accounts/handleResendVerification', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: user.email }),
-        });
-
-        if (response.ok) {
-            setVerifyButtonText('Verification link sent - please check your emails');
-        } else if (response.status === 401) {
-            setVerifyButtonText('Error sending verification link');
-        }
-    }
 
     return (
         <section className='standings'>
@@ -166,8 +148,8 @@ export const Standings = ({ user }) => {
                 />
             )}
 
-            {/* Check if user is verified before showing league options buttons */}
-            {user && user.verified ? (
+            {/* Check if user is logge in */}
+            {user && (
                 <div className="two-buttons">
                     <button className="btn black" onClick={() => setShowJoinLeague(!showJoinLeague)}>
                         <PlusIcon />
@@ -178,17 +160,6 @@ export const Standings = ({ user }) => {
                         Create a league
                     </button>
                 </div>
-            ) : user && !user.verified ? (
-                <div className="two-buttons">
-                    <button className="btn white" style={{ width: '100%' }} onClick={handleSendVerificationLink}>
-                        {verifyButtonText}
-                        {verifyButtonText === 'Please verify your account before creating or joining a league' && (
-                            <RightChevronIcon />
-                        )}
-                    </button>
-                </div>
-            ) : (
-                null
             )}
 
             {/* Show league names and the user's positions in them. User can click on a league to see the full standings */}
@@ -207,7 +178,7 @@ export const Standings = ({ user }) => {
                         <RightChevronIcon />
                     </Link>
                 </div>
-                {user && user.verified && (
+                {user && (
                     <>
                         <div className="subtitle">
                             <h3>Private Leagues</h3>

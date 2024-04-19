@@ -27,8 +27,8 @@ export default async function handler(request, response) {
             const email = formData.email;
             const emailInDatabase = await dbCollection.findOne({ email });
 
-            const generateRandomToken = (length) => {
-                const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+            const generateRandomCode = (length) => {
+                const characters = '0123456789'
                 let token = '';
                 for (let i = 0; i < length; i++) {
                     const randomIndex = Math.floor(Math.random() * characters.length);
@@ -38,18 +38,18 @@ export default async function handler(request, response) {
             };
 
             if (emailInDatabase) {
-                const verificationToken = generateRandomToken(24);
+                const verificationToken = generateRandomCode(6);
 
                 await dbCollection.updateOne({ email }, { $set: { verificationToken } });
                 
-                const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
+                // const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
 
                 const msg = {
                     to: email,
                     from: 'gridlock.contact@gmail.com',
                     templateId: 'd-f9b818d2289e4c2da46e434c87a9b9e9',
                     dynamic_template_data: {
-                        verificationLink: verificationLink,
+                        verificationLink: verificationToken,
                     }
                 };
     

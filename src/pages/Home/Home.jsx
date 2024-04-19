@@ -10,14 +10,12 @@ import { GearIcon, StatsIcon } from '../../components/Icons/Icons'
 import { LoaderWhite } from '../../components/Loader/Loader'
 // Styles
 import './home.styles.css'
-import { VerificationModal } from '../../components/VerificationModal/VerificationModal'
 
 
 export const Home = ({ seasonData, driverData, user }) => {
 
     const [nextEvent, setNextEvent] = useState([]);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [showVerificationModal, setShowVerificationModal] = useState(false);
     const [roundNumber, setRoundNumber] = useState(0);
 
     useEffect(() => {
@@ -28,12 +26,6 @@ export const Home = ({ seasonData, driverData, user }) => {
                 setShowUpdateModal(true);
             }
         }
-        const checkForVerificationModal = () => {
-            if (user.verified === false) {
-                setShowVerificationModal(true);
-            }
-        }
-        checkForVerificationModal();
         checkForUpdateModal();
     }, [])
 
@@ -99,13 +91,6 @@ export const Home = ({ seasonData, driverData, user }) => {
                 <div className="whole-page-loader">
                     <LoaderWhite />
                 </div>
-            )}
-            {showVerificationModal && (
-                <VerificationModal
-                    user={user}
-                    setShowModal={setShowVerificationModal}
-                    showModal={showVerificationModal}
-                />
             )}
         </section>
     )

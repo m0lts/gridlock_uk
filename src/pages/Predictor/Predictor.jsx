@@ -14,37 +14,6 @@ import './predictor.styles.css'
 
 export const Predictor = ({ seasonData, driverData, user }) => {
 
-    const [userVerified, setUserVerified] = useState(true);
-    const [verifyButtonText, setVerifyButtonText] = useState();
-
-    // On page load, check if user is verified
-    useEffect(() => {
-        if (user) {
-            if (!user.verified) {
-                setUserVerified(false);
-            }
-        }
-    }, [user])
-
-    // Resend verification link if user is not verified
-    const handleSendVerificationLink = async () => {
-        setVerifyButtonText('Sending Link...');
-        const response = await fetch('/api/accounts/handleResendVerification', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: user.email }),
-        });
-
-        if (response.ok) {
-            setVerifyButtonText(`Re-sent verification link to ${user.email}`);
-        } else if (response.status === 401) {
-            setVerifyButtonText('Error sending verification link.');
-        }
-    }
-
-
     // Grid and track stats data
     const [nextEvent, setNextEvent] = useState([]);
     const [roundNumber, setRoundNumber] = useState(0);
@@ -83,8 +52,8 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                         roundNumber={roundNumber}
                     />
 
-                    {/* Check if user is logged in and verified */}
-                    {user && userVerified ? (
+                    {/* Check if user is logged in */}
+                    {user ? (
                         <>
                             <div className="predictions">
                                 <PredictorGrid
@@ -96,20 +65,7 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                                 />
                             </div>
                         </>
-                    ) : !userVerified && user ? (
-                        <div className='feature-locked-cont' onClick={handleSendVerificationLink}>
-                            <div className='feature-locked'>
-                                {verifyButtonText ? (
-                                    <h3>{verifyButtonText}</h3>
-                                ) : (
-                                    <>
-                                        <h3>You must verify your account before submitting a prediction</h3>
-                                        <RightChevronIcon />
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                    ) : !user && (
+                    ) : (
                         <div className="feature-locked-cont">
                             <Link to={"/login"} className='link feature-locked'>
                                 <h3>Login to make a prediction</h3>
@@ -126,8 +82,8 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                         />
                     </div>
 
-                    {/* Only show previous predictions if user logged in and verified */}
-                    {(user && userVerified) ? (
+                    {/* Only show previous predictions if user logged in */}
+                    {user ? (
                         <div className="bottom-section">
                             <h2 style={{ marginBottom: '0.5em' }}>Your Previous Predictions</h2>
                             <PreviousPredictions
@@ -138,7 +94,6 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                     ) : (
                         <div className="bottom-section"></div>
                     )}
-
                 </>
             ) : (
                 <div className="whole-page-loader">

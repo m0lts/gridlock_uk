@@ -1,6 +1,6 @@
 // Dependencies
 import { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 // Components
 import { Header } from './components/Header/Header'
 // Pages
@@ -23,10 +23,9 @@ import { LeagueStandings } from './pages/LeagueStandings/LeagueStandings'
 import { HelpPage } from './pages/Help/Help'
 // Utils
 import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
+import { decodeToken, getTokenFromCookie } from './utils/cookieFunctions'
 // Styles
 import './assets/global.styles.css'
-import { decodeToken, getTokenFromCookie } from './utils/cookieFunctions'
-import { VerificationModal } from './components/VerificationModal/VerificationModal'
 
 
 export default function App() {
@@ -71,26 +70,28 @@ export default function App() {
 
   // User data
   const [user, setUser] = useState(null);
-  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const navigate = useNavigate();
+
+  // If old localStorage logged in code is present, remove it
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      localStorage.removeItem('user');
+    }
+  }, []);
 
   useEffect(() => {
-    // Retrieve JWT token from cookie
     const token = getTokenFromCookie();
     if (!token) {
         return;
     }
-
-    // Decode JWT token to get user information
     const decodedToken = decodeToken(token);
     if (decodedToken) {
       setUser(decodedToken);
       if (decodedToken.verified === false) {
-        setShowVerificationModal(true);
+        navigate('/verifyaccount');
       }
     }
   }, []);
-
-  console.log(user)
 
   return (
     <div className="app">
@@ -105,8 +106,8 @@ export default function App() {
         <Route path="/login" element={<LogIn user={user} setUser={setUser} />} />
         <Route path="/signup" element={<SignUp seasonData={returnedEventData} setUser={setUser} user={user} />} />
         <Route path='/forgotpassword' element={<ForgotPassword user={user} />} />
-        <Route path='/resetpassword' element={<ResetPassword user={user} />} />
-        <Route path='/verifyaccount' element={<VerifyAccount user={user} />} />
+        <Route path='/resetpassword' element={<ResetPassword user={user} setUser={setUser} />} />
+        <Route path='/verifyaccount' element={<VerifyAccount user={user} setUser={setUser} />} />
         <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} user={user} />} /> 
         <Route path='/event/:event' element={<EventPage user={user} />} />
         <Route path='/session-result/:sessionId' element={<SessionResult />} />
@@ -114,13 +115,6 @@ export default function App() {
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />
-      {showVerificationModal && 
-        <VerificationModal 
-          user={user}
-          setShowModal={setShowVerificationModal}
-          showModal={showVerificationModal}
-        />
-      }
     </div>
   )
 }
