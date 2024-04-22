@@ -53,7 +53,7 @@ export default async function handler(request, response) {
 
             if (passwordMatch) {
                 delete userRecord.password;
-                const jwtToken = jwt.sign({ email: userRecord.email, username: userRecord.username, user_id: userRecord._id, verified: userRecord.verified }, process.env.JWT_SECRET, { expiresIn: '1d' });
+                const jwtToken = jwt.sign({ email: userRecord.email, username: userRecord.username, user_id: userRecord._id, verified: userRecord.verified }, process.env.JWT_SECRET, { expiresIn: '14d' });
                 response.status(200).json({ jwtToken });
             } else {
                 response.status(401).json({ error: 'Incorrect password' });

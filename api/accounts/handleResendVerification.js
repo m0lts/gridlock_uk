@@ -42,11 +42,12 @@ export default async function handler(request, response) {
 
                 await dbCollection.updateOne({ email }, { $set: { verificationToken } });
                 
-                // const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
-
                 const msg = {
                     to: email,
-                    from: 'gridlock.contact@gmail.com',
+                    from: {
+                        name: 'Gridlock',
+                        email: 'gridlock.contact@gmail.com'
+                    },
                     templateId: 'd-f9b818d2289e4c2da46e434c87a9b9e9',
                     dynamic_template_data: {
                         verificationLink: verificationToken,

@@ -1,6 +1,6 @@
 // Function to save JWT token securely in an HTTP-only cookie
 export const saveTokenToCookie = (token) => {
-    document.cookie = `jwtToken=${token}; path=/`;
+    document.cookie = `jwtToken=${token}; path=/; Secure; SameSite=Strict`;
 };
 
 // Function to retrieve JWT token from cookies
@@ -16,7 +16,7 @@ export const getTokenFromCookie = () => {
 
 // Function to remove JWT token from cookie on logout
 export const removeTokenFromCookie = () => {
-    document.cookie = 'jwtToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'jwtToken=; path=/; Secure; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
 };
 
 // Function to decode JWT token

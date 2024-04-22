@@ -72,7 +72,22 @@ export default function LogIn({ user, setUser }) {
                 saveTokenToCookie(responseData.jwtToken);
                 const decodedToken = decodeToken(responseData.jwtToken);
                 setUser(decodedToken);
-                navigate('/');
+                if (decodedToken.verified) {
+                    navigate('/');
+                } else {
+                    const response = await fetch('/api/accounts/handleResendVerification', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: decodedToken.email }),
+                    });
+                    if (response) {
+                        navigate('/verifyaccount');
+                    } else {
+                        alert('Verification email failed to send, please try again later.');
+                    }
+                }
               } else if (response.status === 400) {
                 setFormSubmitted(false);
                 setEmailError('* Username or email incorrect.');

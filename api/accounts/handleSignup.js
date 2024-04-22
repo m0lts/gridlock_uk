@@ -104,7 +104,7 @@ export default async function handler(request, response) {
             } else {
                 await dbCollection.insertOne(formData);
                 const userDocument = await dbCollection.findOne({ email });
-                const jwtToken = jwt.sign({ email: userDocument.email, username: userDocument.username, user_id: userDocument._id, verified: userDocument.verified }, process.env.JWT_SECRET, { expiresIn: '1d' });
+                const jwtToken = jwt.sign({ email: userDocument.email, username: userDocument.username, user_id: userDocument._id, verified: userDocument.verified }, process.env.JWT_SECRET, { expiresIn: '30d' });
                 response.status(201).json({ jwtToken });
             }
 

@@ -80,18 +80,41 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const token = getTokenFromCookie();
-    if (!token) {
-        return;
-    }
-    const decodedToken = decodeToken(token);
-    if (decodedToken) {
-      setUser(decodedToken);
-      if (decodedToken.verified === false) {
-        navigate('/verifyaccount');
+
+    const verifyToken = async (token) => {
+      try {
+        const response = await fetch('/api/accounts/handleTokenVerification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+        if (response.ok) {
+          const responseJson = await response.json();
+          return responseJson.user;
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Token verification failed:', error);
+        return null;
       }
+    };
+
+    const token = getTokenFromCookie();
+    if (token) {
+      verifyToken(token).then(decodedToken => {
+        if (decodedToken) {
+          setUser(decodedToken);
+          if (decodedToken.verified === false) {
+            navigate('/verifyaccount');
+          }
+        }
+      });
     }
   }, []);
+
 
   return (
     <div className="app">

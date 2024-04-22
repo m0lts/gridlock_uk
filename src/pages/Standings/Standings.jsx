@@ -185,8 +185,8 @@ export const Standings = ({ user }) => {
                             <p className='last-updated-msg'>Last updated: {leaguesUpdateTime}</p>
                         </div>
                         <div className="leagues">
-                        {(leagues.length > 0 || (sessionStorage.getItem('leaguesData') && !loadingPrivateLeagues)) ? (
-                            leagues.map((league, index) => (
+                        {(leagues.length > 0 || (sessionStorage.getItem('leaguesData') && JSON.parse(sessionStorage.getItem('leaguesData')).length > 0)) ? (
+                            (leagues.length > 0 ? leagues : JSON.parse(sessionStorage.getItem('leaguesData'))).map((league, index) => (
                                 <Link key={index} className="league link" to={`/standings/${league.leagueName}`} state={{ name: league.leagueName, standings: league.leagueMembers, admin: league.leagueAdmin, updateTime: leaguesUpdateTime, user: user.username, code: league._id }}>
                                     <div className='left'>
                                         <h3 className='position-box'>{configUserPosition(league.leagueMembers)}</h3>
@@ -195,11 +195,11 @@ export const Standings = ({ user }) => {
                                     <RightChevronIcon />
                                 </Link>
                             ))
-                        ) : (loadingPrivateLeagues ? (
+                        ) : loadingPrivateLeagues ? (
                             <LoaderWhite />
                         ) : (
                             <p className='no-leagues-msg' style={{ color: 'var(--white)', fontSize: '12px' }}>Your private leagues will appear here if you create or join one.</p>
-                        ))}
+                        )}
                         </div>
                     </>
                 )}
