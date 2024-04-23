@@ -104,8 +104,22 @@ export default async function handler(request, response) {
             } else {
                 await dbCollection.insertOne(formData);
                 const userDocument = await dbCollection.findOne({ email });
-                const jwtToken = jwt.sign({ email: userDocument.email, username: userDocument.username, user_id: userDocument._id, verified: userDocument.verified }, process.env.JWT_SECRET, { expiresIn: '30d' });
-                response.status(201).json({ jwtToken });
+                const jwtToken = jwt.sign({ 
+                    email: userDocument.email, 
+                    username: userDocument.username, 
+                    user_id: userDocument._id, 
+                    verified: userDocument.verified
+                }, process.env.JWT_SECRET, { expiresIn: '14d' });
+                response.setHeader('Set-Cookie', `jwtToken=${jwtToken}; HttpOnly; Secure; Path=/; Max-Age=1209600; SameSite=Strict`);
+                response.status(200).json({
+                    message: 'Authentication successful',
+                    user: {
+                        email: userDocument.email,
+                        username: userDocument.username,
+                        user_id: userDocument._id,
+                        verified: userDocument.verified
+                    }
+                });
             }
 
             } else {

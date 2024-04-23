@@ -88,9 +88,8 @@ export default function SignUp({ user, setUser }) {
       
             if (response.ok) {
                 const responseData = await response.json();
-                saveTokenToCookie(responseData.jwtToken);
-                const decodedToken = decodeToken(responseData.jwtToken);
-                setUser(decodedToken);
+                const user = responseData.user;
+                setUser(user);
                 navigate('/verifyaccount');
               } else if (response.status === 400) {
                 // Email already taken

@@ -4,8 +4,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 // Components
 import { AccountIcon } from '../Icons/Icons'
 import { DefaultLogo, NoLinkLogo } from '../Logos/Logos'
-// Utils
-import { removeTokenFromCookie } from '../../utils/cookieFunctions'
 // Styles
 import './header.styles.css'
 
@@ -16,10 +14,18 @@ export const Header = ({ user }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleLogout = () => {
-        removeTokenFromCookie();
-        navigate('/');
-        window.location.reload();
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('/api/accounts/handleLogout', { method: 'POST' });
+            if (response.ok) {
+                navigate('/');
+                window.location.reload();
+            } else {
+                console.error('Logout failed:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
     }
 
 

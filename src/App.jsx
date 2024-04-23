@@ -23,7 +23,6 @@ import { LeagueStandings } from './pages/LeagueStandings/LeagueStandings'
 import { HelpPage } from './pages/Help/Help'
 // Utils
 import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
-import { decodeToken, getTokenFromCookie } from './utils/cookieFunctions'
 // Styles
 import './assets/global.styles.css'
 
@@ -81,18 +80,20 @@ export default function App() {
 
   useEffect(() => {
 
-    const verifyToken = async (token) => {
+    const verifyToken = async () => {
       try {
         const response = await fetch('/api/accounts/handleTokenVerification', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
+          method: 'GET',
         });
-        if (response.ok) {
+        if (response.status === 201) {
+          setUser(null);
+        } else if (response.status === 200) {
           const responseJson = await response.json();
-          return responseJson.user;
+          const token = responseJson.user;
+          setUser(token);
+          if (!token.verified) {
+            navigate('/verifyaccount');
+          }
         } else {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -102,18 +103,21 @@ export default function App() {
       }
     };
 
-    const token = getTokenFromCookie();
-    if (token) {
-      verifyToken(token).then(decodedToken => {
-        if (decodedToken) {
-          setUser(decodedToken);
-          if (decodedToken.verified === false) {
-            navigate('/verifyaccount');
-          }
-        }
-      });
+    verifyToken();
+
+  }, []);
+
+  // Cookie modal
+  const [cookieConsent, setCookieConsent] = useState(false);
+  useEffect(() => {
+    if (!localStorage.getItem('cookieConsent')) {
+      setCookieConsent(true);
     }
   }, []);
+  const handleCloseCookieModal = () => {
+    setCookieConsent(false);
+    localStorage.setItem('cookieConsent', 'true');
+  }
 
 
   return (

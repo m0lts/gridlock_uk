@@ -1,0 +1,26 @@
+.cookie-consent-modal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    border-top: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    z-index: 1000;
+}
+
+.cookie-consent-modal .modal-content h2 {
+    margin: 0;
+    color: #333;
+}
+
+.cookie-consent-modal .modal-content p {
+    color: #666;
+    font-size: 0.8em;
+    margin:5px 0;
+}
+.cookie-consent-modal .modal-content .btn {
+    margin: 0 auto;
+    margin-top: 10px;
+}

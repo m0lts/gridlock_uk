@@ -68,11 +68,10 @@ export default function LogIn({ user, setUser }) {
       
             // Handle relative responses and edit modal message.
             if (response.ok) {
-                const responseData = await response.json();
-                saveTokenToCookie(responseData.jwtToken);
-                const decodedToken = decodeToken(responseData.jwtToken);
-                setUser(decodedToken);
-                if (decodedToken.verified) {
+                const data = await response.json();
+                const user = data.user;
+                setUser(user);
+                if (user.verified) {
                     navigate('/');
                 } else {
                     const response = await fetch('/api/accounts/handleResendVerification', {
@@ -80,7 +79,7 @@ export default function LogIn({ user, setUser }) {
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ email: decodedToken.email }),
+                        body: JSON.stringify({ email: user.email }),
                     });
                     if (response) {
                         navigate('/verifyaccount');

@@ -36,8 +36,22 @@ export default async function handler(request, response) {
                 { $set: { verified: true }, $unset: { verificationToken: "" } }
             );
 
-            const jwtToken = jwt.sign({ email: userAccount.email, username: userAccount.username, user_id: userAccount._id, verified: true }, process.env.JWT_SECRET, { expiresIn: '1d' });
-            response.status(200).json({ jwtToken });
+            const jwtToken = jwt.sign({ 
+                email: userAccount.email, 
+                username: userAccount.username, 
+                user_id: userAccount._id, 
+                verified: true 
+            }, process.env.JWT_SECRET, { expiresIn: '14d' });
+
+            response.setHeader('Set-Cookie', `jwtToken=${jwtToken}; HttpOnly; Secure; Path=/; Max-Age=1209600; SameSite=Strict`);
+            response.status(200).json({
+                message: 'Account verified successfully',
+                user: {
+                    email: userAccount.email,
+                    username: userAccount.username,
+                    verified: true
+                }
+            });
 
         } else {
             response.status(405).json({ error: "Method Not Allowed" });

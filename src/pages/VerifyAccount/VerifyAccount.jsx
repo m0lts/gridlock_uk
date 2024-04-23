@@ -45,9 +45,7 @@ export const VerifyAccount = ({ user, setUser }) => {
 
             if (response.ok) {
                 const responseData = await response.json();
-                saveTokenToCookie(responseData.jwtToken);
-                const decodedToken = decodeToken(responseData.jwtToken);
-                setUser(decodedToken);
+                setUser(responseData.user);
                 setFormSubmitted(false);
                 navigate('/');
             } else {

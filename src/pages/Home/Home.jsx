@@ -10,12 +10,14 @@ import { GearIcon, StatsIcon } from '../../components/Icons/Icons'
 import { LoaderWhite } from '../../components/Loader/Loader'
 // Styles
 import './home.styles.css'
+import { CookieConsentModal } from '../../components/CookieModal/CookieModal'
 
 
 export const Home = ({ seasonData, driverData, user }) => {
 
     const [nextEvent, setNextEvent] = useState([]);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [showCookieModal, setShowCookieModal] = useState(false);
     const [roundNumber, setRoundNumber] = useState(0);
 
     useEffect(() => {
@@ -26,7 +28,14 @@ export const Home = ({ seasonData, driverData, user }) => {
                 setShowUpdateModal(true);
             }
         }
+        const checkForCookieModal = () => {
+            const cookieConsent = localStorage.getItem('cookieConsent');
+            if (!cookieConsent) {
+                setShowCookieModal(true);
+            }
+        }
         checkForUpdateModal();
+        checkForCookieModal();
     }, [])
 
 
@@ -46,6 +55,12 @@ export const Home = ({ seasonData, driverData, user }) => {
 
     return (
         <section className="home">
+            {showCookieModal && (
+                <CookieConsentModal
+                    showCookieModal={showCookieModal}
+                    setShowCookieModal={setShowCookieModal}
+                />
+            )}
             {showUpdateModal && (
                 <UpdateModal
                     showUpdateModal={showUpdateModal}
