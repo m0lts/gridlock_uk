@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const uri = process.env.MONGODB_URI;
 const options = {};
@@ -51,7 +52,25 @@ export default async function handler(request, response) {
             const passwordMatch = await bcrypt.compare(password, dbPassword);
 
             if (passwordMatch) {
-                response.status(200).json({ userRecord });
+                delete userRecord.password;
+                const jwtToken = jwt.sign({ 
+                    email: userRecord.email, 
+                    username: userRecord.username, 
+                    user_id: userRecord._id, 
+                    verified: userRecord.verified
+                }, process.env.JWT_SECRET, { expiresIn: '14d' });
+
+                response.setHeader('Set-Cookie', `jwtToken=${jwtToken}; HttpOnly; Secure; Path=/; Max-Age=1209600; SameSite=Strict`);
+                response.status(200).json({
+                    message: 'Authentication successful',
+                    user: {
+                        email: userRecord.email,
+                        username: userRecord.username,
+                        user_id: userRecord._id,
+                        verified: userRecord.verified
+                    }
+                });
+
             } else {
                 response.status(401).json({ error: 'Incorrect password' });
             }

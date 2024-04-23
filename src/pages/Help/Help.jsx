@@ -5,14 +5,10 @@ import { HowToPlay } from '../../components/HowToPlay/HowToPlay';
 // Styles
 import './help.styles.css'
 
-export const HelpPage = () => {
-
-    const userLoggedIn = localStorage.getItem('user');
-    const user = userLoggedIn ? JSON.parse(userLoggedIn) : null;
-
+export const HelpPage = ({ user }) => {
     return (
         <section className='help-page'>
-            {userLoggedIn ? (
+            {user ? (
                 <>
                     <GetInTouch
                         user={user}

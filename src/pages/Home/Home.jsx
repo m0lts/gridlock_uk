@@ -10,28 +10,35 @@ import { GearIcon, StatsIcon } from '../../components/Icons/Icons'
 import { LoaderWhite } from '../../components/Loader/Loader'
 // Styles
 import './home.styles.css'
+import { CookieConsentModal } from '../../components/CookieModal/CookieModal'
 
 
-export const Home = ({ seasonData, driverData }) => {
+export const Home = ({ seasonData, driverData, user }) => {
 
     const [nextEvent, setNextEvent] = useState([]);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [showCookieModal, setShowCookieModal] = useState(false);
     const [roundNumber, setRoundNumber] = useState(0);
-
-    const userLoggedIn = localStorage.getItem('user');
-    const user = JSON.parse(userLoggedIn);
-    const userName = user ? user.username : null;
 
     useEffect(() => {
         const checkForUpdateModal = () => {
             localStorage.removeItem('updateModal');
-            const updateModal = localStorage.getItem('updateModalv2');
+            localStorage.removeItem('updateModalv2');
+            const updateModal = localStorage.getItem('updateModalv2.0.1');
             if (!updateModal) {
                 setShowUpdateModal(true);
             }
         }
+        const checkForCookieModal = () => {
+            const cookieConsent = localStorage.getItem('cookieConsent');
+            if (!cookieConsent) {
+                setShowCookieModal(true);
+            }
+        }
         checkForUpdateModal();
+        checkForCookieModal();
     }, [])
+
 
     useEffect(() => {
         const findNextEvent = () => {
@@ -49,6 +56,12 @@ export const Home = ({ seasonData, driverData }) => {
 
     return (
         <section className="home">
+            {showCookieModal && (
+                <CookieConsentModal
+                    showCookieModal={showCookieModal}
+                    setShowCookieModal={setShowCookieModal}
+                />
+            )}
             {showUpdateModal && (
                 <UpdateModal
                     showUpdateModal={showUpdateModal}
@@ -62,9 +75,9 @@ export const Home = ({ seasonData, driverData }) => {
                         roundNumber={roundNumber}
                     />
                     <AccountStats
-                        userName={userName}
+                        username={user ? user.username : null}
                     />
-                    {userName && (
+                    {user && (
                         <div className="middle-section">
                             <div className="two-buttons">
                                 <button className="btn black">

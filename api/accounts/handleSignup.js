@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb";
 import bcrypt from 'bcrypt';
 import sendgrid from '@sendgrid/mail';
 import client from "@sendgrid/client";
+import jwt from "jsonwebtoken";
 
 
 // Send grid API key
@@ -48,8 +49,8 @@ export default async function handler(request, response) {
                 return;
             }
 
-            const generateRandomToken = (length) => {
-                const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+            const generateRandomCode = (length) => {
+                const characters = '0123456789'
                 let token = '';
                 for (let i = 0; i < length; i++) {
                     const randomIndex = Math.floor(Math.random() * characters.length);
@@ -58,10 +59,10 @@ export default async function handler(request, response) {
                 return token;
             };
 
-            const verificationToken = generateRandomToken(24);
-            formData.verificationToken = verificationToken;
+            const verificationCode = generateRandomCode(6);
+            formData.verificationToken = verificationCode;
 
-            const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
+            // const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
 
             const msg = {
                 to: email,
@@ -71,7 +72,7 @@ export default async function handler(request, response) {
                 },
                 templateId: 'd-f9b818d2289e4c2da46e434c87a9b9e9',
                 dynamic_template_data: {
-                    verificationLink: verificationLink,
+                    verificationLink: verificationCode,
                     username: formData.username
                 }
             };
@@ -102,7 +103,23 @@ export default async function handler(request, response) {
                 return;
             } else {
                 await dbCollection.insertOne(formData);
-                response.status(201).json({ message: 'Email successfully sent' });
+                const userDocument = await dbCollection.findOne({ email });
+                const jwtToken = jwt.sign({ 
+                    email: userDocument.email, 
+                    username: userDocument.username, 
+                    user_id: userDocument._id, 
+                    verified: userDocument.verified
+                }, process.env.JWT_SECRET, { expiresIn: '14d' });
+                response.setHeader('Set-Cookie', `jwtToken=${jwtToken}; HttpOnly; Secure; Path=/; Max-Age=1209600; SameSite=Strict`);
+                response.status(200).json({
+                    message: 'Authentication successful',
+                    user: {
+                        email: userDocument.email,
+                        username: userDocument.username,
+                        user_id: userDocument._id,
+                        verified: userDocument.verified
+                    }
+                });
             }
 
             } else {

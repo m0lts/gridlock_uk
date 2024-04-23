@@ -49,7 +49,7 @@ export const UserProfile = ({ seasonData }) => {
                 Back
             </div>
             <AccountStats
-                userName={user}
+                username={user}
             />
             <div className="previous-predictions-section">
                 <h3>Previous Predictions</h3>

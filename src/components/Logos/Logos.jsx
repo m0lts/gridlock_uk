@@ -12,3 +12,11 @@ export const DefaultLogo = () => {
         </Link>
     )
 }
+
+export const NoLinkLogo = () => {
+    return (
+        <div className="default-logo">
+            <img src={Logo} alt="Gridlock logo" />
+        </div>
+    )
+}

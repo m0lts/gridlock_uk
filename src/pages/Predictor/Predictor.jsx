@@ -12,41 +12,7 @@ import { CircuitInformation } from '../../components/CircuitInformation/CircuitI
 import './predictor.styles.css'
 
 
-export const Predictor = ({ seasonData, driverData }) => {
-
-    // Check if user is logged in and verified
-    const userLoggedIn = localStorage.getItem('user');
-    const user = JSON.parse(userLoggedIn);
-    const [userVerified, setUserVerified] = useState(true);
-    const [verifyButtonText, setVerifyButtonText] = useState();
-
-    // On page load, check if user is verified
-    useEffect(() => {
-        if (userLoggedIn) {
-            if (!user.verified) {
-                setUserVerified(false);
-            }
-        }
-    }, [userLoggedIn])
-
-    // Resend verification link if user is not verified
-    const handleSendVerificationLink = async () => {
-        setVerifyButtonText('Sending Link...');
-        const response = await fetch('/api/accounts/handleResendVerification', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: user.email }),
-        });
-
-        if (response.ok) {
-            setVerifyButtonText(`Re-sent verification link to ${user.email}`);
-        } else if (response.status === 401) {
-            setVerifyButtonText('Error sending verification link.');
-        }
-    }
-
+export const Predictor = ({ seasonData, driverData, user }) => {
 
     // Grid and track stats data
     const [nextEvent, setNextEvent] = useState([]);
@@ -86,8 +52,8 @@ export const Predictor = ({ seasonData, driverData }) => {
                         roundNumber={roundNumber}
                     />
 
-                    {/* Check if user is logged in and verified */}
-                    {userLoggedIn && userVerified ? (
+                    {/* Check if user is logged in */}
+                    {user ? (
                         <>
                             <div className="predictions">
                                 <PredictorGrid
@@ -99,20 +65,7 @@ export const Predictor = ({ seasonData, driverData }) => {
                                 />
                             </div>
                         </>
-                    ) : !userVerified && userLoggedIn ? (
-                        <div className='feature-locked-cont' onClick={handleSendVerificationLink}>
-                            <div className='feature-locked'>
-                                {verifyButtonText ? (
-                                    <h3>{verifyButtonText}</h3>
-                                ) : (
-                                    <>
-                                        <h3>You must verify your account before submitting a prediction</h3>
-                                        <RightChevronIcon />
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                    ) : !userLoggedIn && (
+                    ) : (
                         <div className="feature-locked-cont">
                             <Link to={"/login"} className='link feature-locked'>
                                 <h3>Login to make a prediction</h3>
@@ -129,8 +82,8 @@ export const Predictor = ({ seasonData, driverData }) => {
                         />
                     </div>
 
-                    {/* Only show previous predictions if user logged in and verified */}
-                    {(userLoggedIn && userVerified) ? (
+                    {/* Only show previous predictions if user logged in */}
+                    {user ? (
                         <div className="bottom-section">
                             <h2 style={{ marginBottom: '0.5em' }}>Your Previous Predictions</h2>
                             <PreviousPredictions
@@ -141,7 +94,6 @@ export const Predictor = ({ seasonData, driverData }) => {
                     ) : (
                         <div className="bottom-section"></div>
                     )}
-
                 </>
             ) : (
                 <div className="whole-page-loader">

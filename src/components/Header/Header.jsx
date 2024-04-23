@@ -3,38 +3,45 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 // Components
 import { AccountIcon } from '../Icons/Icons'
-import { DefaultLogo } from '../Logos/Logos'
+import { DefaultLogo, NoLinkLogo } from '../Logos/Logos'
 // Styles
 import './header.styles.css'
 
-export const Header = () => {
-
-    // Get user data from local storage
-    const storedUser = localStorage.getItem('user');
-    const user = storedUser ? JSON.parse(storedUser) : null;
-    const storedUsername = user ? user.username : null;
+export const Header = ({ user }) => {
 
     const [showAccountMenu, setShowAccountMenu] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleLogout = () => {
-        localStorage.removeItem('user');
-        navigate('/');
-        window.location.reload();
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('/api/accounts/handleLogout', { method: 'POST' });
+            if (response.ok) {
+                navigate('/');
+                window.location.reload();
+            } else {
+                console.error('Logout failed:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
     }
 
 
     return (
         <header className="header">
-            <DefaultLogo />
-            {storedUsername ? (
+            {location.pathname === '/verifyaccount' ? (
+                <NoLinkLogo />
+            ) : (
+                <DefaultLogo />
+            )}
+            {(location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/forgotpassword' || location.pathname === '/resetpassword' || location.pathname === '/verifyaccount') ? (
+                null
+            ) : user ? (
                 <div className="account-icon" onClick={() => setShowAccountMenu(!showAccountMenu)}>
                     <AccountIcon />
                 </div>
-            ) : (location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/forgotpassword' || location.pathname === '/resetpassword') ? (
-                null
             ) : (
                 <Link className='btn white link' to={'/login'}>
                     Login

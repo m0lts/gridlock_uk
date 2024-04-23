@@ -17,7 +17,7 @@ export const LeagueStandings = () => {
     const navigate = useNavigate();
     const inheritedState = location.state;
     const updateTime = inheritedState && inheritedState.updateTime;
-    const formattedUpdateTime = updateTime && new Date(updateTime).toLocaleString();
+    const formattedUpdateTime = updateTime && updateTime;
 
 
     const handleGoBack = () => {

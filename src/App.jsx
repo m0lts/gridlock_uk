@@ -1,6 +1,6 @@
 // Dependencies
 import { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 // Components
 import { Header } from './components/Header/Header'
 // Pages
@@ -29,6 +29,7 @@ import './assets/global.styles.css'
 
 export default function App() {
 
+  // API request
   const [apiRequest, setApiRequest] = useState('races?season=2024&timezone=Europe/London');
   const [returnedEventData, setReturnedEventData] = useState([]);
   const [returnedDriverData, setReturnedDriverData] = useState([]);
@@ -66,26 +67,78 @@ export default function App() {
 
   }, [apiRequest])
 
+  // User data
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  // If old localStorage logged in code is present, remove it
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      localStorage.removeItem('user');
+    }
+  }, []);
+
+  useEffect(() => {
+
+    const verifyToken = async () => {
+      try {
+        const response = await fetch('/api/accounts/handleTokenVerification', {
+          method: 'GET',
+        });
+        if (response.status === 201) {
+          setUser(null);
+        } else if (response.status === 200) {
+          const responseJson = await response.json();
+          const token = responseJson.user;
+          setUser(token);
+          if (!token.verified) {
+            navigate('/verifyaccount');
+          }
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Token verification failed:', error);
+        return null;
+      }
+    };
+
+    verifyToken();
+
+  }, []);
+
+  // Cookie modal
+  const [cookieConsent, setCookieConsent] = useState(false);
+  useEffect(() => {
+    if (!localStorage.getItem('cookieConsent')) {
+      setCookieConsent(true);
+    }
+  }, []);
+  const handleCloseCookieModal = () => {
+    setCookieConsent(false);
+    localStorage.setItem('cookieConsent', 'true');
+  }
+
 
   return (
     <div className="app">
-      <Header />
+      <Header user={user} />
       {/* <MaintenancePage /> */}
       <Routes>
-        <Route path="/" element={<Home seasonData={returnedEventData} driverData={returnedDriverData} />} />
-        <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} />} />
-        <Route path="/calendar" element={<Calendar seasonData={returnedEventData} />} />
-        <Route path="/standings" element={<Standings />} />
-        <Route path="/standings/:leagueName" element={<LeagueStandings />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp seasonData={returnedEventData} />} />
-        <Route path='/forgotpassword' element={<ForgotPassword />} />
-        <Route path='/resetpassword' element={<ResetPassword />} />
-        <Route path='/verifyaccount' element={<VerifyAccount />} />
-        <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} />} /> 
-        <Route path='/event/:event' element={<EventPage />} />
+        <Route path="/" element={<Home seasonData={returnedEventData} driverData={returnedDriverData} user={user} />} />
+        <Route path="/predictor" element={<Predictor seasonData={returnedEventData} driverData={returnedDriverData} user={user} />} />
+        <Route path="/calendar" element={<Calendar seasonData={returnedEventData} user={user} />} />
+        <Route path="/standings" element={<Standings user={user} />} />
+        <Route path="/standings/:leagueName" element={<LeagueStandings user={user} />} />
+        <Route path="/login" element={<LogIn user={user} setUser={setUser} />} />
+        <Route path="/signup" element={<SignUp seasonData={returnedEventData} setUser={setUser} user={user} />} />
+        <Route path='/forgotpassword' element={<ForgotPassword user={user} />} />
+        <Route path='/resetpassword' element={<ResetPassword user={user} setUser={setUser} />} />
+        <Route path='/verifyaccount' element={<VerifyAccount user={user} setUser={setUser} />} />
+        <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} user={user} />} /> 
+        <Route path='/event/:event' element={<EventPage user={user} />} />
         <Route path='/session-result/:sessionId' element={<SessionResult />} />
-        <Route path='/help' element={<HelpPage />} />
+        <Route path='/help' element={<HelpPage user={user} />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />

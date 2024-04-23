@@ -1,0 +1,54 @@
+.verify-account .top-filler {
+    height: 2em;
+    background: linear-gradient(to bottom, transparent, var(--black));
+}
+.verify-account .bottom-filler {
+    height: 2em;
+    background: linear-gradient(to top, transparent, var(--black));
+}
+.verify-account .body {
+    color: var(--white);
+    padding:1em 5%;
+    background-color: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1em;
+    text-align: center;
+}
+.verify-account form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1rem;
+    margin: 1em 0;
+}
+.verify-account .verification-inputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin: 0 auto;
+    min-height: 50px;
+    gap:0.5em;
+}
+.verify-account .verification-inputs input {
+    width:35px;
+    height:50px;
+    border:1px solid var(--white);
+    color: var(--black);
+    font-family: var(--primary-font);
+    font-size: 1.5rem;
+    border-radius: 5px;
+    text-align: center;
+}
+.verify-account .verification-inputs input:focus {
+    outline: 2px solid var(--red);
+}
+.verify-account .resend-text {
+    font-size: 0.7em;
+}
+.verify-account .resend-text:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

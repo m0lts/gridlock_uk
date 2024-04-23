@@ -1,11 +1,15 @@
 // Dependencies
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 // Components
 import { LoaderWhite } from "../../components/Loader/Loader";
+// Utils
+import { decodeToken, saveTokenToCookie} from "../../utils/cookieFunctions";
 
 
-export default function SignUp({ seasonData }) {
+
+export default function SignUp({ user, setUser }) {
 
     // SET STATES
     // For data packet to be sent to database
@@ -58,6 +62,7 @@ export default function SignUp({ seasonData }) {
         setFormValues({ ...formValues, emailConsent: !checked });
     };
     
+    const navigate = useNavigate();
 
     // HANDLE FORM SUBMISSION
     const handleSubmit = async (event) => {
@@ -82,12 +87,10 @@ export default function SignUp({ seasonData }) {
             });
       
             if (response.ok) {
-                formValues.verified = false;
-                formValues.email = formValues.email.toLowerCase();
-                delete formValues.password;
-                delete formValues.verify_password;
-                localStorage.setItem('user', JSON.stringify(formValues));
-                setSignUpSuccess(true);
+                const responseData = await response.json();
+                const user = responseData.user;
+                setUser(user);
+                navigate('/verifyaccount');
               } else if (response.status === 400) {
                 // Email already taken
                 setEmailError('* Email already in use.');
@@ -115,14 +118,7 @@ export default function SignUp({ seasonData }) {
             <div className="body">
                 <h1 className="title">{signUpSuccess ? 'Success!' : 'Sign Up'}</h1>
                 {formSubmitted ? (
-                    signUpSuccess ? (
-                        <div className="sign-up-success">
-                            <p style={{ marginBottom: '1rem', color: 'var(--white)' }}>We have sent you an email to verify your account. You won't be able to submit a prediction until your account is verified. If you haven't received an email, ensure you check your spam/junk mailbox.</p>
-                            <Link to='/' className="forgot-password-link">Go to homepage</Link>
-                        </div>
-                    ) : (
-                        <LoaderWhite />
-                    )
+                    <LoaderWhite />
                 ) : (
                 <form className="account-form" onSubmit={handleSubmit}>
                     <div className="two-inputs">
