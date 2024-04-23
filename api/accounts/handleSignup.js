@@ -27,15 +27,12 @@ export default async function handler(request, response) {
 
         if (request.method === "POST") {
             const formData = request.body;
-            delete formData.verify_password;
 
-            // Hash the user's password
             const hashedPassword = await bcrypt.hash(formData.password, 10);
             formData.password = hashedPassword;
 
             formData.verified = false;
 
-            // Check if email or username already exists in database
             const email = formData.email;
             formData.email = email.toLowerCase();
             const username = formData.username;
@@ -62,8 +59,6 @@ export default async function handler(request, response) {
             const verificationCode = generateRandomCode(6);
             formData.verificationToken = verificationCode;
 
-            // const verificationLink = `https://www.f1gridlock.com/verifyaccount?email=${email}&token=${verificationToken}`;
-
             const msg = {
                 to: email,
                 from: {
@@ -83,8 +78,7 @@ export default async function handler(request, response) {
                 "contacts": [
                     {
                         "email": email,
-                        "first_name": formData.forename,
-                        "last_name": formData.surname,
+                        "first_name": formData.username,
                     }
                 ],
                 "list_ids": formData.emailConsent ? ['036a4122-8866-4476-bc31-946611d0f7c1'] : ['75df1a79-11c7-46fa-b1eb-834b9d6d3028'],

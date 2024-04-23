@@ -3,50 +3,29 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 // Components
 import { LoaderWhite } from "../../components/Loader/Loader";
-// Utils
-import { decodeToken, saveTokenToCookie } from "../../utils/cookieFunctions";
 // Styles
 import './login.styles.css';
 
 
 export default function LogIn({ user, setUser }) {
 
-    // SET NAVIGATE
     const navigate = useNavigate();
-
-    // SET STATES
-    // For data packet to be sent to database
     const [loginFormValues, setLoginFormValues] = useState({
         email: '',
         password: ''
     });
-    // For validation errors
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    // For submission modal
     const [formSubmitted, setFormSubmitted] = useState(false);
 
-    // SET FORM VALUES TO ENTERED VALUES
     const handleInputChange = async (event) => {
         const { name, value } = event.target;
         setLoginFormValues({
             ...loginFormValues,
             [name]: value,
         });
-
-        // Email validation
-        // if (name === 'email') {
-        //     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        //     setEmailError(emailPattern.test(value) ? '' : '* Must be a valid email address');
-        // }
-        // Password validation
-        // if (name === 'password') {
-        //     const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-        //     setPasswordError(passwordPattern.test(value) ? '' : '* Password must be at least 8 characters long, contain a capital letter, and a number');
-        // }
     };
 
-    // HANDLE FORM SUBMISSION
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -66,13 +45,14 @@ export default function LogIn({ user, setUser }) {
               body: JSON.stringify(loginFormValues),
             });
       
-            // Handle relative responses and edit modal message.
             if (response.ok) {
                 const data = await response.json();
                 const user = data.user;
                 setUser(user);
-                if (user.verified) {
+                if (user.verified && user.userData) {
                     navigate('/');
+                } else if (user.verified && !user.userData) {
+                    navigate('/user-info');
                 } else {
                     const response = await fetch('/api/accounts/handleResendVerification', {
                         method: 'POST',

@@ -25,6 +25,7 @@ import { HelpPage } from './pages/Help/Help'
 import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResponses'
 // Styles
 import './assets/global.styles.css'
+import { UserData } from './pages/UserData/UserData'
 
 
 export default function App() {
@@ -107,19 +108,6 @@ export default function App() {
 
   }, []);
 
-  // Cookie modal
-  const [cookieConsent, setCookieConsent] = useState(false);
-  useEffect(() => {
-    if (!localStorage.getItem('cookieConsent')) {
-      setCookieConsent(true);
-    }
-  }, []);
-  const handleCloseCookieModal = () => {
-    setCookieConsent(false);
-    localStorage.setItem('cookieConsent', 'true');
-  }
-
-
   return (
     <div className="app">
       <Header user={user} />
@@ -139,6 +127,7 @@ export default function App() {
         <Route path='/event/:event' element={<EventPage user={user} />} />
         <Route path='/session-result/:sessionId' element={<SessionResult />} />
         <Route path='/help' element={<HelpPage user={user} />} />
+        <Route path='/user-info' element={<UserData user={user} setUser={setUser} driverData={returnedDriverData} seasonData={returnedEventData} />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />

@@ -49,6 +49,7 @@ export default async function handler(request, response) {
                 user: {
                     email: userAccount.email,
                     username: userAccount.username,
+                    user_id: userAccount._id,
                     verified: true
                 }
             });

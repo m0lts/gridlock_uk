@@ -26,7 +26,9 @@ import { faCircleUser,
     faTemperatureFull,
     faAngleLeft,
     faClipboard,
-    faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
+    faQuestionCircle,
+    faEye,
+    faEyeSlash} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -163,7 +165,16 @@ export const QuestionIcon = () => {
         <FontAwesomeIcon icon={faQuestionCircle} className='icon' />
     )
 }
-
+export const SeeIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faEye} className='icon' />
+    )
+}
+export const HideIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faEyeSlash} className='icon' />
+    )
+}
 // Expand icon 
 export const ExpandIcon = () => {
     return (

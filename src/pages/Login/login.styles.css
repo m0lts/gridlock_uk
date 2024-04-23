@@ -49,6 +49,21 @@
     outline: none;
     border: 1px solid var(--red);
 }
+.account-form .input-group .password-input {
+    display: flex;
+    height:2rem;
+}
+.account-form .input-group .password-input input {
+    width:90%;
+}
+.account-form .input-group .password-input .btn {
+    width:10%;
+    background-color: transparent;
+    margin: 0;
+}
+.account-form .input-group .password-input .btn .icon {
+    color: var(--white);
+}
 .account-form .btn {
     margin-top: 1rem;
 }

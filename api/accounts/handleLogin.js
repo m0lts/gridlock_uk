@@ -17,6 +17,7 @@ export default async function handler(request, response) {
 
         const db = mongoClient.db("gridlock");
         const dbCollection = db.collection("accounts");
+        const userDataCollection = db.collection("user-data");
 
         if (request.method === "POST") {
             const formData = request.body;
@@ -60,6 +61,8 @@ export default async function handler(request, response) {
                     verified: userRecord.verified
                 }, process.env.JWT_SECRET, { expiresIn: '14d' });
 
+                const userDataRecord = await userDataCollection.findOne({ user_id: userRecord._id.toString() });
+
                 response.setHeader('Set-Cookie', `jwtToken=${jwtToken}; HttpOnly; Secure; Path=/; Max-Age=1209600; SameSite=Strict`);
                 response.status(200).json({
                     message: 'Authentication successful',
@@ -67,7 +70,8 @@ export default async function handler(request, response) {
                         email: userRecord.email,
                         username: userRecord.username,
                         user_id: userRecord._id,
-                        verified: userRecord.verified
+                        verified: userRecord.verified,
+                        userData: userDataRecord ? true : false,
                     }
                 });
 

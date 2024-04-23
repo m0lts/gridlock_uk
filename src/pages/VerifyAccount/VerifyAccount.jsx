@@ -6,7 +6,6 @@ import { useLocation } from "react-router-dom";
 import { LoaderWhite } from "../../components/Loader/Loader";
 // Styles
 import './verify-account.styles.css'
-import { decodeToken, saveTokenToCookie } from "../../utils/cookieFunctions";
 
 
 export const VerifyAccount = ({ user, setUser }) => {
@@ -47,7 +46,7 @@ export const VerifyAccount = ({ user, setUser }) => {
                 const responseData = await response.json();
                 setUser(responseData.user);
                 setFormSubmitted(false);
-                navigate('/');
+                navigate('/user-info');
             } else {
                 setFormSubmitted(false);
                 setError('*Invalid verification code, please try again.')
