@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 // Components
 import { RightChevronIcon } from "../Icons/Icons";
 import { LoaderWhite } from "../Loader/Loader";
-// Utils
-import { decodeToken, getTokenFromCookie } from '../../utils/cookieFunctions';
 // Styles
 import './account-stats.styles.css'
 
@@ -14,18 +12,27 @@ export const AccountStats = ({ username }) => {
     const [storedUsername, setStoredUsername] = useState(null);
 
     useEffect(() => {
-        // Retrieve JWT token from cookie
-        const token = getTokenFromCookie();
-        if (!token) {
-            return;
-        }
-    
-        // Decode JWT token to get user information
-        const decodedToken = decodeToken(token);
-        if (decodedToken) {
-            setStoredUsername(decodedToken.username);
-        }
-    }, []);
+        const verifyToken = async () => {
+          try {
+            const response = await fetch('/api/accounts/handleTokenVerification', {
+              method: 'GET',
+            });
+            if (response.status === 201) {
+              setStoredUsername(null);
+            } else if (response.status === 200) {
+              const responseJson = await response.json();
+              const token = responseJson.user;
+              setStoredUsername(token.username);
+            } else {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+          } catch (error) {
+            console.error('Token verification failed:', error);
+            return null;
+          }
+        };
+        verifyToken();
+      }, []);
 
     // Get data from session storage
     const storedUserPosition = sessionStorage.getItem('userPosition');
