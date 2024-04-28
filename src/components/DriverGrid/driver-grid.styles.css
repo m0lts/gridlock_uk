@@ -4,6 +4,14 @@
     display: grid;
     grid-template-columns: 45% 35% 10%;
 }
+.driver-grid.small .used-boost {
+    grid-column: span 3;
+    display: flex;
+    align-items: center;
+    gap:5px;
+    color: var(--purple);
+    margin: 5px 0;
+}
 .driver-grid.small .column-title {
     color: var(--grey);
 }

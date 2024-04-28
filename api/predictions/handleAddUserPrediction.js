@@ -21,13 +21,6 @@ export default async function handler(request, response) {
             const userPrediction = dataReceived.prediction;
             const userEmail = dataReceived.userEmail;
             const competition = dataReceived.competition;
-            const qualifyingStartTime = dataReceived.qualiTime;
-            const submittedAt = dataReceived.submittedAt;
-
-            if (submittedAt > qualifyingStartTime) {
-                response.status(401).json({ message: 'Qualifying has started.' });
-                return;
-            }
 
             const dbPrediction = await dbCollection.findOne({ competition, userEmail })
 

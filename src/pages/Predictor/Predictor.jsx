@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 // Components
-import { RightChevronIcon } from '../../components/Icons/Icons';
+import { PredictorIcon, RightArrowIcon, RightChevronIcon, RocketIcon, StopwatchIcon } from '../../components/Icons/Icons';
 import { PredictorGrid } from './PredictorGrid/PredictorGrid';
 import { LoaderWhite } from '../../components/Loader/Loader';
 import { PreviousPredictions } from '../../components/PreviousPredictions/PreviousPredictions';
@@ -10,6 +10,8 @@ import { NextEventPredictor } from '../../components/NextEventBox/NextEventPredi
 import { CircuitInformation } from '../../components/CircuitInformation/CircuitInformation';
 // Styles
 import './predictor.styles.css'
+import { QualiBoostModal } from '../../components/BoostModals/QualiBoostModal';
+import { GridBoostModal } from '../../components/BoostModals/GridBoostModal';
 
 
 export const Predictor = ({ seasonData, driverData, user }) => {
@@ -18,7 +20,7 @@ export const Predictor = ({ seasonData, driverData, user }) => {
     const [nextEvent, setNextEvent] = useState([]);
     const [roundNumber, setRoundNumber] = useState(0);
     const [qualiTime, setQualiTime] = useState();
-
+    const [raceTime, setRaceTime] = useState();
 
     // When the season data has loaded, find the next event and previous events and set relevant states
     useEffect(() => {
@@ -30,6 +32,8 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                 setNextEvent([scheduledEvent]);
                 const quali = scheduledEvent.events.filter(event => event.type === 'Qualifying');
                 setQualiTime(new Date(quali[0].date).getTime());
+                const race = scheduledEvent.events.filter(event => event.type === 'Race');
+                setRaceTime(new Date(race[0].date).getTime());
             } else {
                 setNextEvent([]);
             }
@@ -42,6 +46,12 @@ export const Predictor = ({ seasonData, driverData, user }) => {
 
     }, [seasonData]);
 
+    // Boost options functions
+    const [showQualiBoostModal, setShowQualiBoostModal] = useState(false);
+    const [showGridBoostModal, setShowGridBoostModal] = useState(false);
+    const [qualiBoost, setQualiBoost] = useState(false);
+    const [gridBoost, setGridBoost] = useState(false);
+    
 
     return (
         <section className="predictor">
@@ -51,6 +61,51 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                         nextEvent={nextEvent}
                         roundNumber={roundNumber}
                     />
+
+                    <div className="bonus-options">
+                        <Link to={'/default-prediction'} className='link'>
+                            <button className="btn black">
+                                My Default Prediction
+                                <RightArrowIcon />
+                            </button>
+                        </Link>
+                        <div className="two-buttons">
+                            <button 
+                                className={`btn white ${qualiBoost && 'disabled'}`}
+                                onClick={() => setShowQualiBoostModal(true)} 
+                                style={{ backgroundColor: qualiBoost && 'var(--purple)', color: qualiBoost && 'white'}}
+                                disabled={qualiBoost || gridBoost}
+                            >
+                                {qualiBoost ? (
+                                    <>
+                                        Quali Boost Active
+                                    </>
+                                ) : (
+                                    <>
+                                        <StopwatchIcon />
+                                        Quali Boost
+                                    </>
+                                )}
+                            </button>
+                            <button 
+                                className={`btn white ${gridBoost && 'disabled'}`}
+                                onClick={() => setShowGridBoostModal(true)} 
+                                style={{ backgroundColor: gridBoost && 'var(--purple)', color: gridBoost && 'white'}}
+                                disabled={qualiBoost || gridBoost || qualiTime < Date.now()}
+                            >
+                                {gridBoost ? (
+                                    <>
+                                        Grid Boost Active
+                                    </>
+                                ) : (
+                                    <>
+                                        <RocketIcon />
+                                        Grid Boost
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
 
                     {/* Check if user is logged in */}
                     {user ? (
@@ -62,6 +117,11 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                                     userEmail={user.email}
                                     userName={user.username}
                                     nextEvent={nextEvent}
+                                    qualiBoost={qualiBoost}
+                                    gridBoost={gridBoost}
+                                    setQualiBoost={setQualiBoost}
+                                    setGridBoost={setGridBoost}
+                                    raceTime={raceTime}
                                 />
                             </div>
                         </>
@@ -100,6 +160,10 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                     <LoaderWhite />
                 </div>
             )}
+
+            {/* Quali and Grid boost modals */}
+            {showQualiBoostModal && <QualiBoostModal setShowModal={setShowQualiBoostModal} showModal={showQualiBoostModal} setQualiBoost={setQualiBoost} user={user} nextEvent={nextEvent} />}
+            {showGridBoostModal && <GridBoostModal setShowModal={setShowGridBoostModal} showModal={showGridBoostModal} setGridBoost={setGridBoost} user={user} nextEvent={nextEvent} />}
         </section>
     )
 }

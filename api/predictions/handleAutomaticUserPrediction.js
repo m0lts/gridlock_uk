@@ -40,6 +40,8 @@ export default async function handler(request, response) {
         const competitionSessions = raceIDData.response.filter(event => event.competition.id === competitionID);
         const competitionQualifying = competitionSessions.filter(event => event.type === '1st Qualifying');
         const qualifyingStartTime = new Date(competitionQualifying[0].date).getTime();
+        const competitionRace = competitionSessions.filter(event => event.type === 'Race');
+        const raceStartTime = new Date(competitionRace[0].date).getTime();
         const qualifyingTimeDateFormat = new Date(competitionQualifying[0].date);
         const currentTime = new Date().getTime();
 
@@ -89,42 +91,57 @@ export default async function handler(request, response) {
 
         if (currentTime > qualifyingStartTime) {
             for (const user of users) {
-                // Check if the user has a prediction for the next race
                 const userEmail = user.email;
                 const userName = user.username;
                 const userPrediction = await predictionsCollection.findOne({ userEmail, competitionId: competitionID });
+                const userDefaultPredictionDocument = await predictionsCollection.findOne({ userEmail, competitionId: 'Default' });
+                const userDefaultPrediction = userDefaultPredictionDocument ? userDefaultPredictionDocument.prediction : null
+        
+                // Check if the user has already submitted a valid prediction and it includes the 'Quali' boost
+                const hasValidQualiBoostPrediction = userPrediction &&
+                                                     userPrediction.prediction &&
+                                                     !userPrediction.prediction.includes(null) &&
+                                                     userPrediction.boost === 'Quali';
                 
-                if (!userPrediction) {
-                    // Generate a random prediction if the user doesn't have one
-                    const randomDrivers = getRandomDrivers(filteredDrivers, 10);
+                // Determine if race has started
+                const raceHasStarted = raceStartTime < Date.now();
+        
+                // Condition to check if automatic prediction needs to be submitted
+                const shouldSubmitPrediction = (
+                    !userPrediction || 
+                    userPrediction.prediction.includes(null) || 
+                    (!userPrediction.boost || userPrediction.boost !== 'Quali')
+                );
+
+                if (shouldSubmitPrediction && !(hasValidQualiBoostPrediction && raceHasStarted)) {
                     const submissionAt = new Date().toISOString();
+                    let predictionToUse = userDefaultPrediction;
+                    let boostUsed = userPrediction ? userPrediction.boost : null;
+        
+                    if (!userDefaultPrediction || boostUsed === 'Grid') {
+                        // Get a random prediction if there's no default or if 'Grid' boost is used
+                        predictionToUse = getRandomDrivers(filteredDrivers, boostUsed === 'Grid' ? 20 : 10);
+                    }
                     
-                    // Create a new prediction object for the next race
                     const newPrediction = {
-                        prediction: randomDrivers,
+                        prediction: predictionToUse,
                         userEmail: userEmail,
                         userName: userName,
                         competition: competitionName,
                         country: competitionCountry,
                         competitionId: competitionID,
-                        qualiTime: qualifyingTimeDateFormat,
                         submittedAt: submissionAt
                     };
-        
                     // Insert the new prediction into the database
                     await predictionsCollection.insertOne(newPrediction);
-
                 } else {
-                    // Do nothing if the user already has a prediction
-                }
-            }
-
-            response.status(200).json({message: `Predictions processed for all users.`})
-
+                    // Do nothing if the user meets none of the conditions or already has a valid 'Quali' boost prediction
+                }            }
+        
+            response.status(200).json({message: `Predictions processed for all users.`});
         } else {
-            response.status(200).json({ message: 'Qualifying has not started yet.' })
+            response.status(200).json({ message: 'Qualifying has not started yet.' });
         }
-
     } catch (error) {
         console.error(error);
         response.status(500).json(error);

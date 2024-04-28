@@ -20,7 +20,7 @@
     --blue: #00b3ff;
     --grey: #808080;
     --dark-grey: #424242;
-    --transparent-grey: #6d6d6d80;
+    --transparent-grey: #3d3d3d80;
     
     background-image: url('../assets/images/background.png');
     min-height: 95vh;
@@ -65,6 +65,9 @@ h6 {
     color: var(--white);
     font-style: italic;
 }
+p {
+    font-size: 0.8rem;
+}
 
 /* App */
 .app {
@@ -100,7 +103,7 @@ h6 {
 .two-buttons .btn {
     width:49%;
 }
-.btn.white, .btn.black, .btn.red {
+.btn.white, .btn.black, .btn.red, .btn.purple {
     padding:0.5em 1em;
     display: flex;
     justify-content: center;
@@ -122,6 +125,14 @@ h6 {
 .btn.red {
     background-color: var(--red);
     color:var(--white);
+}
+.btn.red .icon {
+    color: var(--white);
+    font-size: 1em;
+}
+.btn.purple {
+    background-color: var(--purple);
+    color: var(--white);
 }
 .btn .icon {
     color: var(--red);

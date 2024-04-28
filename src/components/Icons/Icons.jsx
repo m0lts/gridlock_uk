@@ -28,7 +28,9 @@ import { faCircleUser,
     faClipboard,
     faQuestionCircle,
     faEye,
-    faEyeSlash} from '@fortawesome/free-solid-svg-icons'
+    faEyeSlash,
+    faRocket,
+    faStopwatch} from '@fortawesome/free-solid-svg-icons'
 
 
 // Menu icons
@@ -173,6 +175,16 @@ export const SeeIcon = () => {
 export const HideIcon = () => {
     return (
         <FontAwesomeIcon icon={faEyeSlash} className='icon' />
+    )
+}
+export const RocketIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faRocket} className='icon' />
+    )
+}
+export const StopwatchIcon = () => {
+    return (
+        <FontAwesomeIcon icon={faStopwatch} className='icon' />
     )
 }
 // Expand icon 

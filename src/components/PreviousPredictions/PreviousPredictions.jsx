@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 // Components
 import { DownChevronIcon, UpChevronIcon } from '../Icons/Icons';
 import { LoaderWhite } from '../Loader/Loader';
-import { DriverListSmall } from '../DriverGrid/DriverGrid';
+import { DriverListLarge, DriverListSmall } from '../DriverGrid/DriverGrid';
 // Utils
 import { getCountryFlag } from '../../utils/getCountryFlag';
 // Styles
@@ -17,6 +17,7 @@ export const PreviousPredictions = ({ seasonData, userEmail }) => {
     const [noPreviousPrediction, setNoPreviousPrediction] = useState(false);
     const [previousPrediction, setPreviousPrediction] = useState([]);
     const [raceResultData, setRaceResultData] = useState();
+    const [boost, setBoost] = useState(null);
 
     useEffect(() => {
         const findUserPointsForEachCompetition = async () => {
@@ -77,6 +78,14 @@ export const PreviousPredictions = ({ seasonData, userEmail }) => {
             if (response.status === 200) {
                 const data = await response.json();
                 setPreviousPrediction(data.dbPrediction.prediction);
+                const boost = data.dbPrediction.boost;
+                if (boost === 'Grid') {
+                    setBoost('Grid');
+                } else if (boost === 'Quali') {
+                    setBoost('Quali');
+                } else {
+                    setBoost(null);
+                }
 
                 try {
                     const response = await fetch('/api/externalData/CallApi.js', {
@@ -90,8 +99,13 @@ export const PreviousPredictions = ({ seasonData, userEmail }) => {
                     if (response.ok) {
                         const responseData = await response.json();
                         const dataArray = responseData.result.response;
-                        const cleanData =  dataArray.slice(0, 10);
-                        setRaceResultData(cleanData);
+                        if (boost === 'Grid') {
+                            const cleanData = dataArray;
+                            setRaceResultData(cleanData);
+                        } else {
+                            const cleanData =  dataArray.slice(0, 10);
+                            setRaceResultData(cleanData);
+                        }
                     } else {
                         console.log('failure');
                     }
@@ -140,17 +154,24 @@ export const PreviousPredictions = ({ seasonData, userEmail }) => {
                                 <h3>{event.competitionCountry}</h3>
                             </div>
                             <div className="right">
-                                <h3 style={{ color: 'white'}} >{matchUserPointsToSeasonData(event.competitionId)}</h3>
+                                <h3 style={{ color: 'white'}}>{matchUserPointsToSeasonData(event.competitionId)}</h3>
                                 {expandedEvents[index] ? <UpChevronIcon /> : <DownChevronIcon />}
                             </div>
                         </div>
                         {(expandedEvents[index] && previousPrediction.length > 0 && raceResultData) ? (
+                            event.events.find(e => e.type === 'Race').status === 'Completed' ? (
                                 <div className="prediction-details">
                                     <DriverListSmall 
                                         prediction={previousPrediction}
                                         result={raceResultData}
+                                        boost={boost}
                                     />
                                 </div>
+                            ) : (
+                                <DriverListLarge
+                                    drivers={previousPrediction}
+                                />
+                            )
                         ) : (expandedEvents[index] && previousPrediction.length === 0 && !noPreviousPrediction) ? (
                                 <div className="prediction-details">
                                     <LoaderWhite />

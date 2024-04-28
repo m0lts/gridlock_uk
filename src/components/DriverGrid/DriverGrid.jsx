@@ -1,6 +1,7 @@
 // Utils
 import { filterDriverResponse } from '../../utils/FilterApiResponses';
 import { getTeamColour } from '../../utils/getTeamColour'
+import { RocketIcon, StopwatchIcon } from '../Icons/Icons';
 // Styles
 import './driver-grid.styles.css'
 
@@ -29,17 +30,21 @@ export const DriverListLarge = ({ drivers }) => {
 
 }
 
-export const DriverListSmall = ({ prediction, result }) => {
+export const DriverListSmall = ({ prediction, result, boost }) => {
 
     const resultData = filterDriverResponse(result);
+
+    const isGridBoost = prediction.length === 20;
 
     const pointsArray = prediction.map((predictedDriver, index) => {
         const actualDriver = resultData.find(driver => driver.driverAbbr === predictedDriver.driverAbbr);
         if (actualDriver) {
-            if (index === resultData.indexOf(actualDriver)) {
-                return 3;
+            if (isGridBoost) {
+                // 'Grid' boost scoring: +3 points for correct position, no points for just including
+                return index === resultData.indexOf(actualDriver) ? 3 : 0;
             } else {
-                return 1;
+                // Normal scoring: +1 point for including, +2 additional points for correct position
+                return index === resultData.indexOf(actualDriver) ? 3 : 1;
             }
         } else {
             return 0;
@@ -48,6 +53,16 @@ export const DriverListSmall = ({ prediction, result }) => {
 
     return (
         <section className="driver-grid small">
+            {boost && (
+                <h3 className="used-boost">
+                    {boost === 'Quali' ? (
+                        <StopwatchIcon />
+                    ) : (
+                        <RocketIcon />
+                    )}
+                    {boost} Boost
+                </h3>
+            )}
             <div className="prediction-column">
                 <h3 className='column-title'>Prediction</h3>
                 {prediction.map((driver, index) => {

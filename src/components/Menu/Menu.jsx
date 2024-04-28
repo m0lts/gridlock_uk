@@ -23,7 +23,7 @@ export const Menu = () => {
                         </NavLink>
                     </li>
                     <li className="menu-item">
-                        <NavLink to="/predictor" className="menu-link link" style={{ color: location.pathname === '/predictor' ? 'var(--red)' : 'var(--white)'}}>
+                        <NavLink to="/predictor" className="menu-link link" style={{ color: location.pathname === '/predictor' || location.pathname === '/default-prediction' ? 'var(--red)' : 'var(--white)'}}>
                             <PredictorIcon />
                             <p className="text">Predictor</p>
                         </NavLink>

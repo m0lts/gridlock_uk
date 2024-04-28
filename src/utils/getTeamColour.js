@@ -36,6 +36,9 @@ export const getTeamColour = (team) => {
         case 'Stake F1 Team Kick Sauber':
             return '#52E252';
             break;
+        case 'Sauber F1 Team':
+            return '#52E252';
+            break;
         case 'Alfa Romeo':
             return '#52E252';
             break;

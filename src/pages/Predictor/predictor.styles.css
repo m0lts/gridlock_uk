@@ -1,6 +1,24 @@
 .predictor {
     background-color: transparent;
 }
+.predictor .bonus-options {
+    padding: 0 5%;
+    padding-top:1em;
+    width:100%;
+}
+.predictor .bonus-options .btn.black {
+    width:100%;
+}
+.predictor .bonus-options .btn.black .icon {
+    color: var(--white);
+}
+.predictor .bonus-options .two-buttons {
+    padding:0;
+    padding-top: 5px;
+}
+.predictor .bonus-options .two-buttons .btn .icon {
+    color: var(--purple);
+}
 .predictor .feature-locked-cont {
     padding:2em 5%;
     background: linear-gradient(to bottom, transparent, var(--black));
