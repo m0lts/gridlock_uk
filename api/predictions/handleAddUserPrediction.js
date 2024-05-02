@@ -21,15 +21,39 @@ export default async function handler(request, response) {
             const userPrediction = dataReceived.prediction;
             const userEmail = dataReceived.userEmail;
             const competition = dataReceived.competition;
+            const selectedBoost = dataReceived.boost;
 
             const dbPrediction = await dbCollection.findOne({ competition, userEmail })
 
             if (dbPrediction) {
-                await dbCollection.updateOne(
-                    { competition, userEmail },
-                    { $set: { prediction: userPrediction } }
-                );
-                response.status(200).json({ message: 'Prediction updated successfully' });
+
+                const boostInDb = dbPrediction.boost;
+
+                // If user is adding a boost and their prediction includes null values, only update the boost
+                if (!boostInDb) {
+                    if (selectedBoost && userPrediction.includes(null)) {
+                        await dbCollection.updateOne(
+                            { competition, userEmail },
+                            { $set: { boost: selectedBoost } }
+                        );
+                        response.status(200).json({ message: 'Prediction added successfully' });
+                        return;
+                    } else {
+                        await dbCollection.updateOne(
+                            { competition, userEmail },
+                            { $set: { prediction: userPrediction } }
+                        );
+                        response.status(200).json({ message: 'Prediction updated successfully' });
+                        return;
+                    }
+                } else {
+                    await dbCollection.updateOne(
+                        { competition, userEmail },
+                        { $set: { prediction: userPrediction } }
+                    );
+                    response.status(200).json({ message: 'Prediction updated successfully' });
+                }
+
             } else {
                 await dbCollection.insertOne(dataReceived);
                 response.status(201).json({ message: 'Prediction added successfully' });

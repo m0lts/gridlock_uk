@@ -89,54 +89,98 @@ export default async function handler(request, response) {
             return shuffled.slice(0, count);
         }
 
+        const raceHasStarted = raceStartTime < Date.now();
+
+
         if (currentTime > qualifyingStartTime) {
             for (const user of users) {
                 const userEmail = user.email;
                 const userName = user.username;
                 const userPrediction = await predictionsCollection.findOne({ userEmail, competitionId: competitionID });
                 const userDefaultPredictionDocument = await predictionsCollection.findOne({ userEmail, competitionId: 'Default' });
-                const userDefaultPrediction = userDefaultPredictionDocument ? userDefaultPredictionDocument.prediction : null
+                const userDefaultPrediction = userDefaultPredictionDocument ? userDefaultPredictionDocument.prediction : null;
+                const boostUsed = userPrediction ? userPrediction.boost : null;
         
-                // Check if the user has already submitted a valid prediction and it includes the 'Quali' boost
-                const hasValidQualiBoostPrediction = userPrediction &&
-                                                     userPrediction.prediction &&
-                                                     !userPrediction.prediction.includes(null) &&
-                                                     userPrediction.boost === 'Quali';
-                
-                // Determine if race has started
-                const raceHasStarted = raceStartTime < Date.now();
-        
-                // Condition to check if automatic prediction needs to be submitted
-                const shouldSubmitPrediction = (
-                    !userPrediction || 
-                    userPrediction.prediction.includes(null) || 
-                    (!userPrediction.boost || userPrediction.boost !== 'Quali')
-                );
 
-                if (shouldSubmitPrediction && !(hasValidQualiBoostPrediction && raceHasStarted)) {
-                    const submissionAt = new Date().toISOString();
-                    let predictionToUse = userDefaultPrediction;
-                    let boostUsed = userPrediction ? userPrediction.boost : null;
-        
-                    if (!userDefaultPrediction || boostUsed === 'Grid') {
-                        // Get a random prediction if there's no default or if 'Grid' boost is used
-                        predictionToUse = getRandomDrivers(filteredDrivers, boostUsed === 'Grid' ? 20 : 10);
+                if (!userPrediction || userPrediction.prediction.includes(null)) {
+                    if (!boostUsed || boostUsed !== 'Quali') {
+                        const submissionAt = new Date().toISOString();
+                        let predictionToUse = userDefaultPrediction;
+                        
+                        if (!userDefaultPrediction || boostUsed === 'Grid') {
+                            // Get a random prediction if there's no default or if 'Grid' boost is used
+                            predictionToUse = getRandomDrivers(filteredDrivers, boostUsed === 'Grid' ? 20 : 10);
+                        }
+    
+                        if (boostUsed === 'Grid') {
+                            // Update the user's prediction with the default prediction
+                            await predictionsCollection.updateOne({
+                                userEmail,
+                                competitionId: competitionID
+                            }, {
+                                $set: {
+                                    prediction: predictionToUse,
+                                    submittedAt: submissionAt
+                                }
+                            
+                            });
+                        } else {
+                            // Create a new prediction object
+                            const newPrediction = {
+                                prediction: predictionToUse,
+                                userEmail: userEmail,
+                                userName: userName,
+                                competition: competitionName,
+                                country: competitionCountry,
+                                competitionId: competitionID,
+                                submittedAt: submissionAt
+                            };
+                            // Insert the new prediction into the database
+                            await predictionsCollection.insertOne(newPrediction);
+                        }
+                    } else if (boostUsed === 'Quali' && raceHasStarted) {
+                        const submissionAt = new Date().toISOString();
+                        let predictionToUse = userDefaultPrediction;
+                        
+                        if (!userDefaultPrediction) {
+                            predictionToUse = getRandomDrivers(filteredDrivers, 10);
+                        }
+    
+                        // Update the user's prediction with the default prediction
+                        await predictionsCollection.updateOne({
+                            userEmail,
+                            competitionId: competitionID
+                        }, {
+                            $set: {
+                                prediction: predictionToUse,
+                                submittedAt: submissionAt
+                            }
+                        
+                        });
+                    } else {
+                        // Do nothing if the user already has a valid 'Quali' boost prediction
                     }
-                    
-                    const newPrediction = {
-                        prediction: predictionToUse,
-                        userEmail: userEmail,
-                        userName: userName,
-                        competition: competitionName,
-                        country: competitionCountry,
-                        competitionId: competitionID,
-                        submittedAt: submissionAt
-                    };
-                    // Insert the new prediction into the database
-                    await predictionsCollection.insertOne(newPrediction);
+
                 } else {
+                    if (boostUsed === 'Grid' && userPrediction.prediction.length < 20) {
+                        const submissionAt = new Date().toISOString();
+                        const predictionToUse = getRandomDrivers(filteredDrivers, 20);
+    
+                        // Update the user's prediction with the default prediction
+                        await predictionsCollection.updateOne({
+                            userEmail,
+                            competitionId: competitionID
+                        }, {
+                            $set: {
+                                prediction: predictionToUse,
+                                submittedAt: submissionAt
+                            }
+                        
+                        });
+                    }
                     // Do nothing if the user meets none of the conditions or already has a valid 'Quali' boost prediction
-                }            }
+                }
+            }
         
             response.status(200).json({message: `Predictions processed for all users.`});
         } else {

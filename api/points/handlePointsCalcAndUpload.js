@@ -68,7 +68,6 @@ export default async function handler(request, response) {
 
 
         const driverIDs = raceResult.response.map(event => event.driver.id);
-        const top10Drivers = driverIDs.splice(0, 10);
 
 
         // Get userID and prediction from database using closestRace.id
@@ -82,12 +81,13 @@ export default async function handler(request, response) {
         for (const racePrediction of racePredictions) {
             const userEmail = racePrediction.userEmail;
             const userPrediction = racePrediction.prediction;
+            const boostUsed = racePrediction.boost ? racePrediction.boost : null;
             let points = 0;
 
-            const driversToScore = boost === 'Grid' ? driverIDs : driverIDs.slice(0, 10); // Use all drivers if boost is 'Grid', otherwise top 10
-            const scoreForCorrectPosition = boost === 'Grid' ? 3 : 2; // Grid boost gets 3 points for correct positions, others get 2
+            const driversToScore = boostUsed === 'Grid' ? driverIDs : driverIDs.slice(0, 10); // Use all drivers if boost is 'Grid', otherwise top 10
+            const scoreForCorrectPosition = boostUsed === 'Grid' ? 3 : 2; // Grid boost gets 3 points for correct positions, others get 2
         
-            if (boost === 'Grid') {
+            if (boostUsed === 'Grid') {
                 let correctPositions = 0;
                 userPrediction.forEach((predictedDriver, index) => {
                     if (index < driversToScore.length && predictedDriver.driverId === driversToScore[index]) {
