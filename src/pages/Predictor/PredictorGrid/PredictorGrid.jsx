@@ -120,14 +120,12 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
             return;
         }
 
-        if (qualiTime < Date.now()) {
-            if (qualiBoost) {
-                if (raceTime > Date.now()) {
-                    return;
-                }
-            } else {
-                return
-            }
+        if ((qualiTime < Date.now()) && !qualiBoost) {
+            return;
+        }
+
+        if (qualiBoost && (raceTime < Date.now())) {
+            return;
         }
 
         try {
@@ -197,6 +195,7 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
                 }
             } catch (error) {
                 console.error('Error fetching prediction:', error);
+                setFetchingPrediction(false);
             }
         }   
         if (nextEvent.length > 0) {

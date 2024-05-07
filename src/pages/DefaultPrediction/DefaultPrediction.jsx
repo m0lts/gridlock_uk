@@ -10,44 +10,11 @@ export const DefaultPrediction = ({ user, driverData }) => {
     const navigate = useNavigate();
     const [showSelectionModal, setShowSelectionModal] = useState(false);
     const [selectedGridIndex, setSelectedGridIndex] = useState(null);
-    const [selectedDrivers, setSelectedDrivers] = useState(Array(10).fill(null));
-    const [alreadySubmitted, setAlreadySubmitted] = useState(false);
-    const [loading, setLoading] = useState(true);
-    
+    const [selectedDrivers, setSelectedDrivers] = useState(Array(10).fill(null));        
 
     const handleGoBack = () => {
         window.history.back();
     }
-
-    // Get user default prediction
-    useEffect(() => {
-        const fetchDefaultPrediction = async () => {
-            setLoading(true);
-            const response = await fetch('/api/predictions/handleFindUserPrediction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userEmail: user.email, competitionId: 'Default' }),
-            });
-
-            if (response.status === 200) {
-                const data = await response.json();
-                setSelectedDrivers(data.dbPrediction.prediction);
-                setAlreadySubmitted(true);
-                setLoading(false);
-            } else {
-                setAlreadySubmitted(false);
-                setLoading(false);
-            }
-        }
-        
-        if (!user) {
-            navigate('/');
-        } else {
-            fetchDefaultPrediction();
-        }
-    }, [user])
 
     // Prediction logic
     // Filter out any drivers from the driverData array
@@ -65,11 +32,6 @@ export const DefaultPrediction = ({ user, driverData }) => {
     }, [driverData]);
     
     const handleGridItemClick = (index) => {
-
-        if (alreadySubmitted) {
-            return;
-        }
-
         if (selectedDrivers[index]) {
             setDrivers(prevDrivers => [...prevDrivers, selectedDrivers[index]]);
             setSelectedDrivers(prevSelectedDrivers => {
@@ -121,22 +83,34 @@ export const DefaultPrediction = ({ user, driverData }) => {
         </div>
     ));
 
+
     // Send user prediction to database and handle errors
     const [showPredictionModal, setShowPredictionModal] = useState(false);
     const [submittingPredictionMsg, setSubmittingPredictionMsg] = useState('Submitting...');
+    const [updateDriversArray, setUpdateDriversArray] = useState(false);
+    const [fetchingPrediction, setFetchingPrediction] = useState(true);
     const [showError, setShowError] = useState(false);
+    const [disableSubmitButton, setDisableSubmitButton] = useState(true);
+    const [submitButtonText, setSubmitButtonText] = useState('Lock it in');
+    
+    useEffect(() => {
+        if (!selectedDrivers.includes(null)) {
+            setDisableSubmitButton(false);
+        }
+    }, [selectedDrivers]);
+
+    // NEW
 
     const handleUserPrediction = async () => {
+
+        setSubmitButtonText('Submitting...');
         setShowPredictionModal(true);
         setSubmittingPredictionMsg('Submitting...');
 
         if (selectedDrivers.includes(null)) {
             setShowError(true);
+            setSubmitButtonText('Lock it in');
             setShowPredictionModal(false);
-            return;
-        }
-
-        if (alreadySubmitted) {
             return;
         }
 
@@ -160,17 +134,71 @@ export const DefaultPrediction = ({ user, driverData }) => {
             });
 
             if (response.status === 200 || response.status === 201) {
+                setSubmitButtonText('Update prediction');
                 setShowPredictionModal(false);
-                setAlreadySubmitted(true);
             } else {
                 setShowPredictionModal(false);
             }
             
         } catch (error) {
             console.error(error);
+            setShowPredictionModal(false);
         }
         
     }
+
+    useEffect(() => {
+        const fetchPrediction = async () => {
+            try {
+                const payload = {
+                    userEmail: user.email,
+                    competitionId: 'Default',
+                };
+                const response = await fetch('/api/predictions/handleFindUserPrediction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+                if (response.status === 200) {
+                    const responseData = await response.json();
+                    const dbPrediction = responseData.dbPrediction;
+                    if (dbPrediction) {
+                        setSelectedDrivers(dbPrediction.prediction);
+                        setUpdateDriversArray(true);
+                        setSubmitButtonText('Update prediction');
+                    }
+                    setFetchingPrediction(false);
+                } else {
+                    setFetchingPrediction(false);
+                }
+            } catch (error) {
+                console.error('Error fetching prediction:', error);
+                setFetchingPrediction(false);
+            }
+        }   
+
+        if (!user) {
+            navigate('/');
+        } else {
+            fetchPrediction();
+            setFetchingPrediction(true);
+        }
+
+    }, [user])
+
+    useEffect(() => {
+        const updateDriversArrayWithDbPrediction = () => {
+            const updatedDrivers = drivers.filter(driver => {
+                return !selectedDrivers.some(selectedDriver => selectedDriver && selectedDriver.driverId === driver.driverId);
+            });
+            setDrivers(updatedDrivers);
+        }
+        if (drivers.length > 0 && updateDriversArray) {
+            updateDriversArrayWithDbPrediction();
+        }
+    }, [updateDriversArray])
 
     return (
         <section className="default-prediction">
@@ -182,14 +210,11 @@ export const DefaultPrediction = ({ user, driverData }) => {
             </div>
 
             <h1>Default Prediction</h1>
-            {alreadySubmitted ? (
-                <p>Your default prediction is below. You cannot change your default prediction.</p>
-            ) : (
-                <p>You have not submitted a default prediction yet. This prediction will be used if you fail to submit a prediction for a race. Once submitted, you cannot change your default prediction.</p>
-            )}
+            <p>This prediction will be used if you fail to submit a prediction for a race.</p>
+            
 
             <div className="predictor-grid">
-                {loading ? (
+                {fetchingPrediction ? (
                     <LoaderWhite />
                 ) : (
                     <>
@@ -234,17 +259,21 @@ export const DefaultPrediction = ({ user, driverData }) => {
             )}
 
             {/* Submit button */}
-            {!alreadySubmitted && !loading && (
+            {!fetchingPrediction && (
                 <div className="submit-prediction">
-                    <button 
-                        className="btn white" 
-                        onClick={handleUserPrediction}
-                    >
-                        Submit Default Prediction
-                    </button>
-                    <p className='error-msg' style={{ display: showError ? 'block' : 'none' }}>You must select a driver for all positions.</p>
+                        <button 
+                            className="btn white" 
+                            style={{ opacity: disableSubmitButton ? '0.5' : '1' }}
+                            onClick={handleUserPrediction}
+                            disabled={disableSubmitButton}
+                        >
+                            {submitButtonText}
+                        </button>
+                        <p className='error-msg' style={{ display: showError ? 'block' : 'none' }}>You must select a driver for all positions.</p>
                 </div>
             )}
         </section>
     )
 }
+
+

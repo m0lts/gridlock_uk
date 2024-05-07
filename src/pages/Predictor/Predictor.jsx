@@ -96,7 +96,7 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                         <div className="bonus-options">
                             <Link to={'/default-prediction'} className='link'>
                                 <button className="btn black">
-                                    My Default Prediction
+                                    Default Prediction
                                     <RightArrowIcon />
                                 </button>
                             </Link>
