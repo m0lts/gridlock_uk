@@ -18,6 +18,7 @@ export const UserData = ({ user, setUser, driverData, seasonData }) => {
     // Set user data
     const [userData, setUserData] = useState({
         user_id: user ? user.user_id : '',
+        username: user ? user.username : '',
         favouriteDriver: '',
         favouriteTeam: '',
         favouriteGrandPrix: '',
