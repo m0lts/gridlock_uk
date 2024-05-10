@@ -16,11 +16,14 @@ export const Standings = ({ user }) => {
     // Sort standings and league data
     const standingsData = sessionStorage.getItem('standingsData');
     const leaguesData = sessionStorage.getItem('leaguesData');
+    const publicLeaguesData = sessionStorage.getItem('publicLeaguesData');
     const [standings, setStandings] = useState(standingsData ? JSON.parse(standingsData) : []);
     const [leagues, setLeagues] = useState(leaguesData ? JSON.parse(leaguesData) : []);
+    const [publicLeagues, setPublicLeagues] = useState(publicLeaguesData ? JSON.parse(publicLeaguesData) : [])
     const [loadingPrivateLeagues, setLoadingPrivateLeagues] = useState(false);
     const [standingsUpdateTime, setStandingsUpdateTime] = useState(sessionStorage.getItem('standingsUpdateTime') ? sessionStorage.getItem('leaguesUpdateTime') : '');
     const [leaguesUpdateTime, setLeaguesUpdateTime] = useState(sessionStorage.getItem('leaguesUpdateTime') ? sessionStorage.getItem('leaguesUpdateTime') : '');
+    const [publicLeaguesUpdateTime, setPublicLeaguesUpdateTime] = useState(sessionStorage.getItem('publicLeaguesUpdateTime') ? sessionStorage.getItem('publicLeaguesUpdateTime') : '');
 
     useEffect(() => {
         const fetchStandingsAndLeagues = async () => {
@@ -73,6 +76,24 @@ export const Standings = ({ user }) => {
                             sessionStorage.setItem('leaguesData', JSON.stringify(updatedLeagues));
                             setLeaguesUpdateTime(new Date().toLocaleString());
                             sessionStorage.setItem('leaguesUpdateTime', new Date().toLocaleString());
+
+                            const updatedPublicLeagues = leaguesData.publicLeagues.map(league => {
+                                const updatedLeagueMembers = league.leagueMembers.map(member => {
+                                    const memberStandings = sortedStandings.find(user => user.username === member);
+                                    return memberStandings ? { username: member, totalPoints: memberStandings.totalPoints } : member;
+                                });
+                                const sortedLeagueMembers = updatedLeagueMembers.sort((a, b) => {
+                                    if (b.totalPoints !== a.totalPoints) {
+                                        return b.totalPoints - a.totalPoints;
+                                    }
+                                    return a.username.localeCompare(b.username);
+                                });
+                                return { ...league, leagueMembers: sortedLeagueMembers };
+                            });
+                            setPublicLeagues(updatedPublicLeagues);
+                            sessionStorage.setItem('publicLeaguesData', JSON.stringify(updatedPublicLeagues));
+                            setPublicLeaguesUpdateTime(new Date().toLocaleString());
+                            sessionStorage.setItem('publicLeaguesUpdateTime', new Date().toLocaleString());
                             setLoadingPrivateLeagues(false);
                         }
                         
@@ -177,6 +198,21 @@ export const Standings = ({ user }) => {
                         </div>
                         <RightChevronIcon />
                     </Link>
+                    {user && (
+                        (publicLeagues.length > 0 || (sessionStorage.getItem('publicLeaguesData') && JSON.parse(sessionStorage.getItem('publicLeaguesData')).length > 0)) ? (
+                            (publicLeagues.length > 0 ? publicLeagues : JSON.parse(sessionStorage.getItem('publicLeaguesData'))).map((league, index) => (
+                                <Link key={index} className="league link" to={`/standings/${league.leagueName}`} state={{ name: league.leagueName, standings: league.leagueMembers, admin: league.leagueAdmin, updateTime: publicLeaguesUpdateTime, user: user.username, code: league._id }}>
+                                    <div className='left'>
+                                        <h3 className='position-box'>{configUserPosition(league.leagueMembers)}</h3>
+                                        <p>{league.leagueName}</p>
+                                    </div>
+                                    <RightChevronIcon />
+                                </Link>
+                            ))
+                        ) : loadingPrivateLeagues && (
+                            <LoaderWhite />
+                        )
+                    )}
                 </div>
                 {user && (
                     <>

@@ -27,6 +27,7 @@ import { filterEventResponse, filterDriverResponse } from './utils/FilterApiResp
 import './assets/global.styles.css'
 import { UserData } from './pages/UserData/UserData'
 import { DefaultPrediction } from './pages/DefaultPrediction/DefaultPrediction'
+import { Settings } from './pages/Settings/Settings'
 
 
 export default function App() {
@@ -109,6 +110,7 @@ export default function App() {
 
   }, []);
 
+
   return (
     <div className="app">
       <Header user={user} />
@@ -130,6 +132,7 @@ export default function App() {
         <Route path='/help' element={<HelpPage user={user} />} />
         <Route path='/user-info' element={<UserData user={user} setUser={setUser} driverData={returnedDriverData} seasonData={returnedEventData} />} />
         <Route path='/default-prediction' element={<DefaultPrediction driverData={returnedDriverData} user={user} />} />
+        <Route path='/settings' element={<Settings user={user} />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Menu />

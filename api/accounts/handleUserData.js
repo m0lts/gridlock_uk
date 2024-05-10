@@ -84,6 +84,8 @@ export default async function handler(request, response) {
                     await publicLeaguesCollection.updateOne({ leagueName: 'Red Bull Fans' }, { $push: { leagueMembers: formData.username } });
                 } else if (formData.favouriteTeam === 'Scuderia Ferrari/n') {
                     await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $push: { leagueMembers: formData.username } });
+                } else if (formData.favouriteTeam === 'Scuderia Ferrari\n') {
+                    await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $push: { leagueMembers: formData.username } });
                 } else if (formData.favouriteTeam === 'Scuderia Ferrari') {
                     await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $push: { leagueMembers: formData.username } });
                 } else if (formData.favouriteTeam === 'McLaren Racing') {
@@ -118,6 +120,8 @@ export default async function handler(request, response) {
                 const updateFields = {};
                 if (formData.favouriteDriver !== userDataDocument.favouriteDriver && formData.favouriteDriver !== '') {
                     updateFields.favouriteDriver = formData.favouriteDriver;
+
+                    console.log(userDataDocument)
 
                     if (userDataDocument.favouriteDriver === 'Max Verstappen') {
                         await publicLeaguesCollection.updateOne({ leagueName: 'Verstappen Fans' }, { $pull: { leagueMembers: formData.username } });
@@ -211,6 +215,10 @@ export default async function handler(request, response) {
                         await publicLeaguesCollection.updateOne({ leagueName: 'Red Bull Fans' }, { $pull: { leagueMembers: formData.username } });
                     } else if (userDataDocument.favouriteTeam === 'Scuderia Ferrari') {
                         await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $pull: { leagueMembers: formData.username } });
+                    } else if (userDataDocument.favouriteTeam === 'Scuderia Ferrari/n') {
+                        await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $pull: { leagueMembers: formData.username } });
+                    } else if (userDataDocument.favouriteTeam === 'Scuderia Ferrari\n') {
+                        await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $pull: { leagueMembers: formData.username } });
                     } else if (userDataDocument.favouriteTeam === 'McLaren Racing') {
                         await publicLeaguesCollection.updateOne({ leagueName: 'McLaren Fans' }, { $pull: { leagueMembers: formData.username } });
                     } else if (userDataDocument.favouriteTeam === 'Mercedes-AMG Petronas') {
@@ -236,6 +244,8 @@ export default async function handler(request, response) {
                     } else if (formData.favouriteTeam === 'Scuderia Ferrari/n') {
                         await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $push: { leagueMembers: formData.username } });
                     } else if (formData.favouriteTeam === 'Scuderia Ferrari') {
+                        await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $push: { leagueMembers: formData.username } });
+                    } else if (formData.favouriteTeam === 'Scuderia Ferrari\n') {
                         await publicLeaguesCollection.updateOne({ leagueName: 'Ferrari Fans' }, { $push: { leagueMembers: formData.username } });
                     } else if (formData.favouriteTeam === 'McLaren Racing') {
                         await publicLeaguesCollection.updateOne({ leagueName: 'McLaren Fans' }, { $push: { leagueMembers: formData.username } });

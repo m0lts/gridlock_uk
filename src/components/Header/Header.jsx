@@ -15,6 +15,7 @@ export const Header = ({ user }) => {
     const location = useLocation();
 
     const handleLogout = async () => {
+        setShowAccountMenu(!showAccountMenu)
         try {
             const response = await fetch('/api/accounts/handleLogout', { method: 'POST' });
             if (response.ok) {
@@ -49,6 +50,11 @@ export const Header = ({ user }) => {
             )}
             {showAccountMenu && (
                 <ul className="account-menu">
+                    <li className="item">
+                        <Link className="btn black link" to={'/settings'} onClick={() => setShowAccountMenu(!showAccountMenu)}>
+                            Settings
+                        </Link>
+                    </li>
                     <li className='item'>
                         <button className='btn red' onClick={handleLogout}>
                             Logout

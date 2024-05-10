@@ -15,6 +15,7 @@ export default async function handler(request, response) {
 
         const db = mongoClient.db("gridlock");
         const dbCollection = db.collection("leagues");
+        const publicLeaguesCollection = db.collection("public-leagues");
 
         if (request.method === "POST") {
             try {
@@ -23,8 +24,11 @@ export default async function handler(request, response) {
         
                 // Find leagues that user is in
                 const leagues = await dbCollection.find({ leagueMembers: user }).project({ leagueMembers: 1, leagueName: 1, leagueAdmin: 1 }).toArray();
-        
-                response.status(200).json({ leagues });
+
+                // Find public leagues that user is in
+                const publicLeagues = await publicLeaguesCollection.find({ leagueMembers: user }).project({ leagueMembers: 1, leagueName: 1, leagueAdmin: 1 }).toArray();
+
+                response.status(200).json({ leagues, publicLeagues });
             } catch (error) {
                 console.error('Error finding leagues for user:', error);
                 response.status(500).json({ error: 'Internal Server Error' });
