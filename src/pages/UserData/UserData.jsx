@@ -3,19 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Nationalities } from '../../utils/getAllNationalities';
 import './user-data.styles.css';
 import { LoaderWhite } from '../../components/Loader/Loader';
+import { LeftChevronIcon } from '../../components/Icons/Icons';
 
 export const UserData = ({ user, setUser, driverData, seasonData }) => {
 
     // If user isn't logged in, redirect to login page
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!user) {
-            navigate('/');
-        }
-    }, [user, navigate]);
-
-    // Set user data
     const [userData, setUserData] = useState({
         user_id: user ? user.user_id : '',
         username: user ? user.username : '',
@@ -26,6 +19,50 @@ export const UserData = ({ user, setUser, driverData, seasonData }) => {
         f1Engagement: '',
     });
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [updatingData, setUpdatingData] = useState(false);
+    
+
+    useEffect(() => {
+
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch('/api/accounts/handleGetUserData', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId: user.user_id }),
+                });
+                if (response.status === 200) {
+                    const responseData = await response.json();
+                    setUserData((prevUserData) => ({
+                        ...prevUserData,
+                        favouriteDriver: responseData.favouriteDriver,
+                        favouriteTeam: responseData.favouriteTeam,
+                        favouriteGrandPrix: responseData.favouriteGrandPrix,
+                        nationality: responseData.nationality,
+                        f1Engagement: responseData.f1Engagement,
+                    }));
+                    setUpdatingData(true);
+                    setFormSubmitted(false);
+                } else {
+                    setFormSubmitted(false);
+                }
+            } catch (error) {
+                console.error(error);
+                setFormSubmitted(false);
+            }
+        }
+
+
+        if (!user) {
+            navigate('/');
+        } else {
+            setFormSubmitted(true);
+            fetchUserData();
+        }
+    }, [user, navigate]);
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -114,6 +151,9 @@ export const UserData = ({ user, setUser, driverData, seasonData }) => {
         setCircuitData(getCircuits());
     }, [driverData, seasonData]);
 
+    const handleGoBack = () => {
+        window.history.back();
+    }
 
     return (
         <section className="user-data">
@@ -121,9 +161,22 @@ export const UserData = ({ user, setUser, driverData, seasonData }) => {
                 <LoaderWhite />
             ) : (
                 <>
+                    <div className="back-button" onClick={handleGoBack}>
+                        <LeftChevronIcon />
+                        Back
+                    </div>
                     <div className="user-data-header">
-                        <h1>Welcome, {user ? user.username : 'User'}!</h1>
-                        <p>We've noticed your profile isn't fully set up yet. Take a moment to complete it to enhance your experience.</p>
+                        {updatingData ? (
+                            <>
+                                <h1>Changed your mind?</h1>
+                                <p>Select your new favourites below.</p>
+                            </>
+                        ) : (
+                            <>
+                                <h1>Welcome, {user ? user.username : 'User'}!</h1>
+                                <p>We've noticed your profile isn't fully set up yet. Take a moment to complete it to enhance your experience.</p>
+                            </>
+                        )}
                     </div>
                     <form className="account-form" onSubmit={handleSubmit}>
                         <div className="input-group">
