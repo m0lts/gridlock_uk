@@ -149,13 +149,23 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
 
             if (response.status === 200 || response.status === 201) {
                 setSubmitButtonText('Update prediction');
-                setShowPredictionModal(false);
+                setSubmittingPredictionMsg('Your prediction has been submitted.')
+                setTimeout(() => {
+                    setShowPredictionModal(false);
+                }, 2000);
             } else {
-                setShowPredictionModal(false);
+                setSubmittingPredictionMsg('Prediction submission failed, please try again. If the issue persists, please get in touch with the team at gridlock.contact@gmail.com')
+                setTimeout(() => {
+                    setShowPredictionModal(false);
+                }, 2000);
             }
             
         } catch (error) {
             console.error(error);
+            setSubmittingPredictionMsg('Prediction submission failed, please try again. If the issue persists, please get in touch with the team at gridlock.contact@gmail.com')
+            setTimeout(() => {
+                setShowPredictionModal(false);
+            }, 2000);
         }
         
     }
@@ -256,7 +266,9 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
             {showPredictionModal && (
                 <div className="prediction-modal">
                     <div className="modal-msg">
-                        <LoaderWhite />
+                        {submittingPredictionMsg === 'Submitting...' && (
+                            <LoaderWhite />
+                        )}
                         <h3>{submittingPredictionMsg}</h3>
                         <button className='btn white' onClick={() => setShowPredictionModal(false)}>Close</button>
                     </div>

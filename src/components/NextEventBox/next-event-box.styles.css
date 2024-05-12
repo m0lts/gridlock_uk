@@ -60,6 +60,13 @@
     gap:1em;
     padding:1em;
 }
+.next-event-box .bottom .lower.closed {
+    background-color: var(--black);
+    border: none;
+}
+.next-event-box .bottom .lower.closed h3, .next-event-box .bottom .lower.closed h2, .next-event-box .bottom .lower.closed .icon {
+    color: var(--purple) !important;
+}
 .next-event-box .bottom .upper .timer {
     width:40%;
     text-align: center;

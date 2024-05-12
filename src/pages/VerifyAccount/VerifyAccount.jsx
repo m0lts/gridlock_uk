@@ -8,15 +8,30 @@ import { LoaderWhite } from "../../components/Loader/Loader";
 import './verify-account.styles.css'
 
 
-export const VerifyAccount = ({ user, setUser }) => {
+export const VerifyAccount = ({ user, setUser, seasonData }) => {
 
     const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [nextRoundNumber, setNextRoundNumber] = useState(null);
     const [error, setError] = useState(null);
     const [verifyButtonText, setVerifyButtonText] = useState('Resend verification code');
     const [isResendDisabled, setIsResendDisabled] = useState(false);
     const inputRefs = useRef([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+
+        const getNextRoundNumber = () => {
+            const scheduledEvent = seasonData.find(event => event.status === 'Scheduled');
+            if (scheduledEvent) {
+                setNextRoundNumber(seasonData.indexOf(scheduledEvent) + 1);
+            }
+        }
+
+        if (seasonData.length > 0) {
+            getNextRoundNumber()
+        }
+    }, [])
 
     const handleChange = (index, value) => {
         const newCode = [...verificationCode];
@@ -45,8 +60,24 @@ export const VerifyAccount = ({ user, setUser }) => {
             if (response.ok) {
                 const responseData = await response.json();
                 setUser(responseData.user);
-                setFormSubmitted(false);
-                navigate('/user-info');
+                try {
+                    const response = await fetch('/api/leagues/handleJoinPublicLeague', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ nextRoundNumber, username: user.username }),
+                    });
+                    if (response.ok) {
+                        setFormSubmitted(true);                        
+                        navigate('/user-info');
+                    } else {
+                        setFormSubmitted(false);
+                    }
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    setFormSubmitted(false);        
+                }
             } else {
                 setFormSubmitted(false);
                 setError('*Invalid verification code, please try again.')

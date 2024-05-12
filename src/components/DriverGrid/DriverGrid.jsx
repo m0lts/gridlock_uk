@@ -34,18 +34,11 @@ export const DriverListSmall = ({ prediction, result, boost }) => {
 
     const resultData = filterDriverResponse(result);
 
-    const isGridBoost = prediction.length === 20;
-
     const pointsArray = prediction.map((predictedDriver, index) => {
         const actualDriver = resultData.find(driver => driver.driverAbbr === predictedDriver.driverAbbr);
         if (actualDriver) {
-            if (isGridBoost) {
-                // 'Grid' boost scoring: +3 points for correct position, no points for just including
-                return index === resultData.indexOf(actualDriver) ? 3 : 0;
-            } else {
-                // Normal scoring: +1 point for including, +2 additional points for correct position
-                return index === resultData.indexOf(actualDriver) ? 3 : 1;
-            }
+            // Normal scoring: +1 point for including, +2 additional points for correct position
+            return index === resultData.indexOf(actualDriver) ? 3 : 1;
         } else {
             return 0;
         }

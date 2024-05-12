@@ -14,6 +14,7 @@ import './next-event-box.styles.css'
 export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
 
     const [qualifyingTime, setQualifyingTime] = useState('00:00:00:00');
+    const [raceTime, setRaceTime] = useState('00:00:00:00');
     const [predictionsClosed, setPredictionsClosed] = useState(false);
 
     useEffect(() => {
@@ -25,6 +26,13 @@ export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
             }
             const qualiTime = new Date(quali.date).getTime();
             setQualifyingTime(qualiTime);
+
+            const race = nextEvent[0].events.find(event => event.type === 'Race');
+            if (!race) {
+                return;
+            }
+            const raceTime = new Date(race.date).getTime();
+            setRaceTime(raceTime); 
 
             const currentTime = new Date().getTime();
             const difference = qualiTime - currentTime;
@@ -63,9 +71,14 @@ export const NextEventPredictor = ({ nextEvent, roundNumber }) => {
             </Link>
             {predictionsClosed ? (
                 <div className="bottom">
-                    <Link to={'/predictor'} className="upper closed link">
+                    <div className="upper closed">
                         <h3>Predictions Closed</h3>
-                        <RightChevronIcon />
+                    </div>
+                    <Link to={'/predictor'} className="lower closed link">
+                        <h3>Quali boost closes in:</h3>
+                        <CountdownTimer
+                            qualiTime={raceTime}
+                        />
                     </Link>
                 </div>
             ) : (

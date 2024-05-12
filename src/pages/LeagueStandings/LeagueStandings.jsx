@@ -72,7 +72,7 @@ export const LeagueStandings = () => {
                                     <td className="table-position">{index + 1}</td>
                                     <td className="table-username">
                                         <Link to={{ pathname: `/user/${user.username}`, state: { user } }} className='link'>
-                                            {user.username}
+                                            {user.username ? user.username : user}
                                         </Link>
                                     </td>
                                     <td className="table-points">{user.totalPoints} <RightChevronIcon /></td>

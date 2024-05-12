@@ -85,34 +85,27 @@ export default async function handler(request, response) {
             let points = 0;
 
             const driversToScore = boostUsed === 'Grid' ? driverIDs : driverIDs.slice(0, 10); // Use all drivers if boost is 'Grid', otherwise top 10
-            const scoreForCorrectPosition = boostUsed === 'Grid' ? 3 : 2; // Grid boost gets 3 points for correct positions, others get 2
+            const scoreForCorrectPosition = 2;
         
-            if (boostUsed === 'Grid') {
-                let correctPositions = 0;
-                userPrediction.forEach((predictedDriver, index) => {
+            let correctPositions = 0;
+            // Check if all 20 drivers were correctly predicted for Grid boost
+            userPrediction.forEach((predictedDriver, index) => {
+                if (driversToScore.includes(predictedDriver.driverId)) {
+                    points += 1; // Base point for including the driver in the prediction
                     if (index < driversToScore.length && predictedDriver.driverId === driversToScore[index]) {
-                        points += scoreForCorrectPosition; // +3 points for Grid boost correctly predicting position
+                        points += scoreForCorrectPosition; // +2 points for correctly predicting position
                         correctPositions++;
                     }
-                });
-                // Check if all 20 drivers were correctly predicted for Grid boost
-                if (correctPositions === 20) {
-                    points += 20; // Bonus points for perfect prediction
                 }
-            } else {
-                userPrediction.forEach((predictedDriver, index) => {
-                    if (driversToScore.includes(predictedDriver.driverId)) {
-                        points += 1; // Base point for including the driver in the prediction
-                        if (index < driversToScore.length && predictedDriver.driverId === driversToScore[index]) {
-                            points += scoreForCorrectPosition; // +2 points for correctly predicting position
-                        }
-                    }
-                });
-                // Standard bonus for getting top 10 exact match
-                if (points === 30) {
-                    points += 10;
-                }
+            });
+            // Standard bonus for getting top 10 exact match
+            if (points === 30) {
+                points += 10;
             }
+            if (correctPositions === 20) {
+                points += 20; // Bonus points for perfect prediction
+            }
+
 
             // Accumulate points for each user
             if (userPointsMap[userEmail]) {

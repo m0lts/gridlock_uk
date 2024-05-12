@@ -110,7 +110,6 @@ export default function App() {
 
   }, []);
 
-
   return (
     <div className="app">
       <Header user={user} />
@@ -125,7 +124,7 @@ export default function App() {
         <Route path="/signup" element={<SignUp seasonData={returnedEventData} setUser={setUser} user={user} />} />
         <Route path='/forgotpassword' element={<ForgotPassword user={user} />} />
         <Route path='/resetpassword' element={<ResetPassword user={user} setUser={setUser} />} />
-        <Route path='/verifyaccount' element={<VerifyAccount user={user} setUser={setUser} />} />
+        <Route path='/verifyaccount' element={<VerifyAccount user={user} setUser={setUser} seasonData={returnedEventData} />} />
         <Route path='/user/:user' element={<UserProfile seasonData={returnedEventData} user={user} />} /> 
         <Route path='/event/:event' element={<EventPage user={user} />} />
         <Route path='/session-result/:sessionId' element={<SessionResult />} />
