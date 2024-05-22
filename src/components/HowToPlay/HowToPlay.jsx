@@ -30,7 +30,18 @@ export const HowToPlay = () => {
                     </div>
                     <div className='grid'>
                         <h1>02</h1>
-                        <p>Submit your prediction before qualifying starts. If you fail to submit a prediction, a randomised prediction will be automatically submitted for you.</p>
+                        <p>Submit your prediction before qualifying starts. If you fail to submit a prediction, your default prediction will be automatically submitted for you.</p>
+                    </div>
+                </div>
+                <div className="sec3">
+                    <h3>Boosts:</h3>
+                    <div className='grid'>
+                        <h1>Quali</h1>
+                        <p>Users can submit their prediction after qualifying, but must submit their prediction before the race starts.</p>
+                    </div>
+                    <div className='grid'>
+                        <h1>Grid</h1>
+                        <p>Users can submit a prediction for all 20 drivers on the grid. </p>
                     </div>
                 </div>
                 <div className="sec4">
@@ -47,7 +58,11 @@ export const HowToPlay = () => {
                         <h1>10 <span>bonus points</span></h1>
                         <p>For getting all 10 drivers in their correct finishing position.</p>
                     </div>
-                    <p>The maximum available points per weekend is 40 points.</p>
+                    <div className="grid">
+                        <h1>20 <span>bonus points</span></h1>
+                        <p>For getting all 20 drivers in their correct finishing position when the grid boost is used.</p>
+                    </div>
+                    <p>The maximum available points per weekend is 40 points, unless the grid boost is used, where a used can get up to 80 points.</p>
                 </div>
             </div>
         </section>

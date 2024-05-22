@@ -45,7 +45,7 @@ export const GridBoostModal = ({ setShowModal, showModal, setGridBoost, user, ne
                     <h2>Grid Boost</h2>
                 </div>
                 <div className="modal-text">
-                    <p>The grid boost allows you to submit a prediction of all 20 grid places. You will receive 3 points for each driver you predict in the correct position.</p>
+                    <p>The grid boost allows you to submit a prediction of all 20 grid places.</p>
                     <br />
                     <p>You can only use this once.</p>
                     <p>You can only select one boost per weekend.</p>

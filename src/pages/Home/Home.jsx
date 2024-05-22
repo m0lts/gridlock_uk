@@ -24,7 +24,8 @@ export const Home = ({ seasonData, driverData, user }) => {
         const checkForUpdateModal = () => {
             localStorage.removeItem('updateModal');
             localStorage.removeItem('updateModalv2');
-            const updateModal = localStorage.getItem('updateModalv2.0.1');
+            localStorage.removeItem('updateModalv2.0.1');
+            const updateModal = localStorage.getItem('updateModalv3');
             if (!updateModal) {
                 setShowUpdateModal(true);
             }
