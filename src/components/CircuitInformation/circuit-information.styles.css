@@ -14,6 +14,13 @@
     justify-content: flex-start;
     width:100%;
 }
+.circuit-information .details .image {
+    max-width:90%;
+    overflow: hidden;
+}
+.circuit-information .details .image img {
+    width: 100%;
+}
 .circuit-information h4 {
     font-size: 1em;
 }
