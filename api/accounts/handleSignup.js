@@ -63,7 +63,7 @@ export default async function handler(request, response) {
                 to: email,
                 from: {
                     name: 'Gridlock',
-                    email: 'gridlock.contact@gmail.com'
+                    email: 'admin@f1gridlock.com'
                 },
                 templateId: 'd-f9b818d2289e4c2da46e434c87a9b9e9',
                 dynamic_template_data: {

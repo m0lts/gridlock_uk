@@ -59,7 +59,7 @@ export default async function handler(request, response) {
 
             const msg = {
                 to: email,
-                from: 'gridlock.contact@gmail.com',
+                from: 'admin@f1gridlock.com',
                 templateId: 'd-153671bbc10b4e2f878cf25669f7714c',
                 dynamic_template_data: {
                     resetLink: resetLink,
