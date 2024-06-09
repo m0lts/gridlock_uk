@@ -1,7 +1,6 @@
 // Dependencies
 import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom"
-import { useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom"
 // Components
 import { LoaderWhite } from "../../components/Loader/Loader";
 // Styles
@@ -9,6 +8,9 @@ import './verify-account.styles.css'
 
 
 export const VerifyAccount = ({ user, setUser, seasonData }) => {
+
+    const location = useLocation();
+    const stateData = location.state?.user;
 
     const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -46,15 +48,14 @@ export const VerifyAccount = ({ user, setUser, seasonData }) => {
         e.preventDefault();
         setFormSubmitted(true);
         const code = verificationCode.join('');
-        const userId = user.user_id;
 
         try {
-            const response = await fetch('/api/accounts/handleVerifyUser.js', {
+            const response = await fetch('/api/accounts/handleVerifyUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ code, userId }),
+                body: JSON.stringify({ code, email: stateData.email }),
             });
 
             if (response.ok) {
@@ -66,7 +67,7 @@ export const VerifyAccount = ({ user, setUser, seasonData }) => {
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ nextRoundNumber, username: user.username }),
+                        body: JSON.stringify({ nextRoundNumber, username: responseData.user.username }),
                     });
                     if (response.ok) {
                         setFormSubmitted(true);                        
@@ -100,11 +101,11 @@ export const VerifyAccount = ({ user, setUser, seasonData }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: user.email }),
+                body: JSON.stringify({ email: stateData.email }),
             });
 
             if (response.ok) {
-                setVerifyButtonText(`Re-sent verification code to ${user.email}`);
+                setVerifyButtonText(`Re-sent verification code to ${stateData.email}`);
                 setTimeout(() => {
                     setVerifyButtonText('Resend verification code');
                 }, 2000);

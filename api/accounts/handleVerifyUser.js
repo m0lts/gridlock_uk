@@ -1,5 +1,13 @@
 import { MongoClient, ObjectId } from "mongodb";
 import jwt from 'jsonwebtoken';
+import sendgrid from '@sendgrid/mail';
+import client from "@sendgrid/client";
+
+
+// Send grid API key
+sendgrid.setApiKey(process.env.SENDGRIDAPI_KEY);
+client.setApiKey(process.env.SENDGRIDAPI_KEY);
+
 
 const uri = process.env.MONGODB_URI;
 const options = {};
@@ -17,32 +25,61 @@ export default async function handler(request, response) {
 
         const db = mongoClient.db("gridlock");
         const dbCollection = db.collection("accounts");
+        const verificationCollection = db.collection("verification-codes");
 
 
         if (request.method === "POST") {
             const receivedData = request.body;
             const verificationCode = receivedData.code;
-            const userId = receivedData.userId;
+            const userEmail = receivedData.email;
 
-            const userAccount = await dbCollection.findOne({ verificationToken: verificationCode, _id: new ObjectId(userId) });
+            const verificationDocument = await verificationCollection.findOne({ verificationToken: verificationCode, email: userEmail })
 
-            if (!userAccount) {
+            if (!verificationDocument) {
                 response.status(400).json({ error: 'Incorrect verification details.' });
                 return;
             }
+            
+            const contactData = {
+                "contacts": [
+                    {
+                        "email": userEmail,
+                        "first_name": verificationDocument.username,
+                    }
+                ],
+                "list_ids": verificationDocument.emailConsent ? ['036a4122-8866-4476-bc31-946611d0f7c1'] : ['75df1a79-11c7-46fa-b1eb-834b9d6d3028'],
+            };
+            
+            const contactRequest = {
+                method: 'PUT',
+                url: '/v3/marketing/contacts',
+                body: contactData,
+            };
+            
+            const contactAdded = await client.request(contactRequest);
+            
+            if (!contactAdded) {
+                response.status(401).json({ error: 'Error adding contact.' });
+                return;
+            }
 
-            await dbCollection.updateOne(
-                { _id: new ObjectId(userId) },
-                { $set: { verified: true }, $unset: { verificationToken: "" } }
+            verificationDocument.verified = true;
+            delete verificationDocument.verificationToken;
+
+            await dbCollection.insertOne(verificationDocument);
+
+            const userAccount = await dbCollection.findOne(
+                { email: userEmail }
             );
+            
+            await verificationCollection.deleteOne({ email: userEmail });
 
             const jwtToken = jwt.sign({ 
                 email: userAccount.email, 
                 username: userAccount.username, 
                 user_id: userAccount._id, 
-                verified: true 
+                verified: userAccount.verified, 
             }, process.env.JWT_SECRET, { expiresIn: '14d' });
-
             response.setHeader('Set-Cookie', `jwtToken=${jwtToken}; HttpOnly; Secure; Path=/; Max-Age=1209600; SameSite=Strict`);
             response.status(200).json({
                 message: 'Account verified successfully',
@@ -50,7 +87,7 @@ export default async function handler(request, response) {
                     email: userAccount.email,
                     username: userAccount.username,
                     user_id: userAccount._id,
-                    verified: true
+                    verified: userAccount.verified
                 }
             });
 

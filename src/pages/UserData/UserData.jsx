@@ -20,6 +20,7 @@ export const UserData = ({ user, setUser, driverData, seasonData }) => {
     });
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [updatingData, setUpdatingData] = useState(false);
+    const [allowGoBack, setAllowGoBack] = useState(true);
     
 
     useEffect(() => {
@@ -44,6 +45,9 @@ export const UserData = ({ user, setUser, driverData, seasonData }) => {
                         f1Engagement: responseData.f1Engagement,
                     }));
                     setUpdatingData(true);
+                    setFormSubmitted(false);
+                } else if (response.status === 400) {
+                    setAllowGoBack(false);
                     setFormSubmitted(false);
                 } else {
                     setFormSubmitted(false);
@@ -161,10 +165,12 @@ export const UserData = ({ user, setUser, driverData, seasonData }) => {
                 <LoaderWhite />
             ) : (
                 <>
-                    <div className="back-button" onClick={handleGoBack}>
-                        <LeftChevronIcon />
-                        Back
-                    </div>
+                    {allowGoBack && (
+                        <div className="back-button" onClick={handleGoBack}>
+                            <LeftChevronIcon />
+                            Back
+                        </div>
+                    )}
                     <div className="user-data-header">
                         {updatingData ? (
                             <>

@@ -2,7 +2,6 @@ import { MongoClient } from "mongodb";
 import bcrypt from 'bcrypt';
 import sendgrid from '@sendgrid/mail';
 import client from "@sendgrid/client";
-import jwt from "jsonwebtoken";
 
 
 // Send grid API key
@@ -24,6 +23,7 @@ export default async function handler(request, response) {
 
         const db = mongoClient.db("gridlock");
         const dbCollection = db.collection("accounts");
+        const verificationCollection = db.collection("verification-codes");
 
         if (request.method === "POST") {
             const formData = request.body;
@@ -74,44 +74,18 @@ export default async function handler(request, response) {
 
             const sendEmail = await sendgrid.send(msg);
 
-            const contactData = {
-                "contacts": [
-                    {
-                        "email": email,
-                        "first_name": formData.username,
-                    }
-                ],
-                "list_ids": formData.emailConsent ? ['036a4122-8866-4476-bc31-946611d0f7c1'] : ['75df1a79-11c7-46fa-b1eb-834b9d6d3028'],
-            };
-
-            const contactRequest = {
-                method: 'PUT',
-                url: '/v3/marketing/contacts',
-                body: contactData,
-            };
-
-            const contactAdded = await client.request(contactRequest);
-
-            if (!sendEmail || !contactAdded) {
+            if (!sendEmail) {
                 response.status(500).json({ error: "Error sending verification email." });
                 return;
             } else {
-                await dbCollection.insertOne(formData);
-                const userDocument = await dbCollection.findOne({ email });
-                const jwtToken = jwt.sign({ 
-                    email: userDocument.email, 
-                    username: userDocument.username, 
-                    user_id: userDocument._id, 
-                    verified: userDocument.verified
-                }, process.env.JWT_SECRET, { expiresIn: '14d' });
-                response.setHeader('Set-Cookie', `jwtToken=${jwtToken}; HttpOnly; Secure; Path=/; Max-Age=1209600; SameSite=Strict`);
+                await verificationCollection.deleteOne({ email: formData.email });
+                await verificationCollection.insertOne(formData);
                 response.status(200).json({
-                    message: 'Authentication successful',
+                    message: 'Signup successful',
                     user: {
-                        email: userDocument.email,
-                        username: userDocument.username,
-                        user_id: userDocument._id,
-                        verified: userDocument.verified
+                        email: formData.email,
+                        username: formData.username,
+                        verified: formData.verified,
                     }
                 });
             }

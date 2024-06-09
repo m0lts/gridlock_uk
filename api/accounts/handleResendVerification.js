@@ -19,13 +19,14 @@ export default async function handler(request, response) {
 
         const db = mongoClient.db("gridlock");
         const dbCollection = db.collection("accounts");
+        const verificationCollection = db.collection("verification-codes");
 
         if (request.method === "POST") {
             const formData = request.body;
 
             // Check if email or username already exists in database
             const email = formData.email;
-            const emailInDatabase = await dbCollection.findOne({ email });
+            const emailInDatabase = await verificationCollection.findOne({ email });
 
             const generateRandomCode = (length) => {
                 const characters = '0123456789'
@@ -40,7 +41,7 @@ export default async function handler(request, response) {
             if (emailInDatabase) {
                 const verificationToken = generateRandomCode(6);
 
-                await dbCollection.updateOne({ email }, { $set: { verificationToken } });
+                await verificationCollection.updateOne({ email }, { $set: { verificationToken } });
                 
                 const msg = {
                     to: email,

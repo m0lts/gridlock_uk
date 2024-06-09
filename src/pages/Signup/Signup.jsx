@@ -70,8 +70,8 @@ export default function SignUp({ user, setUser }) {
             if (response.ok) {
                 const responseData = await response.json();
                 const user = responseData.user;
-                setUser(user);
-                navigate('/verifyaccount');
+                // setUser(user);
+                navigate('/verifyaccount', { state: { user } })
               } else if (response.status === 400) {
                 setEmailError('* Email already in use.');
                 setFormSubmitted(false);

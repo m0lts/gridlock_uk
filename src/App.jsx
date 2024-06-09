@@ -94,9 +94,9 @@ export default function App() {
           const responseJson = await response.json();
           const token = responseJson.user;
           setUser(token);
-          if (!token.verified) {
-            navigate('/verifyaccount');
-          }
+          // if (!token.verified) {
+          //   navigate('/verifyaccount');
+          // }
         } else {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
