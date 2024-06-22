@@ -53,6 +53,8 @@ export const Predictor = ({ seasonData, driverData, user }) => {
     const [gridBoost, setGridBoost] = useState(false);
     const [qualiBoostUsed, setQualiBoostUsed] = useState(false);
     const [gridBoostUsed, setGridBoostUsed] = useState(false);
+    const [fetchingPrediction, setFetchingPrediction] = useState(true);
+
 
     useEffect(() => {
         const fetchUserBoosts = async () => {
@@ -92,7 +94,7 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                         roundNumber={roundNumber}
                     />
 
-                    {user && (
+                    {(user && !fetchingPrediction) && (
                         <div className="bonus-options">
                             <Link to={'/default-prediction'} className='link'>
                                 <button className="btn black">
@@ -154,6 +156,8 @@ export const Predictor = ({ seasonData, driverData, user }) => {
                                     setQualiBoost={setQualiBoost}
                                     setGridBoost={setGridBoost}
                                     raceTime={raceTime}
+                                    fetchingPrediction={fetchingPrediction}
+                                    setFetchingPrediction={setFetchingPrediction}
                                 />
                             </div>
                         </>

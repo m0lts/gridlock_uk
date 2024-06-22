@@ -7,7 +7,7 @@ import { getTeamColour } from '../../../utils/getTeamColour';
 // Styles
 import './predictor-grid.styles.css'
 
-export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qualiTime, qualiBoost, setQualiBoost, gridBoost, setGridBoost, raceTime }) => {
+export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qualiTime, qualiBoost, setQualiBoost, gridBoost, setGridBoost, raceTime, fetchingPrediction, setFetchingPrediction }) => {
 
     // Filter out any drivers from the driverData array
     const [drivers, setDrivers] = useState([])
@@ -93,7 +93,6 @@ export const PredictorGrid = ({ driverData, userEmail, userName, nextEvent, qual
     const [showPredictionModal, setShowPredictionModal] = useState(false);
     const [submittingPredictionMsg, setSubmittingPredictionMsg] = useState('Submitting...');
     const [updateDriversArray, setUpdateDriversArray] = useState(false);
-    const [fetchingPrediction, setFetchingPrediction] = useState(true);
     const [showError, setShowError] = useState(false);
     const [disableSubmitButton, setDisableSubmitButton] = useState(true);
     const [submitButtonText, setSubmitButtonText] = useState('Lock it in');
